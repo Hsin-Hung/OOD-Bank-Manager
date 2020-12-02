@@ -1,6 +1,10 @@
 import java.math.BigDecimal;
 import java.sql.*;
 
+
+/*
+ * DBManager.java - class that handles all database operations
+ */
 public class DBManager {
 
     private Connection conn = null;
@@ -73,7 +77,6 @@ public class DBManager {
     }
 
     public void addDefaultManager() {
-
         String sql = "INSERT INTO USERS(NAME,USERNAME,PASSWORD,ROLE) VALUES (\"MANAGER\",\"admin\",\"admin\",\"MANAGER\");";
         Statement stmt = null;
         try {
@@ -115,6 +118,47 @@ public class DBManager {
         }
     }
 
-    public void addTransaction()
+    public void addTransaction(String type, BigDecimal amount, String currency, int userid, int accountId) {
+        String sql = "INSERT INTO TRANSACTIONS(DATE,TYPE,AMOUNT,CURRENCY,USERID,ACCOUNTID) VALUES (?,?,?,?,?,?)";
+        try {
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setString(1, String.valueOf(java.time.LocalDate.now()));
+            stmt.setString(2, type);
+            stmt.setBigDecimal(3, amount);
+            stmt.setString(4,currency);
+            stmt.setInt(5, userid);
+            stmt.setInt(3, accountId);
+            stmt.execute();
+            stmt.close();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public void deleteAccount(int accountId) {
+        String sql = "DELETE FROM ACCOUNTS WHERE ID = ?";
+        try {
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, accountId);
+            stmt.execute();
+            stmt.close();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public void updateAmount(int accountId, BigDecimal amount) {
+        String sql = "UPDATE ACCOUNTS SET AMOUNT = ? WHERE ID = ?";
+        try {
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setBigDecimal(1, amount);
+            stmt.setInt(2, accountId);
+            stmt.execute();
+            stmt.close();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
 
 }
