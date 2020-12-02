@@ -1,11 +1,11 @@
 import javax.swing.*;
 import java.awt.event.WindowEvent;
 
-public abstract class MainWindow extends JFrame {
+public abstract class BaseScreen extends JFrame {
     private static int openWindows = 0;
     protected boolean switchWindow = false;
 
-    public MainWindow() {
+    public BaseScreen() {
         super("ATM");
         openWindows += 1;
 

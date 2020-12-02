@@ -5,18 +5,18 @@ import com.intellij.uiDesigner.core.Spacer;
 import javax.swing.*;
 import java.awt.*;
 
-public class CheckingScreen extends MainWindow {
+public class AccountsScreen extends BaseScreen {
     private JButton createBtn;
     private JPanel accountsPanel;
     private JPanel mainPanel;
 
-    public CheckingScreen() {
+    public AccountsScreen(Customer customer) {
         $$$setupUI$$$();
 
         initialize();
         accountsPanel.setLayout(new BoxLayout(accountsPanel, BoxLayout.Y_AXIS));
-        for (int i = 0; i < 5; i++) {
-            CheckAccountObject a = new CheckAccountObject();
+        for (BankAccount bankAccounts : customer.getBankAccounts()) {
+            AccountsObject a = new AccountsObject(bankAccounts);
             a.$$$getRootComponent$$$().setAlignmentX(Component.CENTER_ALIGNMENT);
             accountsPanel.add(a.$$$getRootComponent$$$());
         }
@@ -42,14 +42,16 @@ public class CheckingScreen extends MainWindow {
         final JLabel label1 = new JLabel();
         label1.setText("Checkings Account");
         mainPanel.add(label1, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        accountsPanel = new JPanel();
-        accountsPanel.setLayout(new GridBagLayout());
-        mainPanel.add(accountsPanel, new GridConstraints(1, 0, 1, 5, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         createBtn = new JButton();
         createBtn.setText("Create New");
         mainPanel.add(createBtn, new GridConstraints(0, 4, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final Spacer spacer1 = new Spacer();
         mainPanel.add(spacer1, new GridConstraints(0, 1, 1, 3, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
+        final JScrollPane scrollPane1 = new JScrollPane();
+        mainPanel.add(scrollPane1, new GridConstraints(1, 0, 1, 5, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        accountsPanel = new JPanel();
+        accountsPanel.setLayout(new GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
+        scrollPane1.setViewportView(accountsPanel);
     }
 
     /**

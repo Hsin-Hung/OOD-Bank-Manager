@@ -7,27 +7,24 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-public class Login extends MainWindow {
+public class LoginScreen extends BaseScreen {
     private JTextField userTextField;
     private JPanel mainPanel;
     private JPasswordField passwordField;
     private JButton loginButton;
-    private final ATMSession owner;
 
-    public Login(ATMSession owner) {
+    public LoginScreen(ATM owner) {
         super();
         $$$setupUI$$$();
 
-        this.owner = owner;
-
-        Login login = this;
         loginButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
 
-                owner.login(userTextField.getText(), new String(passwordField.getPassword()));
-                closeScreen();
+                if (owner.login(userTextField.getText(), new String(passwordField.getPassword()))) {
+                    closeScreen();
+                }
             }
         });
 
@@ -66,13 +63,13 @@ public class Login extends MainWindow {
         label1.setText("Username:");
         mainPanel.add(label1, new GridConstraints(2, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         loginButton = new JButton();
-        loginButton.setText("Login");
+        loginButton.setText("LoginScreen");
         mainPanel.add(loginButton, new GridConstraints(4, 1, 1, 2, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final JLabel label2 = new JLabel();
         label2.setText("Password:");
         mainPanel.add(label2, new GridConstraints(3, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final JLabel label3 = new JLabel();
-        label3.setText("Login Form");
+        label3.setText("LoginScreen Form");
         mainPanel.add(label3, new GridConstraints(1, 1, 1, 2, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
     }
 

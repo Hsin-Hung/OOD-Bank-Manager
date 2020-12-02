@@ -1,6 +1,7 @@
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public abstract class BankAccount {
     final int USER_ID;// the user who owns it
@@ -39,12 +40,13 @@ public abstract class BankAccount {
     public int getAccountID() {
         return ACCOUNT_ID;
     }
+    public String getCurrency() { return CURRENCY; }
 
     public void addTransaction(Transaction t) {
         transactions.add(t);
     }
 
-    public ArrayList<Transaction> getTransaction() {
+    public List<Transaction> getTransaction() {
         return transactions;
     }
 

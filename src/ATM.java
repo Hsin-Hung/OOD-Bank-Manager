@@ -1,10 +1,15 @@
 // all the logics are done in the bank, ATM is just a fascade for the bank
 public class ATM {
     Bank bank;// the bank that connects this ATM
-    Customer loggedInCustomer; // the customer who logged in to this ATM
 
     public ATM(Bank bank) {
         this.bank = bank;
+
+        startLogin();
+    }
+
+    private void startLogin() {
+        new LoginScreen(this);
     }
 
     //create a new customer
@@ -13,16 +18,22 @@ public class ATM {
         // loggedInCustomer = bank.createCustomer(username,password)
     }
 
-    //prompt for username and password and set 'loggedInCustomer' as the logged in customer
-    private boolean logIn() {
-        //input username and password
-        //loggedInCustomer = bank.userAuth(username, password)
+    /**
+     * Check if valid login, if valid, swaps over to the corrent user screens.
+     * @param userName userName that's logging in
+     * @param password the inputted password field
+     * @return true if login was successful
+     */
+    public boolean login(String userName, String password) {
+        System.out.println("User name: " + userName + " Password: " + password);
+        // TODO check login with db, transition into customer or manager. return results.
+        new CustomerScreen(this);
 
         return true;
     }
 
-    private void logOut() {
-        loggedInCustomer = null;
+    public void logout() {
+        startLogin();
     }
 
     private void createCheckingAccount() {
@@ -59,10 +70,4 @@ public class ATM {
     private void viewBalance() {
     }
 
-    //use ATM, starting point of ATM
-    public void useATM() {
-        if (logIn()) {
-            //manage the accounts
-        }
-    }
 }

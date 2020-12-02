@@ -14,8 +14,7 @@ public class DBManager {
     public DBManager() {
         try {
             // db parameters
-            String file = this.getClass().getResource("").getPath();
-            file = file.substring(1, file.length() - 4) + "src/db/";
+            String file = System.getProperty("user.dir") + "/src/db/";
             String url = "jdbc:sqlite://" + file + "atm.db";
             System.out.println("URL=" + url);
             // create a connection to the database
@@ -254,14 +253,15 @@ public class DBManager {
             ResultSet rs = stmt.executeQuery();
             String role = rs.getString(1);
             if (role.equals("CUSTOMER")) {
-                p = new Customer();
+//                p = new Customer();
             } else if (role.equals("MANAGER")) {
-                p = new BankManager();
+//                p = new BankManager();
             }
             stmt.close();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-        return p;
+        return null;
+//        return p;
     }
 }
