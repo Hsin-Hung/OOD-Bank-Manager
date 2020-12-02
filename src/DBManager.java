@@ -1,3 +1,4 @@
+import java.math.BigDecimal;
 import java.sql.*;
 
 public class DBManager {
@@ -99,6 +100,21 @@ public class DBManager {
         }
     }
 
-    public void addAccount(String userid, String type, double amount, )
+    public void addAccount(int userid, String type, BigDecimal amount, String currency) {
+        String sql = "INSERT INTO ACCOUNTS(USERID,TYPE,AMOUNT,CURRENCY) VALUES (?,?,?,?)";
+        try {
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, userid);
+            stmt.setString(2, type);
+            stmt.setBigDecimal(3, amount);
+            stmt.setString(4,currency);
+            stmt.execute();
+            stmt.close();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public void addTransaction()
 
 }
