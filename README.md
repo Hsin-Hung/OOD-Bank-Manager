@@ -3,10 +3,10 @@ https://docs.google.com/document/d/1Zn7F8lUnsoWattYWEYV1gk3GumoHLplR_2g8bpVYKtA/
 
 
 # Compilation
-javac -cp "lib/*" src/*.java
+```javac -cp "lib/*" src/*.java```
 
 # Execution
-java -cp "lib/*;src" App
+```java -cp "lib/*;src" App```
 
 # Clean folder
-rm src/*.class
+```rm src/*.class```

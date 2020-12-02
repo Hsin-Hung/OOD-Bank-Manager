@@ -28,8 +28,7 @@ public class Login extends MainWindow {
                 super.mouseClicked(e);
 
                 owner.login(userTextField.getText(), new String(passwordField.getPassword()));
-                switchWindow = true;
-                dispatchEvent(new WindowEvent(login, WindowEvent.WINDOW_CLOSING));
+                closeScreen();
             }
         });
 
@@ -39,6 +38,7 @@ public class Login extends MainWindow {
     private void initialize() {
         setContentPane(mainPanel);
         setSize(500, 500);
+        centerScreen();
     }
 
     /**

@@ -13,6 +13,10 @@ public class ATMSession {
 
     public void login(String userName, String password) {
         System.out.println("User name: " + userName + " Password: " + password);
-        mainWindow = new UserScreen(this);
+        mainWindow = new CustomerScreen(this);
+    }
+
+    public void logout() {
+        startLogin();
     }
 }
