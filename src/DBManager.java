@@ -252,4 +252,26 @@ public class DBManager {
         }
     }
 
+
+    public Person getPerson(String username) {
+        //TODO: INCOMPLETE
+        String sql = "SELECT ROLES FROM USERS WHERE USERNAME = ?";
+        Person p;
+        try {
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setString(1, username);
+            ResultSet rs = stmt.executeQuery();
+            String role = rs.getString(1);
+            if(role.equals("CUSTOMER")) {
+                p = new Customer();
+            } else if (role.equals("MANAGER")) {
+               p = new BankManager();
+            }
+            stmt.close();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return p;
+    }
+
 }
