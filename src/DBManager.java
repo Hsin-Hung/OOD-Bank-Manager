@@ -99,6 +99,6 @@ public class DBManager {
         }
     }
 
-    public void addAccount(String userid, String type, double amount, )
+    public void addAccount(String userid, String type, double amount){}
 
 }
