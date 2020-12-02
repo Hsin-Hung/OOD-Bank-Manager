@@ -15,7 +15,7 @@ public class DBManager {
 
             conn = DriverManager.getConnection(url);
             System.out.println("Connection to SQLite has been established.");
-            //    createTables();
+            createTables();
 
 
         } catch (SQLException e) {
@@ -28,24 +28,43 @@ public class DBManager {
         Statement stmt = null;
         try {
             stmt = conn.createStatement();
-            String sql = "CREATE TABLE \"USERS\" (\n" +
-                    "\t\"ID\"\tINTEGER NOT NULL UNIQUE,\n" +
-                    "\t\"NAME\"\tTEXT NOT NULL,\n" +
-                    "\t\"USERNAME\"\tTEXT NOT NULL UNIQUE,\n" +
-                    "\t\"PASSWORD\"\tTEXT NOT NULL,\n" +
-                    "\t\"ROLE\"\tTEXT NOT NULL,\n" +
-                    "\tPRIMARY KEY(\"ID\" AUTOINCREMENT)\n" +
+            String sql = "CREATE TABLE IF NOT EXISTS USERS (" +
+                    "ID INTEGER NOT NULL UNIQUE," +
+                    "NAME TEXT NOT NULL," +
+                    "USERNAME TEXT NOT NULL UNIQUE," +
+                    "PASSWORD TEXT NOT NULL," +
+                    "ROLE TEXT NOT NULL," +
+                    "PRIMARY KEY(ID AUTOINCREMENT)" +
                     ")";
             stmt.execute(sql);
 
-            sql = "CREATE TABLE IF NOT EXISTS TRANSACTIONS();";
+            sql = "CREATE TABLE IF NOT EXISTS TRANSACTIONS(" +
+                    "ID INTEGER NOT NULL UNIQUE, " +
+                    "DATE TEXT NOT NULL, " +
+                    "TYPE TEXT NOT NULL, " +
+                    "AMOUNT REAL NOT NULL, " +
+                    "USERID INTEGER NOT NULL, " +
+                    "ACCOUNTID INTEGER NOT NULL, " +
+                    "PRIMARY KEY(ID AUTOINCREMENT))";
             stmt.execute(sql);
-            sql = "CREATE TABLE IF NOT EXISTS STOCKS();";
+            sql = "CREATE TABLE IF NOT EXISTS STOCKS(" +
+                    "ID INTEGER, " +
+                    "NAME TEXT NOT NULL, " +
+                    "BUYAMOUNT REAL NOT NULL, " +
+                    "SELLAMOUNT REAL NOT NULL, " +
+                    "PRIMARY KEY(ID AUTOINCREMENT))";
             stmt.execute(sql);
-            sql = "CREATE TABLE IF NOT EXISTS ACCOUNTS();";
+            System.out.println("STOCKS CREATED");
+            sql = "CREATE TABLE IF NOT EXISTS ACCOUNTS (" +
+                    "ID INTEGER NOT NULL UNIQUE," +
+                    "USERID INTEGER NOT NULL," +
+                    "TYPE TEXT NOT NULL," +
+                    "AMOUNT REAL NOT NULL," +
+                    "CURRENCY TEXT NOT NULL," +
+                    "PRIMARY KEY(ID AUTOINCREMENT)" +
+                    ")";
             stmt.execute(sql);
             stmt.close();
-            addDefaultManager();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
