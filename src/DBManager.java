@@ -1,5 +1,10 @@
 import java.math.BigDecimal;
+
 import java.sql.*;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 
 /*
@@ -20,7 +25,12 @@ public class DBManager {
 
             conn = DriverManager.getConnection(url);
             System.out.println("Connection to SQLite has been established.");
+//            dropTables();
+//            System.out.println("Tables dropped");
             createTables();
+            System.out.println("Tables created");
+            addDefaultManager();
+            System.out.println("Add default manager");
 
 
         } catch (SQLException e) {
@@ -28,6 +38,25 @@ public class DBManager {
         }
     }
 
+    public void dropTables() {
+        Statement stmt = null;
+        try {
+            stmt = conn.createStatement();
+            String sql = "DROP TABLE USERS";
+            stmt.execute(sql);
+            sql = "DROP TABLE ACCOUNTS";
+            stmt.execute(sql);
+            sql = "DROP TABLE TRANSACTIONS";
+            stmt.execute(sql);
+            sql = "DROP TABLE LOANS";
+            stmt.execute(sql);
+            sql = "DROP TABLE STOCKS";
+            stmt.execute(sql);
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+    }
     public void createTables() {
 
         Statement stmt = null;
@@ -50,6 +79,8 @@ public class DBManager {
                     "AMOUNT REAL NOT NULL, " +
                     "USERID INTEGER NOT NULL, " +
                     "ACCOUNTID INTEGER NOT NULL, " +
+                    "TARGETACCOUNTID INTEGER, " +
+                    "TARGETUSERID INTEGER, " +
                     "PRIMARY KEY(ID AUTOINCREMENT))";
             stmt.execute(sql);
             sql = "CREATE TABLE IF NOT EXISTS STOCKS(" +
@@ -59,13 +90,21 @@ public class DBManager {
                     "SELLAMOUNT REAL NOT NULL, " +
                     "PRIMARY KEY(ID AUTOINCREMENT))";
             stmt.execute(sql);
-            System.out.println("STOCKS CREATED");
             sql = "CREATE TABLE IF NOT EXISTS ACCOUNTS (" +
                     "ID INTEGER NOT NULL UNIQUE," +
                     "USERID INTEGER NOT NULL," +
                     "TYPE TEXT NOT NULL," +
                     "AMOUNT REAL NOT NULL," +
                     "CURRENCY TEXT NOT NULL," +
+                    "PRIMARY KEY(ID AUTOINCREMENT)" +
+                    ")";
+            stmt.execute(sql);
+            sql = "CREATE TABLE IF NOT EXISTS LOANS (" +
+                    "ID INTEGER NOT NULL UNIQUE," +
+                    "USERID INTEGER NOT NULL," +
+                    "AMOUNT REAL NOT NULL," +
+                    "CURRENCY TEXT NOT NULL," +
+                    "COLLATERAL TEXT NOT NULL," +
                     "PRIMARY KEY(ID AUTOINCREMENT)" +
                     ")";
             stmt.execute(sql);
@@ -148,11 +187,15 @@ public class DBManager {
     }
 
     public void updateAmount(int accountId, BigDecimal amount) {
-        String sql = "UPDATE ACCOUNTS SET AMOUNT = ? WHERE ID = ?";
+        String sql = "UPDATE ACCOUNTS SET AMOUNT = ?, DATE = ? WHERE ID = ?";
         try {
             PreparedStatement stmt = conn.prepareStatement(sql);
             stmt.setBigDecimal(1, amount);
-            stmt.setInt(2, accountId);
+            Date date = Calendar.getInstance().getTime();
+            DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
+            String strDate = dateFormat.format(date);
+            stmt.setString(2, strDate);
+            stmt.setInt(3, accountId);
             stmt.execute();
             stmt.close();
         } catch (SQLException e) {
@@ -160,5 +203,53 @@ public class DBManager {
         }
     }
 
+    public void addLoan(int userid, String type, BigDecimal amount, String currency,String collateral) {
+        String sql = "INSERT INTO LOANS(USERID,AMOUNT,CURRENCY,COLLATERAL,DATE) VALUES (?,?,?,?,?)";
+        try {
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, userid);
+            stmt.setBigDecimal(2, amount);
+            stmt.setString(3,currency);
+            stmt.setString(4,collateral);
+            Date date = Calendar.getInstance().getTime();
+            DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
+            String strDate = dateFormat.format(date);
+            stmt.setString(5, strDate);
+            stmt.execute();
+            stmt.close();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public void updateLoanAmount(int id, BigDecimal amount) {
+        String sql = "UPDATE LOANS SET AMOUNT = ?, DATE = ? WHERE ID = ?";
+        try {
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setBigDecimal(1, amount);
+            Date date = Calendar.getInstance().getTime();
+            DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
+            String strDate = dateFormat.format(date);
+            stmt.setString(2, strDate);
+            stmt.setInt(3, id);
+            stmt.execute();
+            stmt.close();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+
+    public void deleteLoan(int id ) {
+        String sql = "DELETE FROM ACCOUNTS WHERE ID = ?";
+        try {
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, id);
+            stmt.execute();
+            stmt.close();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
 
 }
