@@ -1,14 +1,12 @@
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 public abstract class BankAccount {
-    final int USER_ID;// the user who owns it
-    final int ACCOUNT_ID;//id that uniquely identifies this bank account
-    final String CURRENCY;
-    String type;
-    Date date;
+    private final int USER_ID;// the user who owns it
+    private final int ACCOUNT_ID;//id that uniquely identifies this bank account
+    private final String CURRENCY;
+    protected String type;
+    private Date date;
 
     BigDecimal balance = new BigDecimal(0);
     ArrayList<Transaction> transactions;
@@ -40,28 +38,41 @@ public abstract class BankAccount {
     public int getAccountID() {
         return ACCOUNT_ID;
     }
-    public String getCurrency() { return CURRENCY; }
+
+    public String getCurrency() {
+        return CURRENCY;
+    }
 
     public void addTransaction(Transaction t) {
         transactions.add(t);
     }
 
-    public List<Transaction> getTransaction() {
+    public ArrayList<Transaction> getTransaction() {
         return transactions;
     }
 
-    public boolean hasEnoughBalance(int amount) {
-        return true;
+    public boolean hasEnoughBalance(BigDecimal amount) {
+
+        int res = balance.compareTo(amount);
+
+        if (res == 0 || res == 1) return true;
+
+        return false;
+
     }
 
-    public int withdraw(int amount) {
-//        if(hasEnoughBalance(amount)) {
-//
-//        }
+    public boolean withdraw(BigDecimal amount) {
 
-        return 0;
+        if (hasEnoughBalance(amount)) {
+            balance.subtract(amount);
+            return true;
+        }
+
+        return false;
+
     }
 
-    public void deposit(int amount) {
+    public void deposit(BigDecimal amount) {
+        balance.add(amount);
     }
 }
