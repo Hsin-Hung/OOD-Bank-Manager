@@ -16,15 +16,15 @@ public class Bank {
     }
 
     //create a checking account
-    public void createCheckingAccount(Customer customer) {
+    public void createCheckingAccount(Customer customer, String currency) {
     }
 
     //create a savings account
-    public void createSavingsAccount(Customer customer) {
+    public void createSavingsAccount(Customer customer, String currency) {
     }
 
     //create a checking account
-    public void createSecuritiesAccount(Customer customer) {
+    public void createSecuritiesAccount(Customer customer, String currency) {
     }
 
     public String getAccountType(BankAccount ba) {

@@ -1,6 +1,7 @@
 // all the logics are done in the bank, ATM is just a fascade for the bank
 public class ATM {
     Bank bank;// the bank that connects this ATM
+    Customer loggedInCustomer;
 
     public ATM(Bank bank) {
         this.bank = bank;
