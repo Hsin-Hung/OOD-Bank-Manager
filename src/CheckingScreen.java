@@ -6,7 +6,6 @@ import javax.swing.*;
 import java.awt.*;
 
 public class CheckingScreen extends MainWindow {
-
     private JButton createBtn;
     private JPanel accountsPanel;
     private JPanel mainPanel;
@@ -59,5 +58,4 @@ public class CheckingScreen extends MainWindow {
     public JComponent $$$getRootComponent$$$() {
         return mainPanel;
     }
-
 }

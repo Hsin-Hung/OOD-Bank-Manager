@@ -65,5 +65,4 @@ public class CheckAccountObject {
     public JComponent $$$getRootComponent$$$() {
         return panel1;
     }
-
 }

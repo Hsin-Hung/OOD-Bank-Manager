@@ -6,14 +6,13 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.WindowEvent;
 
 public class Login extends MainWindow {
     private JTextField userTextField;
     private JPanel mainPanel;
     private JPasswordField passwordField;
     private JButton loginButton;
-    private ATMSession owner;
+    private final ATMSession owner;
 
     public Login(ATMSession owner) {
         super();
@@ -83,5 +82,4 @@ public class Login extends MainWindow {
     public JComponent $$$getRootComponent$$$() {
         return mainPanel;
     }
-
 }

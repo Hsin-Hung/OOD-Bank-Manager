@@ -1,24 +1,21 @@
 import java.math.BigDecimal;
-
 import java.sql.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-
 /*
  * DBManager.java - class that handles all database operations
  */
 public class DBManager {
-
     private Connection conn = null;
 
     public DBManager() {
         try {
             // db parameters
             String file = this.getClass().getResource("").getPath();
-            file = file.substring(1,file.length()-4) + "src/db/";
+            file = file.substring(1, file.length() - 4) + "src/db/";
             String url = "jdbc:sqlite://" + file + "atm.db";
             System.out.println("URL=" + url);
             // create a connection to the database
@@ -31,8 +28,6 @@ public class DBManager {
             System.out.println("Tables created");
             addDefaultManager();
             System.out.println("Add default manager");
-
-
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
@@ -55,10 +50,9 @@ public class DBManager {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-
     }
-    public void createTables() {
 
+    public void createTables() {
         Statement stmt = null;
         try {
             stmt = conn.createStatement();
@@ -112,7 +106,6 @@ public class DBManager {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-
     }
 
     public void addDefaultManager() {
@@ -134,7 +127,7 @@ public class DBManager {
             stmt.setString(1, name);
             stmt.setString(2, user);
             stmt.setString(3, pass);
-            stmt.setString(4,role);
+            stmt.setString(4, role);
             stmt.execute();
             stmt.close();
         } catch (SQLException e) {
@@ -149,7 +142,7 @@ public class DBManager {
             stmt.setInt(1, userid);
             stmt.setString(2, type);
             stmt.setBigDecimal(3, amount);
-            stmt.setString(4,currency);
+            stmt.setString(4, currency);
             stmt.execute();
             stmt.close();
         } catch (SQLException e) {
@@ -164,7 +157,7 @@ public class DBManager {
             stmt.setString(1, String.valueOf(java.time.LocalDate.now()));
             stmt.setString(2, type);
             stmt.setBigDecimal(3, amount);
-            stmt.setString(4,currency);
+            stmt.setString(4, currency);
             stmt.setInt(5, userid);
             stmt.setInt(3, accountId);
             stmt.execute();
@@ -203,14 +196,14 @@ public class DBManager {
         }
     }
 
-    public void addLoan(int userid, String type, BigDecimal amount, String currency,String collateral) {
+    public void addLoan(int userid, String type, BigDecimal amount, String currency, String collateral) {
         String sql = "INSERT INTO LOANS(USERID,AMOUNT,CURRENCY,COLLATERAL,DATE) VALUES (?,?,?,?,?)";
         try {
             PreparedStatement stmt = conn.prepareStatement(sql);
             stmt.setInt(1, userid);
             stmt.setBigDecimal(2, amount);
-            stmt.setString(3,currency);
-            stmt.setString(4,collateral);
+            stmt.setString(3, currency);
+            stmt.setString(4, collateral);
             Date date = Calendar.getInstance().getTime();
             DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
             String strDate = dateFormat.format(date);
@@ -239,8 +232,7 @@ public class DBManager {
         }
     }
 
-
-    public void deleteLoan(int id ) {
+    public void deleteLoan(int id) {
         String sql = "DELETE FROM ACCOUNTS WHERE ID = ?";
         try {
             PreparedStatement stmt = conn.prepareStatement(sql);
@@ -252,7 +244,6 @@ public class DBManager {
         }
     }
 
-
     public Person getPerson(String username) {
         //TODO: INCOMPLETE
         String sql = "SELECT ROLES FROM USERS WHERE USERNAME = ?";
@@ -262,10 +253,10 @@ public class DBManager {
             stmt.setString(1, username);
             ResultSet rs = stmt.executeQuery();
             String role = rs.getString(1);
-            if(role.equals("CUSTOMER")) {
+            if (role.equals("CUSTOMER")) {
                 p = new Customer();
             } else if (role.equals("MANAGER")) {
-               p = new BankManager();
+                p = new BankManager();
             }
             stmt.close();
         } catch (SQLException e) {
