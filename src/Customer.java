@@ -3,7 +3,7 @@ import java.util.*;
 public class Customer extends Person {
     private List<Loan> loans;
     private List<BankAccount> bankAccounts;
-
+    private List<Transaction> transactions;
 
 
     public Customer( int user_id, String name, String username, String password) {
@@ -26,6 +26,8 @@ public class Customer extends Person {
     public void removeLoan(Loan loan) {
         loans.remove(loan);
     }
+
+    public void addTransaction(Transaction transaction){ transactions.add(transaction); }
 
     public void addBankAccount(BankAccount ba) {
         bankAccounts.add(ba);
