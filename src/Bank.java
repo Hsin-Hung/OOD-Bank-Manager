@@ -11,10 +11,10 @@ public class Bank {
     }
 
     //create and return the customer object
-    public Customer createCustomer(String username, String password) {
+    public Customer createCustomer(String name, String username, String password) {
         //TODO - generate a new uid
         int uid = 0;
-        Customer newCustomer = new Customer(username, uid, password);
+        Customer newCustomer = new Customer( uid,name, username, password);
 
         //make sure database successfully added the customer before returning it
         if (database.addNewCustomer(newCustomer)) {
@@ -36,7 +36,7 @@ public class Bank {
         int account_ID = 0; //TODO - generate the unique account ID here
 
         //create the new checking account
-        CheckingAccount newCheckingAccount = new CheckingAccount(customer.getUid(), account_ID, currency);
+        CheckingAccount newCheckingAccount = new CheckingAccount(account_ID, customer.getUid(), account_ID, currency);
 
         //make sure the database successfully added the new bank account
         if (database.addNewBankAccount(newCheckingAccount)) {
@@ -55,7 +55,7 @@ public class Bank {
         int account_ID = 0; //TODO - generate the unique account ID here
 
         //create the new checking account
-        SavingsAccount newSavingsAccount = new SavingsAccount(customer.getUid(), account_ID, currency);
+        SavingsAccount newSavingsAccount = new SavingsAccount(account_ID, customer.getUid(), currency);
 
 
         //check if the database successfully added this new bank account
@@ -70,7 +70,7 @@ public class Bank {
     }
 
     public String getAccountType(BankAccount ba) {
-        return ba.getType();
+        return ba.getType().toString();
     }
 
     //update interests for all loans and all bank account
@@ -119,7 +119,7 @@ public class Bank {
         //TODO - create the lid
         int lid = 0;
 
-        Loan newLoan = new Loan(lid, customer.getUid(), currency, amount, collateral, new Date());
+        Loan newLoan = new Loan(lid, customer.getUid(), currency, amount, collateral);
 
         customer.addLoan(newLoan);
 

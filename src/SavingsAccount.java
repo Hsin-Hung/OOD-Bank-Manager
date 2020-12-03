@@ -1,11 +1,9 @@
+import java.math.BigDecimal;
+
 public class SavingsAccount extends BankAccount {
-    public SavingsAccount(int user_id, int account_id, String currency) {
-        super(user_id, account_id, currency);
-        type = "savings";
+    public SavingsAccount( int account_id,int user_id,  String currency, BigDecimal balance) {
+        super (  account_id,user_id, currency,balance, AccountType.SAVINGS);
     }
 
-    @Override
-    public String getType() {
-        return type;
-    }
+
 }

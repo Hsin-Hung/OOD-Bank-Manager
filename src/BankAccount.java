@@ -2,30 +2,24 @@ import java.math.BigDecimal;
 import java.util.*;
 
 public abstract class BankAccount {
-    private final int USER_ID;// the user who owns it
-    private final int ACCOUNT_ID;//id that uniquely identifies this bank account
-    private final String CURRENCY;
-    protected String type;
-    private Date date;
-
+    private int ACCOUNT_ID;//id that uniquely identifies this bank account
+    private int USER_ID;// the user who owns it
+    private String CURRENCY;
+    private AccountType type;
     BigDecimal balance = new BigDecimal(0);
-    ArrayList<Transaction> transactions;
 
-    public BankAccount(int user_id, int account_id, String currency) {
-        this.USER_ID = user_id;
+    public BankAccount(int account_id,int user_id,  String currency, BigDecimal balance, AccountType type ) {
         this.ACCOUNT_ID = account_id;
+        this.USER_ID = user_id;
         this.CURRENCY = currency;
+        this.type = type;
+        this.balance = balance;
     }
 
-    public abstract String getType();
-
-    public Date getDate() {
-        return date;
+    public AccountType getType() {
+        return type;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
-    }
 
     public BigDecimal getBalance() {
         return balance;
@@ -43,13 +37,6 @@ public abstract class BankAccount {
         return CURRENCY;
     }
 
-    public void addTransaction(Transaction t) {
-        transactions.add(t);
-    }
-
-    public ArrayList<Transaction> getTransaction() {
-        return transactions;
-    }
 
     public boolean hasEnoughBalance(BigDecimal amount) {
 

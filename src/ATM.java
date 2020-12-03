@@ -17,9 +17,9 @@ public class ATM {
     }
 
     //create a new customer
-    private boolean signUp(String userName, String password) {
+    private boolean signUp(String name, String userName, String password) {
 
-        Customer customer = bank.createCustomer(userName, password);
+        Customer customer = bank.createCustomer(name, userName, password);
         if (customer != null) {
             loggedInCustomer = customer;
             return true;
