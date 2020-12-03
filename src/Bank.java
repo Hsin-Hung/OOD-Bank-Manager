@@ -3,7 +3,8 @@ import java.util.Date;
 
 public class Bank {
     private String name;
-    private DBManager database;
+    private DBManager db;
+
 
     public Bank(String name) {
 
@@ -13,13 +14,9 @@ public class Bank {
 
     //create and return the customer object
     public Customer createCustomer(String name, String username, String password) {
-
-
-        //TODO - database will create and return the created customer. make sure username is unique?
-
-        //if following stmt succeed, then return the created customer
-        database.addUser(name, username, password, Role.CUSTOMER.toString());
-        return null;
+       db.addUser(name,username,password,Role.CUSTOMER);
+       Customer c = (Customer) db.getPerson(username);
+       return c;
 
     }
 
@@ -35,22 +32,26 @@ public class Bank {
     }
 
     //create a checking account
-    public boolean createCheckingAccount(Customer customer, String currency) {
+    public boolean createCheckingAccount(Customer customer, String currency, BigDecimal amount) {
 
         //TODO - check if new account is added successfully to db, then return true
         database.addAccount(customer.getUid(), AccountType.CHECKING.toString(), new BigDecimal(0), currency);
 
-        return false;
+        //create the new checking account
+        CheckingAccount account = (CheckingAccount) db.addAccount(customer.getUid(),AccountType.CHECKING,amount, currency);
+
+        customer.addBankAccount(account);
+
+        return true;
+
 
     }
 
     //create a savings account
-    public boolean createSavingsAccount(Customer customer, String currency) {
-
-        //TODO - check if new account is added successfully to db, then return true
-        database.addAccount(customer.getUid(), AccountType.SAVINGS.toString(), new BigDecimal(0), currency);
-
-        return false;
+    public boolean createSavingsAccount(Customer customer, String currency, BigDecimal amount) {
+        SavingsAccount account = (SavingsAccount) db.addAccount(customer.getUid(),AccountType.SAVINGS,amount, currency);
+        customer.addBankAccount(account);
+        return true;
 
     }
 

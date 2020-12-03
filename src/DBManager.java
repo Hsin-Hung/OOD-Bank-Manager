@@ -120,14 +120,14 @@ public class DBManager {
         }
     }
 
-    public void addUser(String name, String user, String pass, String role) {
+    public void addUser(String name, String user, String pass, Role role) {
         String sql = "INSERT INTO USERS(NAME,USERNAME,PASSWORD,ROLE) VALUES (?,?,?,?)";
         try {
             PreparedStatement stmt = conn.prepareStatement(sql);
             stmt.setString(1, name);
             stmt.setString(2, user);
             stmt.setString(3, pass);
-            stmt.setString(4, role);
+            stmt.setString(4, role.toString());
             stmt.execute();
             stmt.close();
         } catch (SQLException e) {
@@ -135,19 +135,39 @@ public class DBManager {
         }
     }
 
-    public void addAccount(int userid, String type, BigDecimal amount, String currency) {
+    public BankAccount addAccount(int userid, AccountType type, BigDecimal amount, String currency) {
         String sql = "INSERT INTO ACCOUNTS(USERID,TYPE,AMOUNT,CURRENCY) VALUES (?,?,?,?)";
+        BankAccount account = null;
         try {
             PreparedStatement stmt = conn.prepareStatement(sql);
             stmt.setInt(1, userid);
-            stmt.setString(2, type);
+            stmt.setString(2, type.toString());
             stmt.setBigDecimal(3, amount);
             stmt.setString(4, currency);
             stmt.execute();
+
+            sql = "SELECT ID FROM ACCOUNTS WHERE USERID = ? AND TYPE = ? AND CURRENCY = ? ";
+            stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, userid);
+            stmt.setString(2, type.toString());
+            stmt.setString(4, currency);
+
+            ResultSet rs = stmt.executeQuery();
+            switch(type.toString()) {
+                case "CHECKING":
+                    account = new CheckingAccount(rs.getInt(1),userid,currency,amount);
+                case "SAVINGS":
+                    account = new SavingsAccount(rs.getInt(1),userid,currency,amount);
+                case "SECURITIES":
+                    account = new SecuritiesAccount(rs.getInt(1),userid,currency,amount);
+
+            }
+
             stmt.close();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
+        return account;
     }
 
     public void addTransaction(String type, BigDecimal amount, String currency, int userid, int accountId) {
@@ -247,12 +267,12 @@ public class DBManager {
         }
     }
 
-    public Person getPerson(int userid) {
-        String sql = "SELECT ID, NAME, USERNAME, PASSWORD, ROLE FROM USERS WHERE ID = ?";
+    public Person getPerson(String username) {
+        String sql = "SELECT ID, NAME, USERNAME, PASSWORD, ROLE FROM USERS WHERE USERNAME = ?";
         Person p = null;
         try {
             PreparedStatement stmt = conn.prepareStatement(sql);
-            stmt.setInt(1, userid);
+            stmt.setString(1, username);
             ResultSet rs = stmt.executeQuery();
             int id = rs.getInt(1);
             String name = rs.getString(2);
@@ -264,8 +284,8 @@ public class DBManager {
 
                 List<BankAccount> accounts = getAllUserAccounts(id);
                 List<Loan> loans = getAllUserLoans(id);
-
-                p = new Customer(id,name,user,password,loans,accounts);
+                List<Transaction> transactions = getAllUserTransaction(id);
+                p = new Customer(id,name,user,password,loans,accounts,transactions);
             } else if (role.equals(Role.MANAGER.toString())) {
                 p = new BankManager(id,name,user,password);
             }
@@ -280,23 +300,15 @@ public class DBManager {
 
     public List<Customer> getAllCustomers() {
         List<Customer> list = new ArrayList<>();
-        String sql = "SELECT ID, NAME, USERNAME, PASSWORD, ROLE FROM USERS WHERE ROLE = ?";
+        String sql = "SELECT ID, USER FROM USERS WHERE ROLE = ?";
 
         try {
             PreparedStatement stmt = conn.prepareStatement(sql);
             stmt.setString(1, Role.CUSTOMER.toString());
             ResultSet rs = stmt.executeQuery();
             while(rs.next()) {
-                int id = rs.getInt(1);
-                String name = rs.getString(2);
-                String user = rs.getString(3);
-                String password = rs.getString(4);
-
-                List<BankAccount> accounts = getAllUserAccounts(id);
-                List<Loan> loans =  getAllUserLoans(id);
-
-                Customer c = new Customer(id, name, user, password, loans, accounts);
-                list.add(c);
+                Person p = getPerson(rs.getString(2));
+                list.add((Customer) p);
             }
             stmt.close();
             rs.close();
@@ -360,6 +372,9 @@ public class DBManager {
         }
         return account;
     }
+
+
+
 
     public List<BankAccount> getAllUserAccounts(int id) {
         List<BankAccount> accounts = new ArrayList<>();
@@ -499,5 +514,10 @@ public class DBManager {
             System.out.println(e.getMessage());
         }
         return list;
+    }
+
+
+    public int getNextUserId() {
+        return -1;
     }
 }
