@@ -3,48 +3,43 @@ import java.util.Date;
 
 public class Bank {
     private String name;
-    private BankDataBase database;
+    private DBManager database;
 
     public Bank(String name) {
 
+        this.database = new DBManager();
         this.name = name;
     }
 
     //create and return the customer object
     public Customer createCustomer(String name, String username, String password) {
-        //TODO - generate a new uid
-        int uid = 0;
-        Customer newCustomer = new Customer( uid,name, username, password);
 
-        //make sure database successfully added the customer before returning it
-        if (database.addNewCustomer(newCustomer)) {
 
-            return newCustomer;
+        //TODO - database will create and return the created customer. make sure username is unique?
 
-        }
+        //if following stmt succeed, then return the created customer
+        database.addUser(name, username, password, Role.CUSTOMER.toString());
         return null;
+
     }
 
     //authenticate username and password and return the customer if there is one
     public Customer userAuth(String username, String password) {
-        return database.getCustomer(username, password);
+
+        //TODO - need to query the uid with the given username and password from db. username should be unique?
+        int uid = 0;// dummy uid
+        Person person = database.getPerson(uid);
+        //TODO - check whether the person is customer or manager
+        return null;
+
     }
 
     //create a checking account
     public boolean createCheckingAccount(Customer customer, String currency) {
 
-        int account_ID = 0; //TODO - generate the unique account ID here
+        //TODO - check if new account is added successfully to db, then return true
+        database.addAccount(customer.getUid(), AccountType.CHECKING.toString(), new BigDecimal(0), currency);
 
-        //create the new checking account
-        CheckingAccount newCheckingAccount = new CheckingAccount(account_ID, customer.getUid(), account_ID, currency);
-
-        //make sure the database successfully added the new bank account
-        if (database.addNewBankAccount(newCheckingAccount)) {
-
-            //add this new checking account to the customer
-            customer.addBankAccount(newCheckingAccount);
-            return true;
-        }
         return false;
 
     }
@@ -52,19 +47,9 @@ public class Bank {
     //create a savings account
     public boolean createSavingsAccount(Customer customer, String currency) {
 
-        int account_ID = 0; //TODO - generate the unique account ID here
+        //TODO - check if new account is added successfully to db, then return true
+        database.addAccount(customer.getUid(), AccountType.SAVINGS.toString(), new BigDecimal(0), currency);
 
-        //create the new checking account
-        SavingsAccount newSavingsAccount = new SavingsAccount(account_ID, customer.getUid(), currency);
-
-
-        //check if the database successfully added this new bank account
-        if (database.addNewBankAccount(newSavingsAccount)) {
-
-            //add this new account to the customer
-            customer.addBankAccount(newSavingsAccount);
-            return true;
-        }
         return false;
 
     }
@@ -76,75 +61,53 @@ public class Bank {
     //update interests for all loans and all bank account
     public void updateInterests() {
 
-        database.updateInterests();
+        //TODO - update all interests in db
+
+        // database.updateInterests();
 
     }
 
     //deposit amount to a bank account
-    //TODO - there might be a better implementation for database persistence
     protected boolean deposit(BankAccount ba, BigDecimal amount) {
 
+        //TODO - update to given bank account with given amount in db
 
+        //if success
+        database.updateAmount(ba.getAccountID(), ba.getBalance().add(amount));
+        //then
         ba.deposit(amount);
 
-        if (database.updateBankAccount(ba)) {
-            return true;
-        } else {
-
-            //redo the deposit if the database failed to update
-            ba.withdraw(amount);
-            return false;
-        }
-
+        return false;
     }
 
     //withdraw an amount from bank account
-    //TODO - there might be a better implementation for database persistence
     protected boolean withdraw(BankAccount ba, BigDecimal amount) {
 
-        ba.withdraw(amount);
+        if (ba.hasEnoughBalance(amount)){
+            //TODO - update to given bank account with given amount in db
 
-        if (database.updateBankAccount(ba)) {
+            //if success
+            database.updateAmount(ba.getAccountID(), ba.getBalance().subtract(amount));
+            //then
+            ba.withdraw(amount);
             return true;
-        } else {
 
-            //redo the withdraw if the database failed to update
-            ba.deposit(amount);
-            return false;
         }
+
+        return false;
     }
 
     protected boolean requestLoan(Customer customer, BigDecimal amount, String currency, String collateral) {
 
-        //TODO - create the lid
-        int lid = 0;
+        //TODO - add the loan to db and update the customer
+        //database.addLoan(int userid, String type, BigDecimal amount, String currency, String collateral)
 
-        Loan newLoan = new Loan(lid, customer.getUid(), currency, amount, collateral);
-
-        customer.addLoan(newLoan);
-
-        if (!database.updateCustomer(customer)) {
-
-            //remove the loan if database failed to update the new loan
-            customer.removeLoan(newLoan);
-            return false;
-        }
-
-        return true;
-
-
+        return false;
     }
 
-    //TODO - maintain database persistence
     public boolean transferMoney(BankAccount fromBank, BankAccount toBank, BigDecimal amount) {
 
-
-        withdraw(fromBank, amount);
-        deposit(toBank, amount);
-
-        //TODO - need to make sure database is persistent
-        database.updateBankAccount(fromBank);
-        database.updateBankAccount(toBank);
+        //TODO - db persistence
 
 
         return true;
