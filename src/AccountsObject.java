@@ -20,7 +20,7 @@ public class AccountsObject {
 
         currencyLabel.setText(account.getCurrency());
         amountLabel.setText(account.getBalance().toPlainString());
-        typeLabel.setText(account.getType());
+        typeLabel.setText(account.getType().toString());
     }
 
     /**

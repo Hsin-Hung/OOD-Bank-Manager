@@ -1,13 +1,16 @@
 public abstract class Person {
-    protected String role;
+    private Role role;
     private int user_id;
+    private String name;
     private String username;
     private String password;
 
-    public Person(String username, int user_id, String password) {
+    public Person( int user_id,String name,String username, String password, Role role) {
         this.user_id = user_id;
+        this.name = name;
         this.username = username;
         this.password = password;
+        this.role = role;
     }
 
     public int getUid(){
@@ -24,5 +27,15 @@ public abstract class Person {
         return password;
     }
 
-    public abstract String getRole();
+    public Role getRole() {
+        return role;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 }
