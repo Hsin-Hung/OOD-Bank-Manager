@@ -124,7 +124,6 @@ public class ATM {
 
     private void viewTransactions(BankAccount ba) {
 
-        ArrayList<Transaction> transactions = ba.getTransaction();
         //TODO - show the transaction
     }
 
