@@ -4,23 +4,58 @@ import com.intellij.uiDesigner.core.Spacer;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.List;
 
-public class AccountsScreen extends BaseScreen {
+public class ElementsScreen extends BaseScreen {
     private JButton createBtn;
-    private JPanel accountsPanel;
+    private JPanel elementsPanel;
     private JPanel mainPanel;
+    private NoArgFunction func;
 
-    public AccountsScreen(Customer customer) {
+    public ElementsScreen() {
         $$$setupUI$$$();
 
         initialize();
-        accountsPanel.setLayout(new BoxLayout(accountsPanel, BoxLayout.Y_AXIS));
-        for (BankAccount bankAccounts : customer.getBankAccounts()) {
-            AccountsObject a = new AccountsObject(bankAccounts);
-            a.$$$getRootComponent$$$().setAlignmentX(Component.CENTER_ALIGNMENT);
-            accountsPanel.add(a.$$$getRootComponent$$$());
+        elementsPanel.setLayout(new BoxLayout(elementsPanel, BoxLayout.Y_AXIS));
+        createBtn.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                if (func != null) {
+                    func.apply();
+                }
+            }
+        });
+    }
+
+    public ElementsScreen(List<IUIElement> elements, NoArgFunction func, String buttonText) {
+        this();
+        this.func = func;
+
+        if (func == null) {
+            createBtn.setVisible(false);
+        } else {
+            createBtn.setText(buttonText);
+        }
+
+        refreshUIElements(elements);
+    }
+
+    public void addUIElement(IUIElement element) {
+        elementsPanel.add(element.$$$getRootComponent$$$());
+    }
+
+    public void refreshUIElements(List<IUIElement> elements) {
+        elementsPanel.removeAll();
+
+        for (IUIElement element : elements) {
+            element.$$$getRootComponent$$$().setAlignmentX(Component.CENTER_ALIGNMENT);
+            elementsPanel.add(element.$$$getRootComponent$$$());
         }
     }
+
 
     private void initialize() {
         setContentPane($$$getRootComponent$$$());
@@ -40,7 +75,7 @@ public class AccountsScreen extends BaseScreen {
         mainPanel.setLayout(new GridLayoutManager(2, 5, new Insets(10, 10, 10, 10), -1, -1));
         mainPanel.setMinimumSize(new Dimension(500, 500));
         final JLabel label1 = new JLabel();
-        label1.setText("Checkings Account");
+        label1.setText("Account");
         mainPanel.add(label1, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         createBtn = new JButton();
         createBtn.setText("Create New");
@@ -49,9 +84,9 @@ public class AccountsScreen extends BaseScreen {
         mainPanel.add(spacer1, new GridConstraints(0, 1, 1, 3, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
         final JScrollPane scrollPane1 = new JScrollPane();
         mainPanel.add(scrollPane1, new GridConstraints(1, 0, 1, 5, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
-        accountsPanel = new JPanel();
-        accountsPanel.setLayout(new GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
-        scrollPane1.setViewportView(accountsPanel);
+        elementsPanel = new JPanel();
+        elementsPanel.setLayout(new GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
+        scrollPane1.setViewportView(elementsPanel);
     }
 
     /**

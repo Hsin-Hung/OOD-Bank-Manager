@@ -4,23 +4,31 @@ import com.intellij.uiDesigner.core.Spacer;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
-public class AccountsObject implements IUIElement {
+public class LoanObject implements IUIElement {
     private JPanel panel1;
     private JLabel currencyLabel;
     private JLabel amountLabel;
-    private JButton withdrawBtn;
-    private JButton depositBtn;
-    private JButton transferBtn;
-    private JButton closeBtn;
-    private JLabel typeLabel;
+    private JButton payoffBtn;
+    private JLabel collateralLabel;
 
-    public AccountsObject(BankAccount account) {
+    public LoanObject(Loan loan) {
         $$$setupUI$$$();
 
-        currencyLabel.setText(account.getCurrency());
-        amountLabel.setText(account.getBalance().toPlainString());
-        typeLabel.setText(account.getType().toString());
+        currencyLabel.setText(loan.currency);
+        amountLabel.setText(loan.amount.toPlainString());
+        collateralLabel.setText(loan.collateral);
+
+        payoffBtn.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+
+                // TODO add payoff loan
+            }
+        });
     }
 
     /**
@@ -50,24 +58,17 @@ public class AccountsObject implements IUIElement {
         amountLabel = new JLabel();
         amountLabel.setText("$100");
         panel2.add(amountLabel, new GridConstraints(1, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        withdrawBtn = new JButton();
-        withdrawBtn.setText("Withdraw");
-        panel2.add(withdrawBtn, new GridConstraints(0, 4, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        depositBtn = new JButton();
-        depositBtn.setText("Deposit");
-        panel2.add(depositBtn, new GridConstraints(1, 4, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        transferBtn = new JButton();
-        transferBtn.setText("Transfer");
-        panel2.add(transferBtn, new GridConstraints(0, 5, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        closeBtn = new JButton();
-        closeBtn.setText("Close Account");
-        panel2.add(closeBtn, new GridConstraints(1, 5, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        payoffBtn = new JButton();
+        payoffBtn.setText("Payoff Loan");
+        panel2.add(payoffBtn, new GridConstraints(1, 5, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final JLabel label3 = new JLabel();
-        label3.setText("Account Type");
+        label3.setText("Collateral");
         panel2.add(label3, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        typeLabel = new JLabel();
-        typeLabel.setText("Label");
-        panel2.add(typeLabel, new GridConstraints(0, 3, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        collateralLabel = new JLabel();
+        collateralLabel.setText("Label");
+        panel2.add(collateralLabel, new GridConstraints(0, 3, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        final Spacer spacer2 = new Spacer();
+        panel2.add(spacer2, new GridConstraints(1, 4, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
     }
 
     /**

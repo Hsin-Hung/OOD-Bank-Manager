@@ -5,8 +5,10 @@ public class Bank {
     private String name;
     private DBManager db;
 
+
     public Bank(String name) {
 
+        this.database = new DBManager();
         this.name = name;
     }
 
@@ -15,17 +17,25 @@ public class Bank {
        db.addUser(name,username,password,Role.CUSTOMER);
        Customer c = (Customer) db.getPerson(username);
        return c;
+
     }
 
     //authenticate username and password and return the customer if there is one
     public Customer userAuth(String username, String password) {
-        return database.getCustomer(username, password);
+
+        //TODO - need to query the uid with the given username and password from db. username should be unique?
+        int uid = 0;// dummy uid
+        Person person = database.getPerson(uid);
+        //TODO - check whether the person is customer or manager
+        return null;
+
     }
 
     //create a checking account
     public boolean createCheckingAccount(Customer customer, String currency, BigDecimal amount) {
 
-        int account_ID = 0; //TODO - generate the unique account ID here
+        //TODO - check if new account is added successfully to db, then return true
+        database.addAccount(customer.getUid(), AccountType.CHECKING.toString(), new BigDecimal(0), currency);
 
         //create the new checking account
         CheckingAccount account = (CheckingAccount) db.addAccount(customer.getUid(),AccountType.CHECKING,amount, currency);
@@ -34,6 +44,7 @@ public class Bank {
 
         return true;
 
+
     }
 
     //create a savings account
@@ -41,6 +52,7 @@ public class Bank {
         SavingsAccount account = (SavingsAccount) db.addAccount(customer.getUid(),AccountType.SAVINGS,amount, currency);
         customer.addBankAccount(account);
         return true;
+
     }
 
     public String getAccountType(BankAccount ba) {
@@ -50,75 +62,53 @@ public class Bank {
     //update interests for all loans and all bank account
     public void updateInterests() {
 
-        database.updateInterests();
+        //TODO - update all interests in db
+
+        // database.updateInterests();
 
     }
 
     //deposit amount to a bank account
-    //TODO - there might be a better implementation for database persistence
     protected boolean deposit(BankAccount ba, BigDecimal amount) {
 
+        //TODO - update to given bank account with given amount in db
 
+        //if success
+        database.updateAmount(ba.getAccountID(), ba.getBalance().add(amount));
+        //then
         ba.deposit(amount);
 
-        if (database.updateBankAccount(ba)) {
-            return true;
-        } else {
-
-            //redo the deposit if the database failed to update
-            ba.withdraw(amount);
-            return false;
-        }
-
+        return false;
     }
 
     //withdraw an amount from bank account
-    //TODO - there might be a better implementation for database persistence
     protected boolean withdraw(BankAccount ba, BigDecimal amount) {
 
-        ba.withdraw(amount);
+        if (ba.hasEnoughBalance(amount)){
+            //TODO - update to given bank account with given amount in db
 
-        if (database.updateBankAccount(ba)) {
+            //if success
+            database.updateAmount(ba.getAccountID(), ba.getBalance().subtract(amount));
+            //then
+            ba.withdraw(amount);
             return true;
-        } else {
 
-            //redo the withdraw if the database failed to update
-            ba.deposit(amount);
-            return false;
         }
+
+        return false;
     }
 
     protected boolean requestLoan(Customer customer, BigDecimal amount, String currency, String collateral) {
 
-        //TODO - create the lid
-        int lid = 0;
+        //TODO - add the loan to db and update the customer
+        //database.addLoan(int userid, String type, BigDecimal amount, String currency, String collateral)
 
-        Loan newLoan = new Loan(lid, customer.getUid(), currency, amount, collateral);
-
-        customer.addLoan(newLoan);
-
-        if (!database.updateCustomer(customer)) {
-
-            //remove the loan if database failed to update the new loan
-            customer.removeLoan(newLoan);
-            return false;
-        }
-
-        return true;
-
-
+        return false;
     }
 
-    //TODO - maintain database persistence
     public boolean transferMoney(BankAccount fromBank, BankAccount toBank, BigDecimal amount) {
 
-
-        withdraw(fromBank, amount);
-        deposit(toBank, amount);
-
-        //TODO - need to make sure database is persistent
-        database.updateBankAccount(fromBank);
-        database.updateBankAccount(toBank);
+        //TODO - db persistence
 
 
         return true;

@@ -26,4 +26,36 @@ public class Transaction {
     public Transaction(int tid, Date date, String type, BigDecimal amount, int uid, int account_id) {
         this(tid, date, type, amount, uid, account_id, -1, -1);
     }
+
+    public int getTid() {
+        return tid;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public BigDecimal getAmount() {
+        return amount;
+    }
+
+    public int getUid() {
+        return uid;
+    }
+
+    public int getAccount_id() {
+        return account_id;
+    }
+
+    public int getTarget_uid() {
+        return target_uid;
+    }
+
+    public int getTarget_account_id() {
+        return target_account_id;
+    }
 }

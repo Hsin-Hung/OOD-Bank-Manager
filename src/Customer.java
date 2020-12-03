@@ -30,6 +30,8 @@ public class Customer extends Person {
         loans.remove(loan);
     }
 
+    public void addTransaction(Transaction transaction){ transactions.add(transaction); }
+
     public void addBankAccount(BankAccount ba) {
         bankAccounts.add(ba);
     }
