@@ -8,7 +8,7 @@ public class Bank {
 
     public Bank(String name) {
 
-        this.database = new DBManager();
+        this.db = new DBManager();
         this.name = name;
     }
 
@@ -24,8 +24,8 @@ public class Bank {
     public Customer userAuth(String username, String password) {
 
         //TODO - need to query the uid with the given username and password from db. username should be unique?
-        int uid = 0;// dummy uid
-        Person person = database.getPerson(uid);
+//        int uid = 0;// dummy uid
+//        Person person = db.getPerson(uid);
         //TODO - check whether the person is customer or manager
         return null;
 
@@ -34,8 +34,6 @@ public class Bank {
     //create a checking account
     public boolean createCheckingAccount(Customer customer, String currency, BigDecimal amount) {
 
-        //TODO - check if new account is added successfully to db, then return true
-        database.addAccount(customer.getUid(), AccountType.CHECKING.toString(), new BigDecimal(0), currency);
 
         //create the new checking account
         CheckingAccount account = (CheckingAccount) db.addAccount(customer.getUid(),AccountType.CHECKING,amount, currency);
@@ -74,7 +72,7 @@ public class Bank {
         //TODO - update to given bank account with given amount in db
 
         //if success
-        database.updateAmount(ba.getAccountID(), ba.getBalance().add(amount));
+        db.updateAmount(ba.getAccountID(), ba.getBalance().add(amount));
         //then
         ba.deposit(amount);
 
@@ -88,7 +86,7 @@ public class Bank {
             //TODO - update to given bank account with given amount in db
 
             //if success
-            database.updateAmount(ba.getAccountID(), ba.getBalance().subtract(amount));
+            db.updateAmount(ba.getAccountID(), ba.getBalance().subtract(amount));
             //then
             ba.withdraw(amount);
             return true;
