@@ -31,7 +31,7 @@ public class ATM {
     }
 
     /**
-     * Check if valid login, if valid, swaps over to the corrent user screens.
+     * Check if valid login, if valid, swaps over to the correct user screens.
      *
      * @param userName userName that's logging in
      * @param password the inputted password field
@@ -41,14 +41,14 @@ public class ATM {
         System.out.println("User name: " + userName + " Password: " + password);
 
         // TODO check login with db, transition into customer or manager. return results.
-        Customer customer = bank.userAuth(userName, password);
-        if (customer != null) {
-            //TODO - valid log in
-
-        } else {
-            //TODO - fail log in
-
-        }
+//        Customer customer = bank.userAuth(userName, password);
+//        if (customer != null) {
+//            //TODO - valid log in
+//
+//        } else {
+//            //TODO - fail log in
+//
+//        }
 
         new CustomerScreen(this);
 
