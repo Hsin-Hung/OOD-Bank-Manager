@@ -3,7 +3,7 @@ import java.util.Date;
 
 public class Bank {
     private String name;
-    private BankDataBase database;
+    private DBManager db;
 
     public Bank(String name) {
 
@@ -12,17 +12,9 @@ public class Bank {
 
     //create and return the customer object
     public Customer createCustomer(String name, String username, String password) {
-        //TODO - generate a new uid
-        int uid = 0;
-        Customer newCustomer = new Customer( uid,name, username, password);
-
-        //make sure database successfully added the customer before returning it
-        if (database.addNewCustomer(newCustomer)) {
-
-            return newCustomer;
-
-        }
-        return null;
+       db.addUser(name,username,password,Role.CUSTOMER);
+       Customer c = (Customer) db.getPerson(username);
+       return c;
     }
 
     //authenticate username and password and return the customer if there is one
@@ -31,42 +23,24 @@ public class Bank {
     }
 
     //create a checking account
-    public boolean createCheckingAccount(Customer customer, String currency) {
+    public boolean createCheckingAccount(Customer customer, String currency, BigDecimal amount) {
 
         int account_ID = 0; //TODO - generate the unique account ID here
 
         //create the new checking account
-        CheckingAccount newCheckingAccount = new CheckingAccount(account_ID, customer.getUid(), account_ID, currency);
+        CheckingAccount account = (CheckingAccount) db.addAccount(customer.getUid(),AccountType.CHECKING,amount, currency);
 
-        //make sure the database successfully added the new bank account
-        if (database.addNewBankAccount(newCheckingAccount)) {
+        customer.addBankAccount(account);
 
-            //add this new checking account to the customer
-            customer.addBankAccount(newCheckingAccount);
-            return true;
-        }
-        return false;
+        return true;
 
     }
 
     //create a savings account
-    public boolean createSavingsAccount(Customer customer, String currency) {
-
-        int account_ID = 0; //TODO - generate the unique account ID here
-
-        //create the new checking account
-        SavingsAccount newSavingsAccount = new SavingsAccount(account_ID, customer.getUid(), currency);
-
-
-        //check if the database successfully added this new bank account
-        if (database.addNewBankAccount(newSavingsAccount)) {
-
-            //add this new account to the customer
-            customer.addBankAccount(newSavingsAccount);
-            return true;
-        }
-        return false;
-
+    public boolean createSavingsAccount(Customer customer, String currency, BigDecimal amount) {
+        SavingsAccount account = (SavingsAccount) db.addAccount(customer.getUid(),AccountType.SAVINGS,amount, currency);
+        customer.addBankAccount(account);
+        return true;
     }
 
     public String getAccountType(BankAccount ba) {
