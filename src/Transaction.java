@@ -4,14 +4,14 @@ import java.util.Date;
 public class Transaction {
     protected int tid;
     protected Date date;
-    protected String type;
+    protected TransactionType type;
     protected BigDecimal amount;
     protected int uid;
     protected int account_id;
     protected int target_uid = -1;
     protected int target_account_id = -1;
 
-    public Transaction(int tid, Date date, String type, BigDecimal amount, int uid, int account_id,
+    public Transaction(int tid, Date date, TransactionType type, BigDecimal amount, int uid, int account_id,
                        int target_uid, int target_account_id) {
         this.tid = tid;
         this.date = date;
@@ -23,7 +23,7 @@ public class Transaction {
         this.target_account_id = target_account_id;
     }
 
-    public Transaction(int tid, Date date, String type, BigDecimal amount, int uid, int account_id) {
+    public Transaction(int tid, Date date, TransactionType type, BigDecimal amount, int uid, int account_id) {
         this(tid, date, type, amount, uid, account_id, -1, -1);
     }
 
@@ -35,7 +35,7 @@ public class Transaction {
         return date;
     }
 
-    public String getType() {
+    public TransactionType getType() {
         return type;
     }
 

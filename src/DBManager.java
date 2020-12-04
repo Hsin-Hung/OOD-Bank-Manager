@@ -176,15 +176,15 @@ public class DBManager {
         return account;
     }
 
-    public boolean addTransaction(String type, BigDecimal amount, String currency, int userid, int accountId) {
+    public boolean addTransaction(TransactionType type, BigDecimal amount, String currency, int userid, int accountId) {
         String sql = "INSERT INTO TRANSACTIONS(DATE,TYPE,AMOUNT,CURRENCY,USERID,ACCOUNTID) VALUES (?,?,?,?,?,?)";
         try {
             PreparedStatement stmt = conn.prepareStatement(sql);
             Date date = Calendar.getInstance().getTime();
-            DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
+            DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");
             String strDate = dateFormat.format(date);
             stmt.setString(1, strDate);
-            stmt.setString(2, type);
+            stmt.setString(2, type.toString());
             stmt.setBigDecimal(3, amount);
             stmt.setString(4, currency);
             stmt.setInt(5, userid);
@@ -218,7 +218,7 @@ public class DBManager {
             PreparedStatement stmt = conn.prepareStatement(sql);
             stmt.setBigDecimal(1, amount);
             Date date = Calendar.getInstance().getTime();
-            DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
+            DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");
             String strDate = dateFormat.format(date);
             stmt.setString(2, strDate);
             stmt.setInt(3, accountId);
@@ -232,17 +232,13 @@ public class DBManager {
     }
 
     public boolean addLoan(int userid, String type, BigDecimal amount, String currency, String collateral) {
-        String sql = "INSERT INTO LOANS(USERID,AMOUNT,CURRENCY,COLLATERAL,DATE) VALUES (?,?,?,?,?)";
+        String sql = "INSERT INTO LOANS(USERID,AMOUNT,CURRENCY,COLLATERAL) VALUES (?,?,?,?)";
         try {
             PreparedStatement stmt = conn.prepareStatement(sql);
             stmt.setInt(1, userid);
             stmt.setBigDecimal(2, amount);
             stmt.setString(3, currency);
             stmt.setString(4, collateral);
-            Date date = Calendar.getInstance().getTime();
-            DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
-            String strDate = dateFormat.format(date);
-            stmt.setString(5, strDate);
             stmt.execute();
             stmt.close();
         } catch (SQLException e) {
@@ -511,7 +507,7 @@ public class DBManager {
             Date date = formatter.parse(sDate);
             t = new Transaction(rs.getInt(1),
                     date,
-                    rs.getString(3),
+                    TransactionType.valueOf(rs.getString(3)),
                     new BigDecimal(rs.getInt(4)),
                     rs.getInt(5),
                     rs.getInt(6),
