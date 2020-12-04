@@ -1,5 +1,6 @@
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 public class Bank {
     private String name;
@@ -45,6 +46,7 @@ public class Bank {
         }
         //create the new checking account
         CheckingAccount account = (CheckingAccount) db.addAccount(customer.getUid(),AccountType.CHECKING,amount, currency);
+        chargeFee(account,Constants.openAccountFee);
         customer.addBankAccount(account);
         db.addTransaction(TransactionType.OPENCHECKING,customer.getUid(),account.getAccountID(),amount,currency,-1,-1);
 
@@ -60,6 +62,7 @@ public class Bank {
             return false;
         }
         SavingsAccount account = (SavingsAccount) db.addAccount(customer.getUid(),AccountType.SAVINGS,amount, currency);
+        chargeFee(account,Constants.openAccountFee);
         customer.addBankAccount(account);
         db.addTransaction(TransactionType.OPENSAVINGS,customer.getUid(),account.getAccountID(),amount,currency,-1,-1);
 
@@ -73,9 +76,15 @@ public class Bank {
 
     //update interests for all loans and all bank account
     public void updateInterests() {
-         //TODO - update all interests in db
-        //Find all savings account with higher than $5000.00 USD - convert to RMB/EUR?
-        //Find all loans, apply interest.
+        List<SavingsAccount> savingsList = db.getHighSavingAccounts();
+        for(SavingsAccount sa: savingsList) {
+            applySavingsInterest(sa,Constants.savingsInterestPercentage);
+        }
+
+        List<Loan> loans = db.getAllLoans();
+        for(Loan l: loans) {
+            applyLoanInterest(l,Constants.savingsInterestPercentage);
+        }
 
 
     }
@@ -137,11 +146,24 @@ public class Bank {
         //TODO -
     }
 
-    public void chargeFee() {
-
+    //Function to charge an amount to the bank account
+    public void chargeFee(BankAccount account, BigDecimal amount) {
+        account.setBalance(account.getBalance().subtract(amount));
+        db.updateAmount(account.getAccountID(),account.getBalance());
     }
 
-    public void applyInterest() {
+    //Function to apply interest on a loan
+    public void applyLoanInterest(Loan loan, BigDecimal percentage) {
+        BigDecimal perc = new BigDecimal("1" ).add(percentage);
+        loan.setAmount(loan.getAmount().multiply(perc));
+        db.updateLoanAmount(loan.getLid(),loan.getAmount());
+    }
 
+
+    //Function to apply interest on a savings account
+    public void applySavingsInterest(SavingsAccount account, BigDecimal percentage) {
+        BigDecimal perc = new BigDecimal("1" ).add(percentage);
+        account.setBalance(account.getBalance().multiply(perc));
+        db.updateAmount(account.getAccountID(),account.getBalance());
     }
 }

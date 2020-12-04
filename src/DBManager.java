@@ -615,5 +615,30 @@ public class DBManager {
         return res;
     }
 
+    public List<SavingsAccount> getHighSavingAccounts() {
+        String sql = "SELECT ID, USERID, TYPE, AMOUNT, CURRENCY FROM ACCOUNTS WHERE AMOUNT >= ? AND TYPE = ?";
+        List<SavingsAccount> list = new ArrayList<>();
+        try {
+            PreparedStatement stmt  = conn.prepareStatement(sql);
+            stmt.setBigDecimal(1, new BigDecimal("5000"));
+            stmt.setString(2, AccountType.SAVINGS.toString());
+            ResultSet rs = stmt.executeQuery();
+            while(rs.next()) {
+                SavingsAccount acc = new SavingsAccount(rs.getInt(1),
+                        rs.getInt(2),
+                        rs.getString(3),
+                        rs.getBigDecimal(4));
+                list.add(acc);
+            }
+
+
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return null;
+        }
+        return list;
+
+    }
+
 
 }
