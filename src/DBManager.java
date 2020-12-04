@@ -52,7 +52,7 @@ public class DBManager {
         }
     }
 
-    public void createTables() {
+    public boolean createTables() {
         Statement stmt = null;
         try {
             stmt = conn.createStatement();
@@ -105,7 +105,10 @@ public class DBManager {
             stmt.close();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
+            return false;
+
         }
+        return true;
     }
 
     public void addDefaultManager() {
@@ -120,7 +123,7 @@ public class DBManager {
         }
     }
 
-    public void addUser(String name, String user, String pass, Role role) {
+    public boolean addUser(String name, String user, String pass, Role role) {
         String sql = "INSERT INTO USERS(NAME,USERNAME,PASSWORD,ROLE) VALUES (?,?,?,?)";
         try {
             PreparedStatement stmt = conn.prepareStatement(sql);
@@ -132,7 +135,9 @@ public class DBManager {
             stmt.close();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
+            return false;
         }
+        return true;
     }
 
     public BankAccount addAccount(int userid, AccountType type, BigDecimal amount, String currency) {
@@ -166,11 +171,12 @@ public class DBManager {
             stmt.close();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
+            return null;
         }
         return account;
     }
 
-    public void addTransaction(String type, BigDecimal amount, String currency, int userid, int accountId) {
+    public boolean addTransaction(String type, BigDecimal amount, String currency, int userid, int accountId) {
         String sql = "INSERT INTO TRANSACTIONS(DATE,TYPE,AMOUNT,CURRENCY,USERID,ACCOUNTID) VALUES (?,?,?,?,?,?)";
         try {
             PreparedStatement stmt = conn.prepareStatement(sql);
@@ -187,10 +193,12 @@ public class DBManager {
             stmt.close();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
+            return false;
         }
+        return true;
     }
 
-    public void deleteAccount(int accountId) {
+    public boolean deleteAccount(int accountId) {
         String sql = "DELETE FROM ACCOUNTS WHERE ID = ?";
         try {
             PreparedStatement stmt = conn.prepareStatement(sql);
@@ -199,10 +207,12 @@ public class DBManager {
             stmt.close();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
+            return false;
         }
+        return true;
     }
 
-    public void updateAmount(int accountId, BigDecimal amount) {
+    public boolean updateAmount(int accountId, BigDecimal amount) {
         String sql = "UPDATE ACCOUNTS SET AMOUNT = ?, DATE = ? WHERE ID = ?";
         try {
             PreparedStatement stmt = conn.prepareStatement(sql);
@@ -216,10 +226,12 @@ public class DBManager {
             stmt.close();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
+            return false;
         }
+        return true;
     }
 
-    public void addLoan(int userid, String type, BigDecimal amount, String currency, String collateral) {
+    public boolean addLoan(int userid, String type, BigDecimal amount, String currency, String collateral) {
         String sql = "INSERT INTO LOANS(USERID,AMOUNT,CURRENCY,COLLATERAL,DATE) VALUES (?,?,?,?,?)";
         try {
             PreparedStatement stmt = conn.prepareStatement(sql);
@@ -235,10 +247,12 @@ public class DBManager {
             stmt.close();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
+            return false;
         }
+        return true;
     }
 
-    public void updateLoanAmount(int id, BigDecimal amount) {
+    public boolean updateLoanAmount(int id, BigDecimal amount) {
         String sql = "UPDATE LOANS SET AMOUNT = ?, DATE = ? WHERE ID = ?";
         try {
             PreparedStatement stmt = conn.prepareStatement(sql);
@@ -252,10 +266,12 @@ public class DBManager {
             stmt.close();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
+            return false;
         }
+        return true;
     }
 
-    public void deleteLoan(int id) {
+    public boolean deleteLoan(int id) {
         String sql = "DELETE FROM ACCOUNTS WHERE ID = ?";
         try {
             PreparedStatement stmt = conn.prepareStatement(sql);
@@ -264,7 +280,9 @@ public class DBManager {
             stmt.close();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
+            return false;
         }
+        return true;
     }
 
     public Person getPerson(String username) {
@@ -293,6 +311,7 @@ public class DBManager {
             rs.close();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
+            return null;
         }
 
         return p;
@@ -314,6 +333,7 @@ public class DBManager {
             rs.close();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
+            return null;
         }
 
         return list;
@@ -332,6 +352,7 @@ public class DBManager {
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
+            return null;
         }
         return accounts;
     }
@@ -369,6 +390,7 @@ public class DBManager {
 
         } catch (Exception e) {
             System.out.println(e.getMessage());
+            return null;
         }
         return account;
     }
@@ -390,6 +412,7 @@ public class DBManager {
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
+            return null;
         }
         return accounts;
     }
@@ -409,6 +432,7 @@ public class DBManager {
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
+            return null;
         }
         return loans;
     }
@@ -431,6 +455,7 @@ public class DBManager {
 
         } catch (Exception e) {
             System.out.println(e.getMessage());
+            return null;
         }
         return loan;
     }
@@ -450,6 +475,7 @@ public class DBManager {
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
+            return null;
         }
         return loans;
     }
@@ -467,6 +493,7 @@ public class DBManager {
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
+            return null;
         }
         return list;
     }
@@ -493,6 +520,7 @@ public class DBManager {
 
         } catch (Exception e) {
             System.out.println(e.getMessage());
+            return null;
         }
         return t;
     }
@@ -512,12 +540,10 @@ public class DBManager {
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
+            return null;
         }
         return list;
     }
 
 
-    public int getNextUserId() {
-        return -1;
-    }
 }
