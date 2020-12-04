@@ -508,7 +508,7 @@ public class DBManager {
     public Transaction getTransaction(int id) {
         Transaction t = null;
         try {
-            String sql = "SELECT ID, DATE, TYPE ,AMOUNT, USERID, ACCOUNTID, TARGETACCOUNTID, TARGETUSERID FROM TRANSACTIONS WHERE ID = ?";
+            String sql = "SELECT ID, DATE, TYPE ,AMOUNT, CURRENCY, USERID, ACCOUNTID, TARGETACCOUNTID, TARGETUSERID FROM TRANSACTIONS WHERE ID = ?";
 
             PreparedStatement stmt = conn.prepareStatement(sql);
             stmt.setInt(1, id);
@@ -520,10 +520,11 @@ public class DBManager {
                     date,
                     TransactionType.valueOf(rs.getString(3)),
                     new BigDecimal(rs.getInt(4)),
-                    rs.getInt(5),
+                    rs.getString(5),
                     rs.getInt(6),
                     rs.getInt(7),
-                    rs.getInt(8));
+                    rs.getInt(8),
+                    rs.getInt(9));
 
         } catch (Exception e) {
             System.out.println(e.getMessage());

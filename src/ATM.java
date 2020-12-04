@@ -138,7 +138,7 @@ public class ATM {
 
         //TODO - database error checking
 
-        if (isPositive(amount)) {
+        if (isPositive(amount) && fromBank.hasEnoughBalance(amount)) {
 
             return bank.transferMoney(fromBank, toBank, amount);
 
