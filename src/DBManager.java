@@ -22,8 +22,8 @@ public class DBManager {
 
             conn = DriverManager.getConnection(url);
             System.out.println("Connection to SQLite has been established.");
-            dropTables();
-            System.out.println("Tables dropped");
+            // dropTables();
+            // System.out.println("Tables dropped");
             createTables();
             System.out.println("Tables created");
             addDefaultManager();
@@ -178,11 +178,11 @@ public class DBManager {
     }
 
     public boolean addTransaction(TransactionType type,int userid, int accountId, BigDecimal amount, String currency, int targetUserId, int targetAccountId ) {
-        String sql = "INSERT INTO TRANSACTIONS(DATE,TYPE,AMOUNT,CURRENCY,USERID,ACCOUNTID,TARGETUSERID,TARGETACCOUNTID) VALUES (?,?,?,?,?,?)";
+        String sql = "INSERT INTO TRANSACTIONS(DATE,TYPE,AMOUNT,CURRENCY,USERID,ACCOUNTID,TARGETUSERID,TARGETACCOUNTID) VALUES (?,?,?,?,?,?,?,?)";
         try {
             PreparedStatement stmt = conn.prepareStatement(sql);
             Date date = Calendar.getInstance().getTime();
-            DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");
+            DateFormat dateFormat = new SimpleDateFormat("YYYY-MM-dd");
             String strDate = dateFormat.format(date);
             stmt.setString(1, strDate);
             stmt.setString(2, type.toString());
@@ -221,7 +221,7 @@ public class DBManager {
             PreparedStatement stmt = conn.prepareStatement(sql);
             stmt.setBigDecimal(1, amount);
             Date date = Calendar.getInstance().getTime();
-            DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");
+            DateFormat dateFormat = new SimpleDateFormat("YYYY-MM-dd");
             String strDate = dateFormat.format(date);
             stmt.setString(2, strDate);
             stmt.setInt(3, accountId);
@@ -257,7 +257,7 @@ public class DBManager {
             PreparedStatement stmt = conn.prepareStatement(sql);
             stmt.setBigDecimal(1, amount);
             Date date = Calendar.getInstance().getTime();
-            DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");
+            DateFormat dateFormat = new SimpleDateFormat("YYYY-MM-dd");
             String strDate = dateFormat.format(date);
             stmt.setString(2, strDate);
             stmt.setInt(3, id);
@@ -506,7 +506,7 @@ public class DBManager {
             stmt.setInt(1, id);
             ResultSet rs = stmt.executeQuery();
             String sDate = rs.getString(2);
-            SimpleDateFormat formatter=new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss");
+            SimpleDateFormat formatter=new SimpleDateFormat("YYYY-MM-dd");
             Date date = formatter.parse(sDate);
             t = new Transaction(rs.getInt(1),
                     date,

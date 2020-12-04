@@ -1,10 +1,17 @@
+import com.sun.javaws.exceptions.InvalidArgumentException;
+
 import java.math.BigDecimal;
 import java.util.*;
 
 // all the logics are done in the bank, ATM is just a fascade for the bank
 public class ATM {
     private Bank bank;// the bank that connects this ATM
-    private Customer loggedInCustomer;// the customer who is logged in to this atm
+
+    public Customer getLoggedInCustomer() {
+        return (Customer) loggedInPerson;
+    }
+
+    private Person loggedInPerson;
 
     public ATM(Bank bank) {
         this.bank = bank;
@@ -21,7 +28,7 @@ public class ATM {
 
         Customer customer = bank.createCustomer(name, userName, password);
         if (customer != null) {
-            loggedInCustomer = customer;
+            loggedInPerson = customer;
             return true;
         } else {
 
@@ -41,16 +48,22 @@ public class ATM {
         System.out.println("User name: " + userName + " Password: " + password);
 
         // TODO check login with db, transition into customer or manager. return results.
-//        Customer customer = bank.userAuth(userName, password);
-//        if (customer != null) {
-//            //TODO - valid log in
-//
-//        } else {
-//            //TODO - fail log in
-//
-//        }
-
-        new CustomerScreen(this);
+        Person person = bank.userAuth(userName, password);
+        if (person == null) {
+            return false;
+        } else {
+            loggedInPerson = person;
+            switch (person.getRole()) {
+                case CUSTOMER:
+                    new CustomerScreen(this) ;
+                    return true;
+                case MANAGER:
+                    // TODO create new manager screen;
+                    return true;
+                default:
+                    // TODO exception
+            }
+        }
 
         return true;
     }
@@ -60,14 +73,14 @@ public class ATM {
     }
 
 
-    private boolean createCheckingAccount(String currency) {
+    private boolean createCheckingAccount(String currency, BigDecimal amount) {
         //TODO - database error checking
-        return bank.createCheckingAccount(loggedInCustomer, currency);//will return boolean indicate success or not
+        return bank.createCheckingAccount(getLoggedInCustomer(), currency, amount); //will return boolean indicate success or not
     }
 
-    private boolean createSavingsAccount(String currency) {
+    private boolean createSavingsAccount(String currency, BigDecimal amount) {
         //TODO - database error checking
-        return bank.createSavingsAccount(loggedInCustomer, currency);//will return boolean indicate success or not
+        return bank.createSavingsAccount(getLoggedInCustomer(), currency, amount); //will return boolean indicate success or not
     }
 
     private boolean deposit(BankAccount ba, BigDecimal amount) {
@@ -104,7 +117,7 @@ public class ATM {
 
         if (isPositive(amount)) {
 
-            return bank.requestLoan(loggedInCustomer, amount, currency, collateral);//will return boolean indicate success or not
+            return bank.requestLoan(getLoggedInCustomer(), amount, currency, collateral);//will return boolean indicate success or not
 
         }
         return false;

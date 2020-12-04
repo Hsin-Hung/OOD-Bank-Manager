@@ -56,10 +56,9 @@ public class ElementsScreen extends BaseScreen {
         }
     }
 
-
     private void initialize() {
         setContentPane($$$getRootComponent$$$());
-        setSize(500, 500);
+        setSize(700, 700);
         centerScreen();
     }
 
@@ -74,9 +73,6 @@ public class ElementsScreen extends BaseScreen {
         mainPanel = new JPanel();
         mainPanel.setLayout(new GridLayoutManager(2, 5, new Insets(10, 10, 10, 10), -1, -1));
         mainPanel.setMinimumSize(new Dimension(500, 500));
-        final JLabel label1 = new JLabel();
-        label1.setText("Account");
-        mainPanel.add(label1, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         createBtn = new JButton();
         createBtn.setText("Create New");
         mainPanel.add(createBtn, new GridConstraints(0, 4, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));

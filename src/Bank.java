@@ -7,8 +7,9 @@ public class Bank {
 
 
     public Bank(String name) {
-
         this.db = new DBManager();
+        // TODO eric remove
+//        db.addTransaction(TransactionType.OPENSAVINGS, 2, 1, new BigDecimal(10000), "USD", -1, -1);
         this.name = name;
     }
 
