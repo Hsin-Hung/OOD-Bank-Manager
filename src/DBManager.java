@@ -640,5 +640,27 @@ public class DBManager {
 
     }
 
+    public boolean transferMoney(int fromId, int toId, BigDecimal fromAmount, BigDecimal toAmount) {
+        String sql = "UPDATE ACCOUNTS SET AMOUNT = " +
+                "CASE ID " +
+                "WHEN ? THEN ? " +
+                "WHEN ? THEN ? " +
+                "END ";
+
+        try {
+            PreparedStatement stmt  = conn.prepareStatement(sql);
+            stmt.setInt(1,fromId);
+            stmt.setBigDecimal(2,fromAmount);
+            stmt.setInt(3,fromId);
+            stmt.setBigDecimal(4,toAmount);
+            stmt.execute();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return false;
+        }
+        return true;
+
+    }
+
 
 }

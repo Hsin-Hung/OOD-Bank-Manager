@@ -1,4 +1,5 @@
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -137,23 +138,42 @@ public class Bank {
         return false;
     }
 
+    //Function to transfer money from one account to another
     public boolean transferMoney(BankAccount fromBank, BankAccount toBank, BigDecimal amount) {
-
-        //TODO - db persistence
-
-
+        //if from bank account is less than amount, return false
+        if(fromBank.getBalance().compareTo(amount) < 0) {
+            return false;
+        }
+        fromBank.setBalance(fromBank.getBalance().subtract(amount));
+        toBank.setBalance(toBank.getBalance().add(amount));
+        db.transferMoney(fromBank.getAccountID(), toBank.getAccountID(), fromBank.getBalance(), toBank.getBalance() );
         return true;
     }
 
-    public void checkCustomer(Customer customer) {
+    //get all the customers from the db
+    public List<Customer> checkCustomer() {
 
+            return db.getAllCustomers();
 
     }
 
-    public void getDailyReport() {
+    public List<Transaction> getDailyReportWithin24hrs(){
 
-        //TODO -
+        List<Transaction> allTransactions = db.getAllTransaction();
+        List<Transaction> within24Transactions = new ArrayList<>();
+
+        long day = 24 * 60 * 60 * 1000;
+
+        for (Transaction t : allTransactions) {
+
+            Date tDate = t.getDate();
+            if (tDate.getTime() > (System.currentTimeMillis() - day)) within24Transactions.add(t);
+
+        }
+        return within24Transactions;
+
     }
+
 
     //Function to charge an amount to the bank account
     public void chargeFee(BankAccount account, BigDecimal amount) {
