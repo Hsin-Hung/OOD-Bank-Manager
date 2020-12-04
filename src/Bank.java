@@ -83,26 +83,9 @@ public class Bank {
     //deposit amount to a bank account
     protected boolean deposit(BankAccount ba, BigDecimal amount) {
 
-        //TODO - update to given bank account with given amount in db
+        if(db.updateAmount(ba.getAccountID(), ba.getBalance().add(amount))){
 
-        //if success
-        db.updateAmount(ba.getAccountID(), ba.getBalance().add(amount));
-        //then
-        ba.deposit(amount);
-
-        return false;
-    }
-
-    //withdraw an amount from bank account
-    protected boolean withdraw(BankAccount ba, BigDecimal amount) {
-
-        if (ba.hasEnoughBalance(amount)){
-            //TODO - update to given bank account with given amount in db
-
-            //if success
-            db.updateAmount(ba.getAccountID(), ba.getBalance().subtract(amount));
-            //then
-            ba.withdraw(amount);
+            ba.deposit(amount);
             return true;
 
         }
@@ -110,9 +93,19 @@ public class Bank {
         return false;
     }
 
-    protected boolean requestLoan(Customer customer, BigDecimal amount, String currency, String collateral) {
+    //withdraw an amount from bank account
+    protected boolean withdraw(BankAccount ba, BigDecimal amount) {
 
-        //TODO - add the loan to db and update the customer
+        if(db.updateAmount(ba.getAccountID(), ba.getBalance().subtract(amount))){
+
+            ba.withdraw(amount);
+            return true;
+
+        }
+        return false;
+    }
+
+    protected boolean requestLoan(Customer customer, BigDecimal amount, String currency, String collateral) {
 
         Loan loan = db.addLoan(customer.getUid(), amount, currency, collateral);
 
@@ -133,7 +126,6 @@ public class Bank {
 
         return true;
     }
-
 
     public void checkCustomer(Customer customer) {
 

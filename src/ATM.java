@@ -89,7 +89,7 @@ public class ATM {
         //TODO - database error checking
 
         //make sure withdraw is positive number
-        if (isPositive(amount)) {
+        if (isPositive(amount) && ba.hasEnoughBalance(amount)) {
 
             return bank.withdraw(ba, amount);//will return boolean indicate success or not
         }
