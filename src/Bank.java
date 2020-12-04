@@ -128,11 +128,15 @@ public class Bank {
         return false;
     }
 
+    //Function to transfer money from one account to another
     public boolean transferMoney(BankAccount fromBank, BankAccount toBank, BigDecimal amount) {
-
-        //TODO - db persistence
-
-
+        //if from bank account is less than amount, return false
+        if(fromBank.getBalance().compareTo(amount) < 0) {
+            return false;
+        }
+        fromBank.setBalance(fromBank.getBalance().subtract(amount));
+        toBank.setBalance(toBank.getBalance().add(amount));
+        db.transferMoney(fromBank.getAccountID(), toBank.getAccountID(), fromBank.getBalance(), toBank.getBalance() );
         return true;
     }
 
