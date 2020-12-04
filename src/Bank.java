@@ -1,4 +1,5 @@
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -149,15 +150,30 @@ public class Bank {
         return true;
     }
 
-    public void checkCustomer(Customer customer) {
+    //get all the customers from the db
+    public List<Customer> checkCustomer() {
 
+            return db.getAllCustomers();
 
     }
 
-    public void getDailyReport() {
+    public List<Transaction> getDailyReportWithin24hrs(){
 
-        //TODO -
+        List<Transaction> allTransactions = db.getAllTransaction();
+        List<Transaction> within24Transactions = new ArrayList<>();
+
+        long day = 24 * 60 * 60 * 1000;
+
+        for (Transaction t : allTransactions) {
+
+            Date tDate = t.getDate();
+            if (tDate.getTime() > (System.currentTimeMillis() - day)) within24Transactions.add(t);
+
+        }
+        return within24Transactions;
+
     }
+
 
     //Function to charge an amount to the bank account
     public void chargeFee(BankAccount account, BigDecimal amount) {

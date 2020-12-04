@@ -167,6 +167,22 @@ public class ATM {
 
     }
 
+    private void checkCustomer(){
+
+        //TODO - display info of all customers or specific customer
+        List<Customer> allCustomers = bank.checkCustomer();
+
+
+    }
+
+    private void getDailyReportWithin24hrs(){
+
+        //TODO - display all transactions within 24 hrs
+        List<Transaction> within24Transactions =  bank.getDailyReportWithin24hrs();
+
+
+    }
+
 
     //starting point when using the ATM, which contains the flow
     public void useATM() {
