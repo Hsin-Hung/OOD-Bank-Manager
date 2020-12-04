@@ -72,15 +72,28 @@ public class ATM {
         startLogin();
     }
 
+    public boolean closeAccount(BankAccount bankAccount){
 
-    private boolean createCheckingAccount(String currency, BigDecimal amount) {
-        //TODO - database error checking
-        return bank.createCheckingAccount(getLoggedInCustomer(), currency, amount); //will return boolean indicate success or not
+        if(bank.closeAccount(bankAccount)){
+
+            //TODO - display the fees and info for closing account
+
+            return true;
+        }
+
+        return false;
+
     }
 
-    private boolean createSavingsAccount(String currency, BigDecimal amount) {
+
+    private boolean createCheckingAccount(String currency, BigDecimal startingBalance) {
         //TODO - database error checking
-        return bank.createSavingsAccount(getLoggedInCustomer(), currency, amount); //will return boolean indicate success or not
+        return bank.createCheckingAccount(loggedInCustomer, currency, startingBalance);//will return boolean indicate success or not
+    }
+
+    private boolean createSavingsAccount(String currency, BigDecimal startingBalance) {
+        //TODO - database error checking
+        return bank.createSavingsAccount(loggedInCustomer, currency, startingBalance);//will return boolean indicate success or not
     }
 
     private boolean deposit(BankAccount ba, BigDecimal amount) {
@@ -102,7 +115,7 @@ public class ATM {
         //TODO - database error checking
 
         //make sure withdraw is positive number
-        if (isPositive(amount)) {
+        if (isPositive(amount) && ba.hasEnoughBalance(amount)) {
 
             return bank.withdraw(ba, amount);//will return boolean indicate success or not
         }

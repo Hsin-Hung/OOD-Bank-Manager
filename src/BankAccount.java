@@ -6,7 +6,7 @@ public abstract class BankAccount {
     private int USER_ID;// the user who owns it
     private String CURRENCY;
     private AccountType type;
-    BigDecimal balance = new BigDecimal(0);
+    private BigDecimal balance = new BigDecimal(0);
 
     public BankAccount(int account_id,int user_id,  String currency, BigDecimal balance, AccountType type ) {
         this.ACCOUNT_ID = account_id;

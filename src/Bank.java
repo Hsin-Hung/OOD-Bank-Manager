@@ -1,5 +1,6 @@
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 public class Bank {
     private String name;
@@ -46,6 +47,7 @@ public class Bank {
         }
         //create the new checking account
         CheckingAccount account = (CheckingAccount) db.addAccount(customer.getUid(),AccountType.CHECKING,amount, currency);
+        chargeFee(account,Constants.openAccountFee);
         customer.addBankAccount(account);
         db.addTransaction(TransactionType.OPENCHECKING,customer.getUid(),account.getAccountID(),amount,currency,-1,-1);
 
@@ -61,10 +63,19 @@ public class Bank {
             return false;
         }
         SavingsAccount account = (SavingsAccount) db.addAccount(customer.getUid(),AccountType.SAVINGS,amount, currency);
+        chargeFee(account,Constants.openAccountFee);
         customer.addBankAccount(account);
         db.addTransaction(TransactionType.OPENSAVINGS,customer.getUid(),account.getAccountID(),amount,currency,-1,-1);
 
         return true;
+
+    }
+
+    //close the given bank account
+    public boolean closeAccount(BankAccount bankAccount){
+
+        return db.deleteAccount(bankAccount.getAccountID());
+
 
     }
 
@@ -74,9 +85,15 @@ public class Bank {
 
     //update interests for all loans and all bank account
     public void updateInterests() {
-         //TODO - update all interests in db
-        //Find all savings account with higher than $5000.00 USD - convert to RMB/EUR?
-        //Find all loans, apply interest.
+        List<SavingsAccount> savingsList = db.getHighSavingAccounts();
+        for(SavingsAccount sa: savingsList) {
+            applySavingsInterest(sa,Constants.savingsInterestPercentage);
+        }
+
+        List<Loan> loans = db.getAllLoans();
+        for(Loan l: loans) {
+            applyLoanInterest(l,Constants.savingsInterestPercentage);
+        }
 
 
     }
@@ -84,26 +101,9 @@ public class Bank {
     //deposit amount to a bank account
     protected boolean deposit(BankAccount ba, BigDecimal amount) {
 
-        //TODO - update to given bank account with given amount in db
+        if(db.updateAmount(ba.getAccountID(), ba.getBalance().add(amount))){
 
-        //if success
-        db.updateAmount(ba.getAccountID(), ba.getBalance().add(amount));
-        //then
-        ba.deposit(amount);
-
-        return false;
-    }
-
-    //withdraw an amount from bank account
-    protected boolean withdraw(BankAccount ba, BigDecimal amount) {
-
-        if (ba.hasEnoughBalance(amount)){
-            //TODO - update to given bank account with given amount in db
-
-            //if success
-            db.updateAmount(ba.getAccountID(), ba.getBalance().subtract(amount));
-            //then
-            ba.withdraw(amount);
+            ba.deposit(amount);
             return true;
 
         }
@@ -111,10 +111,28 @@ public class Bank {
         return false;
     }
 
+    //withdraw an amount from bank account
+    protected boolean withdraw(BankAccount ba, BigDecimal amount) {
+
+        if(db.updateAmount(ba.getAccountID(), ba.getBalance().subtract(amount))){
+
+            ba.withdraw(amount);
+            return true;
+
+        }
+        return false;
+    }
+
     protected boolean requestLoan(Customer customer, BigDecimal amount, String currency, String collateral) {
 
-        //TODO - add the loan to db and update the customer
-        //database.addLoan(int userid, String type, BigDecimal amount, String currency, String collateral)
+        Loan loan = db.addLoan(customer.getUid(), amount, currency, collateral);
+
+        if (loan != null){
+
+            customer.addLoan(loan);
+            return true;
+
+        }
 
         return false;
     }
@@ -127,10 +145,9 @@ public class Bank {
         return true;
     }
 
-
     public void checkCustomer(Customer customer) {
 
-        //TODO -
+
     }
 
     public void getDailyReport() {
@@ -138,11 +155,24 @@ public class Bank {
         //TODO -
     }
 
-    public void chargeFee() {
-
+    //Function to charge an amount to the bank account
+    public void chargeFee(BankAccount account, BigDecimal amount) {
+        account.setBalance(account.getBalance().subtract(amount));
+        db.updateAmount(account.getAccountID(),account.getBalance());
     }
 
-    public void applyInterest() {
+    //Function to apply interest on a loan
+    public void applyLoanInterest(Loan loan, BigDecimal percentage) {
+        BigDecimal perc = new BigDecimal("1" ).add(percentage);
+        loan.setAmount(loan.getAmount().multiply(perc));
+        db.updateLoanAmount(loan.getLid(),loan.getAmount());
+    }
 
+
+    //Function to apply interest on a savings account
+    public void applySavingsInterest(SavingsAccount account, BigDecimal percentage) {
+        BigDecimal perc = new BigDecimal("1" ).add(percentage);
+        account.setBalance(account.getBalance().multiply(perc));
+        db.updateAmount(account.getAccountID(),account.getBalance());
     }
 }

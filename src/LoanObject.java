@@ -17,9 +17,9 @@ public class LoanObject implements IUIElement {
     public LoanObject(Loan loan) {
         $$$setupUI$$$();
 
-        currencyLabel.setText(loan.currency);
-        amountLabel.setText(loan.amount.toPlainString());
-        collateralLabel.setText(loan.collateral);
+        currencyLabel.setText(loan.getCurrency());
+        amountLabel.setText(loan.getAmount().toPlainString());
+        collateralLabel.setText(loan.getCollateral());
 
         payoffBtn.addMouseListener(new MouseAdapter() {
             @Override
