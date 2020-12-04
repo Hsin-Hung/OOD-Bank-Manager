@@ -22,8 +22,8 @@ public class DBManager {
 
             conn = DriverManager.getConnection(url);
             System.out.println("Connection to SQLite has been established.");
-//            dropTables();
-//            System.out.println("Tables dropped");
+            dropTables();
+            System.out.println("Tables dropped");
             createTables();
             System.out.println("Tables created");
             addDefaultManager();
@@ -69,9 +69,10 @@ public class DBManager {
             sql = "CREATE TABLE IF NOT EXISTS TRANSACTIONS(" +
                     "ID INTEGER NOT NULL UNIQUE, " +
                     "TYPE TEXT NOT NULL, " +
-                    "AMOUNT REAL NOT NULL, " +
                     "USERID INTEGER NOT NULL, " +
-                    "ACCOUNTID INTEGER NOT NULL, " +
+                    "ACCOUNTID INTEGER, " +
+                    "AMOUNT REAL, " +
+                    "CURRENCY TEXT, " +
                     "TARGETACCOUNTID INTEGER, " +
                     "TARGETUSERID INTEGER, " +
                     "DATE TEXT NOT NULL, " +
