@@ -59,6 +59,19 @@ public class ATM {
         startLogin();
     }
 
+    public boolean closeAccount(BankAccount bankAccount){
+
+        if(bank.closeAccount(bankAccount)){
+
+            //TODO - display the fees and info for closing account
+
+            return true;
+        }
+
+        return false;
+
+    }
+
 
     private boolean createCheckingAccount(String currency, BigDecimal startingBalance) {
         //TODO - database error checking

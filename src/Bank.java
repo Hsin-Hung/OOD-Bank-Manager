@@ -70,6 +70,14 @@ public class Bank {
 
     }
 
+    //close the given bank account
+    public boolean closeAccount(BankAccount bankAccount){
+
+        return db.deleteAccount(bankAccount.getAccountID());
+
+
+    }
+
     public String getAccountType(BankAccount ba) {
         return ba.getType().toString();
     }
@@ -138,7 +146,7 @@ public class Bank {
 
     public void checkCustomer(Customer customer) {
 
-        //TODO -
+
     }
 
     public void getDailyReport() {
