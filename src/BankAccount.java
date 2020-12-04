@@ -16,6 +16,10 @@ public abstract class BankAccount {
         this.balance = balance;
     }
 
+    public int getUSER_ID() {
+        return USER_ID;
+    }
+
     public AccountType getType() {
         return type;
     }

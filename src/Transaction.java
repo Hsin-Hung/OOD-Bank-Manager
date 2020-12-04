@@ -6,25 +6,27 @@ public class Transaction {
     protected Date date;
     protected TransactionType type;
     protected BigDecimal amount;
+    protected String currency;
     protected int uid;
     protected int account_id;
     protected int target_uid = -1;
     protected int target_account_id = -1;
 
-    public Transaction(int tid, Date date, TransactionType type, BigDecimal amount, int uid, int account_id,
+    public Transaction(int tid, Date date, TransactionType type, BigDecimal amount, String currency, int uid, int account_id,
                        int target_uid, int target_account_id) {
         this.tid = tid;
         this.date = date;
         this.type = type;
         this.amount = amount;
+        this.currency = currency;
         this.uid = uid;
         this.account_id = account_id;
         this.target_uid = target_uid;
         this.target_account_id = target_account_id;
     }
 
-    public Transaction(int tid, Date date, TransactionType type, BigDecimal amount, int uid, int account_id) {
-        this(tid, date, type, amount, uid, account_id, -1, -1);
+    public Transaction(int tid, Date date, TransactionType type, BigDecimal amount, String currency, int uid, int account_id) {
+        this(tid, date, type, amount, currency, uid, account_id, -1, -1);
     }
 
     public int getTid() {
@@ -41,6 +43,10 @@ public class Transaction {
 
     public BigDecimal getAmount() {
         return amount;
+    }
+
+    public String getCurrency() {
+        return currency;
     }
 
     public int getUid() {

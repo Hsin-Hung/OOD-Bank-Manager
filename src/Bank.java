@@ -75,7 +75,15 @@ public class Bank {
     //close the given bank account
     public boolean closeAccount(BankAccount bankAccount){
 
-        return db.deleteAccount(bankAccount.getAccountID());
+
+        if (db.deleteAccount(bankAccount.getAccountID())){
+
+            db.addTransaction(TransactionType.CLOSE,bankAccount.getUSER_ID(),bankAccount.getAccountID(),null,null,-1,-1);
+
+            return true;
+        }
+
+        return false;
 
 
     }
@@ -104,6 +112,8 @@ public class Bank {
 
         if(db.updateAmount(ba.getAccountID(), ba.getBalance().add(amount))){
 
+            db.addTransaction(TransactionType.DEPOSIT, ba.getUSER_ID(), ba.getAccountID(),
+                    amount, ba.getCurrency(), -1, -1);
             ba.deposit(amount);
             return true;
 
@@ -117,6 +127,8 @@ public class Bank {
 
         if(db.updateAmount(ba.getAccountID(), ba.getBalance().subtract(amount))){
 
+            db.addTransaction(TransactionType.WITHDRAW, ba.getUSER_ID(), ba.getAccountID(),
+                    amount, ba.getCurrency(), -1, -1);
             ba.withdraw(amount);
             return true;
 
@@ -140,14 +152,18 @@ public class Bank {
 
     //Function to transfer money from one account to another
     public boolean transferMoney(BankAccount fromBank, BankAccount toBank, BigDecimal amount) {
-        //if from bank account is less than amount, return false
-        if(fromBank.getBalance().compareTo(amount) < 0) {
-            return false;
+
+        if (db.transferMoney(fromBank.getAccountID(), toBank.getAccountID(), fromBank.getBalance(), toBank.getBalance() )){
+
+            db.addTransaction(TransactionType.TRANSFER,fromBank.getUSER_ID(),fromBank.getAccountID(),amount,
+                    fromBank.getCurrency(),toBank.getUSER_ID(),toBank.getAccountID());
+
+            fromBank.setBalance(fromBank.getBalance().subtract(amount));
+            toBank.setBalance(toBank.getBalance().add(amount));
+
+            return true;
         }
-        fromBank.setBalance(fromBank.getBalance().subtract(amount));
-        toBank.setBalance(toBank.getBalance().add(amount));
-        db.transferMoney(fromBank.getAccountID(), toBank.getAccountID(), fromBank.getBalance(), toBank.getBalance() );
-        return true;
+        return false;
     }
 
     //get all the customers from the db
