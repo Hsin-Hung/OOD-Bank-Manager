@@ -1,5 +1,7 @@
 public enum TransactionType {
-    OPEN,
+    SIGNUP,
+    OPENCHECKING,
+    OPENSAVINGS,
     CLOSE,
     DEPOSIT,
     WITHDRAW,

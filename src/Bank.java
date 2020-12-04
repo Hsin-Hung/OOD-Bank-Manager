@@ -20,6 +20,7 @@ public class Bank {
         }
         db.addUser(name,username,password,Role.CUSTOMER);
         Customer c = (Customer) db.getPerson(username);
+        db.addTransaction(TransactionType.SIGNUP,c.getUid(),-1,null,null,-1,-1);
         return c;
 
     }
@@ -30,8 +31,6 @@ public class Bank {
         Person p = db.isValidUserAuth(username,password);
         if(p == null) {
             return null;
-        } else {
-            Role r = p.getRole();
         }
         return p;
 
@@ -47,6 +46,7 @@ public class Bank {
         //create the new checking account
         CheckingAccount account = (CheckingAccount) db.addAccount(customer.getUid(),AccountType.CHECKING,amount, currency);
         customer.addBankAccount(account);
+        db.addTransaction(TransactionType.OPENCHECKING,customer.getUid(),account.getAccountID(),amount,currency,-1,-1);
 
         return true;
 
@@ -61,6 +61,8 @@ public class Bank {
         }
         SavingsAccount account = (SavingsAccount) db.addAccount(customer.getUid(),AccountType.SAVINGS,amount, currency);
         customer.addBankAccount(account);
+        db.addTransaction(TransactionType.OPENSAVINGS,customer.getUid(),account.getAccountID(),amount,currency,-1,-1);
+
         return true;
 
     }
@@ -71,10 +73,10 @@ public class Bank {
 
     //update interests for all loans and all bank account
     public void updateInterests() {
+         //TODO - update all interests in db
+        //Find all savings account with higher than $5000.00 USD - convert to RMB/EUR?
+        //Find all loans, apply interest.
 
-        //TODO - update all interests in db
-
-        // database.updateInterests();
 
     }
 
@@ -135,5 +137,11 @@ public class Bank {
         //TODO -
     }
 
+    public void chargeFee() {
 
+    }
+
+    public void applyInterest() {
+
+    }
 }

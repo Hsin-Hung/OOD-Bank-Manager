@@ -176,8 +176,8 @@ public class DBManager {
         return account;
     }
 
-    public boolean addTransaction(TransactionType type, BigDecimal amount, String currency, int userid, int accountId) {
-        String sql = "INSERT INTO TRANSACTIONS(DATE,TYPE,AMOUNT,CURRENCY,USERID,ACCOUNTID) VALUES (?,?,?,?,?,?)";
+    public boolean addTransaction(TransactionType type,int userid, int accountId, BigDecimal amount, String currency, int targetUserId, int targetAccountId ) {
+        String sql = "INSERT INTO TRANSACTIONS(DATE,TYPE,AMOUNT,CURRENCY,USERID,ACCOUNTID,TARGETUSERID,TARGETACCOUNTID) VALUES (?,?,?,?,?,?)";
         try {
             PreparedStatement stmt = conn.prepareStatement(sql);
             Date date = Calendar.getInstance().getTime();
@@ -188,7 +188,9 @@ public class DBManager {
             stmt.setBigDecimal(3, amount);
             stmt.setString(4, currency);
             stmt.setInt(5, userid);
-            stmt.setInt(3, accountId);
+            stmt.setInt(6, accountId);
+            stmt.setInt(7, targetUserId);
+            stmt.setInt(8, targetAccountId);
             stmt.execute();
             stmt.close();
         } catch (SQLException e) {
@@ -231,7 +233,7 @@ public class DBManager {
         return true;
     }
 
-    public boolean addLoan(int userid, String type, BigDecimal amount, String currency, String collateral) {
+    public boolean addLoan(int userid, BigDecimal amount, String currency, String collateral) {
         String sql = "INSERT INTO LOANS(USERID,AMOUNT,CURRENCY,COLLATERAL) VALUES (?,?,?,?)";
         try {
             PreparedStatement stmt = conn.prepareStatement(sql);
@@ -254,7 +256,7 @@ public class DBManager {
             PreparedStatement stmt = conn.prepareStatement(sql);
             stmt.setBigDecimal(1, amount);
             Date date = Calendar.getInstance().getTime();
-            DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
+            DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");
             String strDate = dateFormat.format(date);
             stmt.setString(2, strDate);
             stmt.setInt(3, id);
