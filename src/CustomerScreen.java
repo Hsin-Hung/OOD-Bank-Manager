@@ -18,13 +18,11 @@ public class CustomerScreen extends BaseScreen {
     private JButton stocksBtn;
     private JButton transactionBtn;
     private final ATM owner;
-    private Customer customer;
 
     public CustomerScreen(ATM owner) {//, Customer customer) {
         $$$setupUI$$$();
 
         this.owner = owner;
-//        this.customer = customer;
         initialize();
 
         logoutBtn.addMouseListener(new MouseAdapter() {
@@ -60,7 +58,7 @@ public class CustomerScreen extends BaseScreen {
 
     private void initialize() {
         setContentPane(mainPanel);
-        setSize(500, 500);
+        setSize(700, 700);
         centerScreen();
 
         // TODO disable stock button for non vips
@@ -69,7 +67,7 @@ public class CustomerScreen extends BaseScreen {
 
     private void createAccountsScreen() {
         List<IUIElement> elements = new ArrayList<>();
-        for (BankAccount bankAccount : customer.getBankAccounts()) {
+        for (BankAccount bankAccount : owner.getLoggedInCustomer().getBankAccounts()) {
             elements.add(new AccountsObject(bankAccount));
         }
         new ElementsScreen(elements, () -> createNewAccount(), "Create Account");
@@ -81,16 +79,15 @@ public class CustomerScreen extends BaseScreen {
 //            elements.add(new AccountsObject(bankAccount));
 //        }
 
-
         new ElementsScreen(elements, () -> createNewLoan(), "Request New Loan");
         // TODO Eric create loan screen
     }
 
     private void createTransactionsScreen() {
         List<IUIElement> elements = new ArrayList<>();
-//        for (IUIElement transaction : customer.getTransactions()) {
-//            elements.add(new TransactionObject(transaction));
-//        }
+        for (Transaction transaction : owner.getLoggedInCustomer().getTransactions()) {
+            elements.add(new TransactionObject(transaction));
+        }
         new ElementsScreen(elements, null, null);
     }
 
@@ -145,6 +142,7 @@ public class CustomerScreen extends BaseScreen {
         loansBtn.setText("View Loans");
         panel2.add(loansBtn, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         stocksBtn = new JButton();
+        stocksBtn.setEnabled(false);
         stocksBtn.setText("View Stocks");
         panel2.add(stocksBtn, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         transactionBtn = new JButton();

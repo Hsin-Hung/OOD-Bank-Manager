@@ -7,5 +7,5 @@ public class Constants {
     public static final BigDecimal closeAccountFee = new BigDecimal("5");
     public static final BigDecimal withdrawFee = new BigDecimal("5");
 
-
+    public static final boolean DEV_MODE = true;
 }
