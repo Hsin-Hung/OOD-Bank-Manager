@@ -545,5 +545,68 @@ public class DBManager {
         return list;
     }
 
+    public boolean isDistinctUsername(String username) {
+        String sql = "SELECT COUNT(*) FROM USERS WHERE USERNAME = ?";
+        boolean res = false;
+        try {
+            PreparedStatement stmt  = conn.prepareStatement(sql);
+            stmt.setString(1, username);
+            ResultSet rs = stmt.executeQuery();
+            int count = rs.getInt(1);
+            if(count >= 1) {
+                res = false;
+            } else {
+                res = true;
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return false;
+        }
+        return false;
+    }
+
+    public boolean isDistinctAccount(int userid, String currency, AccountType type) {
+        String sql = "SELECT COUNT(*) FROM ACCOUNT WHERE USERID = ? AND CURRENCY = ? AND TYPE = ?";
+        boolean res = false;
+        try {
+            PreparedStatement stmt  = conn.prepareStatement(sql);
+            stmt.setInt(1,userid);
+            stmt.setString(2,currency);
+            stmt.setString(3, type.toString());
+            ResultSet rs = stmt.executeQuery();
+            int count = rs.getInt(1);
+            if(count >= 1) {
+                res = false;
+            } else {
+                res = true;
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return false;
+        }
+        return false;
+    }
+
+
+    public Person isValidUserAuth(String user, String pass) {
+        String sql = "SELECT ID, USERNAME FROM USERS WHERE USERNAME = ? AND PASSWORD = ?";
+        Person res = null;
+        try {
+            PreparedStatement stmt  = conn.prepareStatement(sql);
+            stmt.setString(1, user);
+            stmt.setString(2, pass);
+            ResultSet rs = stmt.executeQuery();
+            int id = rs.getInt(1);
+            if(id == 0) {
+                return null;
+            }
+            res = getPerson(user);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return null;
+        }
+        return res;
+    }
+
 
 }

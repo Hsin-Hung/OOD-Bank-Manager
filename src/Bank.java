@@ -14,30 +14,38 @@ public class Bank {
 
     //create and return the customer object
     public Customer createCustomer(String name, String username, String password) {
-       db.addUser(name,username,password,Role.CUSTOMER);
-       Customer c = (Customer) db.getPerson(username);
-       return c;
+        boolean isValidUser = db.isDistinctUsername(username);
+        if(!isValidUser) {
+            return null;
+        }
+        db.addUser(name,username,password,Role.CUSTOMER);
+        Customer c = (Customer) db.getPerson(username);
+        return c;
 
     }
 
     //authenticate username and password and return the customer if there is one
-    public Customer userAuth(String username, String password) {
+    public Person userAuth(String username, String password) {
 
-        //TODO - need to query the uid with the given username and password from db. username should be unique?
-//        int uid = 0;// dummy uid
-//        Person person = db.getPerson(uid);
-        //TODO - check whether the person is customer or manager
-        return null;
+        Person p = db.isValidUserAuth(username,password);
+        if(p == null) {
+            return null;
+        } else {
+            Role r = p.getRole();
+        }
+        return p;
 
     }
 
     //create a checking account
     public boolean createCheckingAccount(Customer customer, String currency, BigDecimal amount) {
 
-
+        boolean isValidAcc = db.isDistinctAccount(customer.getUid(), currency, AccountType.CHECKING);
+        if(!isValidAcc) {
+            return false;
+        }
         //create the new checking account
         CheckingAccount account = (CheckingAccount) db.addAccount(customer.getUid(),AccountType.CHECKING,amount, currency);
-
         customer.addBankAccount(account);
 
         return true;
@@ -47,6 +55,10 @@ public class Bank {
 
     //create a savings account
     public boolean createSavingsAccount(Customer customer, String currency, BigDecimal amount) {
+        boolean isValidAcc = db.isDistinctAccount(customer.getUid(), currency, AccountType.SAVINGS);
+        if(!isValidAcc) {
+            return false;
+        }
         SavingsAccount account = (SavingsAccount) db.addAccount(customer.getUid(),AccountType.SAVINGS,amount, currency);
         customer.addBankAccount(account);
         return true;
