@@ -67,19 +67,23 @@ public class CustomerScreen extends BaseScreen {
 
     private void createAccountsScreen() {
         List<IUIElement> elements = new ArrayList<>();
-        for (BankAccount bankAccount : owner.getLoggedInCustomer().getBankAccounts()) {
+        Customer customer = owner.getLoggedInCustomer();
+        for (BankAccount bankAccount : customer.getBankAccounts()) {
             elements.add(new AccountsObject(bankAccount));
         }
-        new ElementsScreen(elements, () -> createNewAccount(), "Create Account");
+        new ElementsScreen(elements, this::createNewAccount, "Create Account",
+                (ElementsScreen s) -> new AccountsObject(Helper.getLastItem(customer.getBankAccounts())));
     }
 
     private void createLoanScreen() {
         List<IUIElement> elements = new ArrayList<>();
-//        for (BankAccount bankAccount : customer.getBankAccounts()) {
-//            elements.add(new AccountsObject(bankAccount));
-//        }
+        Customer customer = owner.getLoggedInCustomer();
+        for (Loan loan : customer.getLoans()) {
+            elements.add(new LoanObject(loan));
+        }
 
-        new ElementsScreen(elements, () -> createNewLoan(), "Request New Loan");
+        new ElementsScreen(elements, this::createNewLoan, "Request New Loan",
+                (ElementsScreen s) -> new LoanObject(Helper.getLastItem(customer.getLoans())));
         // TODO Eric create loan screen
     }
 
@@ -88,15 +92,16 @@ public class CustomerScreen extends BaseScreen {
         for (Transaction transaction : owner.getLoggedInCustomer().getTransactions()) {
             elements.add(new TransactionObject(transaction));
         }
-        new ElementsScreen(elements, null, null);
+        new ElementsScreen(elements, null, null, null);
     }
 
-    private void createNewAccount() {
-
+    private Void createNewAccount(ElementsScreen s) {
+        new NewAccountDialog(owner, s);
+        return null;
     }
 
-    private void createNewLoan() {
-
+    private Void createNewLoan(ElementsScreen s) {
+        return null;
     }
 
     /**

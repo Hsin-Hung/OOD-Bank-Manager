@@ -5,6 +5,8 @@ import com.intellij.uiDesigner.core.Spacer;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class AccountsObject implements IUIElement {
     private JPanel panel1;
@@ -22,6 +24,12 @@ public class AccountsObject implements IUIElement {
         currencyLabel.setText(account.getCurrency());
         amountLabel.setText(account.getBalance().toPlainString());
         typeLabel.setText(account.getType().toString());
+        withdrawBtn.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+            }
+        });
     }
 
     /**

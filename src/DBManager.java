@@ -514,8 +514,7 @@ public class DBManager {
             stmt.setInt(1, id);
             ResultSet rs = stmt.executeQuery();
             String sDate = rs.getString(2);
-            SimpleDateFormat formatter=new SimpleDateFormat("YYYY-MM-dd");
-            Date date = formatter.parse(sDate);
+            Date date = Constants.DATE_FORMAT.parse(sDate);
             t = new Transaction(rs.getInt(1),
                     date,
                     TransactionType.valueOf(rs.getString(3)),

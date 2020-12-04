@@ -12,27 +12,30 @@ public class ElementsScreen extends BaseScreen {
     private JButton createBtn;
     private JPanel elementsPanel;
     private JPanel mainPanel;
-    private NoArgFunction func;
+    private SingleArgMethod<Void, ElementsScreen> func;
+    private SingleArgMethod<IUIElement, ElementsScreen> updateFunc;
 
     public ElementsScreen() {
         $$$setupUI$$$();
 
         initialize();
         elementsPanel.setLayout(new BoxLayout(elementsPanel, BoxLayout.Y_AXIS));
+        ElementsScreen s = this;
         createBtn.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
                 if (func != null) {
-                    func.apply();
+                    func.apply(s);
                 }
             }
         });
     }
 
-    public ElementsScreen(List<IUIElement> elements, NoArgFunction func, String buttonText) {
+    public ElementsScreen(List<IUIElement> elements, SingleArgMethod<Void, ElementsScreen> func, String buttonText, SingleArgMethod<IUIElement, ElementsScreen> updateFunc) {
         this();
         this.func = func;
+        this.updateFunc = updateFunc;
 
         if (func == null) {
             createBtn.setVisible(false);
@@ -43,7 +46,11 @@ public class ElementsScreen extends BaseScreen {
         refreshUIElements(elements);
     }
 
-    public void addUIElement(IUIElement element) {
+    public void update() {
+        addUIElement(updateFunc.apply(this));
+    }
+
+    private void addUIElement(IUIElement element) {
         elementsPanel.add(element.$$$getRootComponent$$$());
     }
 

@@ -21,8 +21,10 @@ public class TransactionObject implements IUIElement {
         setExternalTransaction(transaction.target_account_id == 0);
 
         // TODO Eric: update transaction details.
-        dateLabel.setText(transaction.getDate().toString());
+        dateLabel.setText(Constants.DATE_FORMAT.format(transaction.getDate()));
         typeLabel.setText(transaction.getType().toString());
+        accountLabel.setText(Integer.toString(transaction.getAccount_id()));
+        amountLabel.setText(transaction.getAmount().toPlainString());
     }
 
     private void setExternalTransaction(boolean external) {
