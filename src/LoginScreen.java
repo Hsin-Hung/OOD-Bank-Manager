@@ -40,6 +40,10 @@ public class LoginScreen extends BaseScreen {
                 }
             }
         });
+
+        if (Constants.DEV_MODE) {
+            devLogin();
+        }
     }
 
     private void initialize() {
@@ -50,6 +54,12 @@ public class LoginScreen extends BaseScreen {
 
     private void login() {
         if (owner.login(userTextField.getText(), new String(passwordField.getPassword()))) {
+            closeScreen();
+        }
+    }
+
+    private void devLogin() {
+        if (owner.login("IAmRich", "giveMeMoney")) {
             closeScreen();
         }
     }
