@@ -60,14 +60,14 @@ public class ATM {
     }
 
 
-    private boolean createCheckingAccount(String currency) {
+    private boolean createCheckingAccount(String currency, BigDecimal startingBalance) {
         //TODO - database error checking
-        return bank.createCheckingAccount(loggedInCustomer, currency);//will return boolean indicate success or not
+        return bank.createCheckingAccount(loggedInCustomer, currency, startingBalance);//will return boolean indicate success or not
     }
 
-    private boolean createSavingsAccount(String currency) {
+    private boolean createSavingsAccount(String currency, BigDecimal startingBalance) {
         //TODO - database error checking
-        return bank.createSavingsAccount(loggedInCustomer, currency);//will return boolean indicate success or not
+        return bank.createSavingsAccount(loggedInCustomer, currency, startingBalance);//will return boolean indicate success or not
     }
 
     private boolean deposit(BankAccount ba, BigDecimal amount) {

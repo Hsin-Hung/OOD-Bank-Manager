@@ -113,7 +113,15 @@ public class Bank {
     protected boolean requestLoan(Customer customer, BigDecimal amount, String currency, String collateral) {
 
         //TODO - add the loan to db and update the customer
-        //database.addLoan(int userid, String type, BigDecimal amount, String currency, String collateral)
+
+        Loan loan = db.addLoan(customer.getUid(), amount, currency, collateral);
+
+        if (loan != null){
+
+            customer.addLoan(loan);
+            return true;
+
+        }
 
         return false;
     }
