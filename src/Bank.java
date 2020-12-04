@@ -8,8 +8,9 @@ public class Bank {
 
 
     public Bank(String name) {
-
         this.db = new DBManager();
+        // TODO eric remove
+//        db.addTransaction(TransactionType.OPENSAVINGS, 2, 1, new BigDecimal(10000), "USD", -1, -1);
         this.name = name;
     }
 
@@ -67,6 +68,14 @@ public class Bank {
         db.addTransaction(TransactionType.OPENSAVINGS,customer.getUid(),account.getAccountID(),amount,currency,-1,-1);
 
         return true;
+
+    }
+
+    //close the given bank account
+    public boolean closeAccount(BankAccount bankAccount){
+
+        return db.deleteAccount(bankAccount.getAccountID());
+
 
     }
 
@@ -142,7 +151,7 @@ public class Bank {
 
     public void checkCustomer(Customer customer) {
 
-        //TODO -
+
     }
 
     public void getDailyReport() {
