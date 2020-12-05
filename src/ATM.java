@@ -122,7 +122,7 @@ public class ATM {
 
     }
 
-    private boolean requestLoan(BigDecimal amount, String currency, String collateral) {
+    public boolean requestLoan(BigDecimal amount, String currency, String collateral) {
 
         //TODO - database error checking
 
