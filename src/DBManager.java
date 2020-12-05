@@ -177,8 +177,9 @@ public class DBManager {
         return account;
     }
 
-    public boolean addTransaction(TransactionType type,int userid, int accountId, BigDecimal amount, String currency, int targetUserId, int targetAccountId ) {
+    public Transaction addTransaction(TransactionType type,int userid, int accountId, BigDecimal amount, String currency, int targetUserId, int targetAccountId ) {
         String sql = "INSERT INTO TRANSACTIONS(DATE,TYPE,AMOUNT,CURRENCY,USERID,ACCOUNTID,TARGETUSERID,TARGETACCOUNTID) VALUES (?,?,?,?,?,?,?,?)";
+        Transaction t = null;
         try {
             PreparedStatement stmt = conn.prepareStatement(sql);
             Date date = Calendar.getInstance().getTime();
@@ -193,12 +194,20 @@ public class DBManager {
             stmt.setInt(7, targetUserId);
             stmt.setInt(8, targetAccountId);
             stmt.execute();
+
+            sql = "SELECT MAX(ID) FROM TRANSACTIONS";
+            stmt = conn.prepareStatement(sql);
+            ResultSet rs = stmt.executeQuery();
+
+            
+            t = new Transaction(rs.getInt(1),date,type,amount,currency,userid,accountId,targetUserId,targetAccountId);
+
             stmt.close();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
-            return false;
+            return null;
         }
-        return true;
+        return t;
     }
 
     public boolean deleteAccount(int accountId) {
