@@ -1,8 +1,9 @@
-import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 import java.util.stream.Collectors;
 
 public class Currency {
@@ -17,16 +18,18 @@ public class Currency {
 
     private static void init() {
         currencyList = new ArrayList<>();
-        String str;
-        try (Scanner sc = new Scanner(new File(System.getProperty("user.dir") + "/src/data/currencies.csv"))) {
-            sc.useDelimiter("\\n");
-            str = sc.next();
-            while (sc.hasNext())
-            {
-                String[] split = sc.next().split(",");
+        try {
+            List<String> lines = Files.readAllLines(Paths.get(System.getProperty("user.dir") + "/src/data/currencies.csv"), StandardCharsets.UTF_8);
+            boolean skipFirst = true;
+            for (String line : lines) {
+                if (skipFirst) {
+                    skipFirst = false;
+                    continue;
+                }
+                String[] split = line.split(",");
                 currencyList.add(split[0]);
             }
-        } catch (FileNotFoundException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
 
