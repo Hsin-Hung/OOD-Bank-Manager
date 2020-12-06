@@ -87,6 +87,27 @@ public class Bank {
 
     }
 
+    //create a security account
+    public boolean createSecuritiesAccount(Customer customer, String currency, BigDecimal amount) {
+
+        boolean isValidAcc = db.isDistinctAccount(customer.getUid(), currency, AccountType.SECURITIES);
+        if(!isValidAcc) {
+            return false;
+        }
+        SecuritiesAccount account = (SecuritiesAccount) db.addAccount(customer,AccountType.SECURITIES,amount, currency);
+
+        if(account != null){
+            chargeFee(account,Constants.openAccountFee);
+            customer.addBankAccount(account);
+            Transaction t = db.addTransaction(TransactionType.OPENSECURITIES,customer.getUid(),account.getAccountID(),amount,currency,-1,-1,null);
+            if(t != null)customer.addTransaction(t);
+            return true;
+        }
+
+        return false;
+
+    }
+
     //close the given bank account
     public boolean closeAccount(Customer c, BankAccount bankAccount){
 
