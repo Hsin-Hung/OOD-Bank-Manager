@@ -161,13 +161,17 @@ public class DBManager {
             stmt.setString(3, currency);
 
             ResultSet rs = stmt.executeQuery();
+
             switch(type.toString()) {
                 case "CHECKING":
                     account = new CheckingAccount(rs.getInt(1),c.getUid(),currency,amount);
+                    break;
                 case "SAVINGS":
                     account = new SavingsAccount(rs.getInt(1),c.getUid(),currency,amount);
+                    break;
                 case "SECURITIES":
                     account = new SecuritiesAccount(rs.getInt(1),c.getUid(),currency,amount);
+                    break;
 
             }
 
@@ -401,18 +405,21 @@ public class DBManager {
                             rs2.getInt(2),
                             rs2.getString(4),
                             new BigDecimal(rs2.getString(5)));
+                    break;
                 case "SAVINGS":
                     account = new SavingsAccount(
                             rs2.getInt(1),
                             rs2.getInt(2),
                             rs2.getString(4),
                             new BigDecimal(rs2.getString(5)));
+                    break;
                 case "SECURITIES":
                     account = new SecuritiesAccount(
                             rs2.getInt(1),
                             rs2.getInt(2),
                             rs2.getString(4),
                             new BigDecimal(rs2.getString(5)));
+                    break;
             }
 
         } catch (Exception e) {
