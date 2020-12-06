@@ -236,15 +236,11 @@ public class DBManager {
     }
 
     public boolean updateAmount(int accountId, BigDecimal amount) {
-        String sql = "UPDATE ACCOUNTS SET AMOUNT = ?, DATE = ? WHERE ID = ?";
+        String sql = "UPDATE ACCOUNTS SET AMOUNT = ? WHERE ID = ?";
         try {
             PreparedStatement stmt = conn.prepareStatement(sql);
             stmt.setBigDecimal(1, amount);
-            Date date = Calendar.getInstance().getTime();
-            DateFormat dateFormat = new SimpleDateFormat("YYYY-MM-dd");
-            String strDate = dateFormat.format(date);
-            stmt.setString(2, strDate);
-            stmt.setInt(3, accountId);
+            stmt.setInt(2, accountId);
             stmt.execute();
             stmt.close();
 
