@@ -109,13 +109,13 @@ public class ATM {
 
     }
 
-    private boolean withdraw(BankAccount ba, BigDecimal amount) {
+    private boolean withdraw(Customer c, BankAccount ba, BigDecimal amount) {
         //TODO - database error checking
 
         //make sure withdraw is positive number
         if (isPositive(amount) && ba.hasEnoughBalance(amount)) {
 
-            return bank.withdraw(ba, amount);//will return boolean indicate success or not
+            return bank.withdraw(c, ba, amount);//will return boolean indicate success or not
         }
         return false;
 

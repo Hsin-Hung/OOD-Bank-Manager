@@ -38,6 +38,8 @@ public class Customer extends Person {
         bankAccounts.add(ba);
     }
 
+    public void removeBankAccount(BankAccount ba) { bankAccounts.remove(ba); }
+
     public List<BankAccount> getBankAccounts() {
         return bankAccounts;
     }

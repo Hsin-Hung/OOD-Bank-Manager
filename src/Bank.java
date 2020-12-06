@@ -15,15 +15,23 @@ public class Bank {
         this.name = name;
     }
 
+    public String getName() {
+        return name;
+    }
+
     //create and return the customer object
     public Customer createCustomer(String name, String username, String password) {
         boolean isValidUser = db.isDistinctUsername(username);
+        Customer c = null;
         if(!isValidUser) {
             return null;
         }
-        db.addUser(name,username,password,Role.CUSTOMER);
-        Customer c = (Customer) db.getPerson(username);
-        db.addTransaction(TransactionType.SIGNUP,c.getUid(),-1,null,null,-1,-1, null);
+        if (db.addUser(name,username,password,Role.CUSTOMER)){
+
+            Transaction t = db.addTransaction(TransactionType.SIGNUP,c.getUid(),-1,null,null,-1,-1, null);
+            c = (Customer) db.getPerson(username);
+            if(t != null)c.addTransaction(t);
+        }
         return c;
 
     }
@@ -31,11 +39,7 @@ public class Bank {
     //authenticate username and password and return the customer if there is one
     public Person userAuth(String username, String password) {
 
-        Person p = db.isValidUserAuth(username,password);
-        if(p == null) {
-            return null;
-        }
-        return p;
+        return db.isValidUserAuth(username,password);
 
     }
 
@@ -48,11 +52,17 @@ public class Bank {
         }
         //create the new checking account
         CheckingAccount account = (CheckingAccount) db.addAccount(customer,AccountType.CHECKING,amount, currency);
-        chargeFee(account,Constants.openAccountFee);
-        customer.addBankAccount(account);
-        Transaction t = db.addTransaction(TransactionType.OPENCHECKING,customer.getUid(),account.getAccountID(),amount,currency,-1,-1,null);
-        customer.addTransaction(t);
-        return true;
+
+        if (account != null){
+
+            chargeFee(account,Constants.openAccountFee);
+            customer.addBankAccount(account);
+            Transaction t = db.addTransaction(TransactionType.OPENCHECKING,customer.getUid(),account.getAccountID(),amount,currency,-1,-1,null);
+            if(t != null)customer.addTransaction(t);
+            return true;
+        }
+
+        return false;
 
 
     }
@@ -64,12 +74,16 @@ public class Bank {
             return false;
         }
         SavingsAccount account = (SavingsAccount) db.addAccount(customer,AccountType.SAVINGS,amount, currency);
-        chargeFee(account,Constants.openAccountFee);
-        customer.addBankAccount(account);
-        Transaction t = db.addTransaction(TransactionType.OPENSAVINGS,customer.getUid(),account.getAccountID(),amount,currency,-1,-1,null);
-        customer.addTransaction(t);
 
-        return true;
+        if(account != null){
+            chargeFee(account,Constants.openAccountFee);
+            customer.addBankAccount(account);
+            Transaction t = db.addTransaction(TransactionType.OPENSAVINGS,customer.getUid(),account.getAccountID(),amount,currency,-1,-1,null);
+            if(t != null)customer.addTransaction(t);
+            return true;
+        }
+
+        return false;
 
     }
 
@@ -79,6 +93,10 @@ public class Bank {
 
         if (db.deleteAccount(c, bankAccount.getAccountID())){
 
+            chargeFee(bankAccount,Constants.closeAccountFee);
+            c.removeBankAccount(bankAccount);
+            Transaction t = db.addTransaction(TransactionType.CLOSE,c.getUid(),bankAccount.getAccountID(),null,null,-1,-1,null);
+            if(t != null)c.addTransaction(t);
 
             return true;
         }
@@ -114,7 +132,7 @@ public class Bank {
 
             Transaction t = db.addTransaction(TransactionType.DEPOSIT, ba.getUSER_ID(), ba.getAccountID(),
                     amount, ba.getCurrency(), -1, -1, null);
-            c.addTransaction(t);
+            if(t != null)c.addTransaction(t);
             ba.deposit(amount);
             return true;
 
@@ -124,12 +142,13 @@ public class Bank {
     }
 
     //withdraw an amount from bank account
-    protected boolean withdraw(BankAccount ba, BigDecimal amount) {
+    protected boolean withdraw(Customer c, BankAccount ba, BigDecimal amount) {
 
         if(db.updateAmount(ba.getAccountID(), ba.getBalance().subtract(amount))){
 
-            db.addTransaction(TransactionType.WITHDRAW, ba.getUSER_ID(), ba.getAccountID(),
+            Transaction t = db.addTransaction(TransactionType.WITHDRAW, ba.getUSER_ID(), ba.getAccountID(),
                     amount, ba.getCurrency(), -1, -1, null);
+            if(t != null)c.addTransaction(t);
             ba.withdraw(amount);
             return true;
 
@@ -144,6 +163,9 @@ public class Bank {
         if (loan != null){
 
             customer.addLoan(loan);
+            Transaction t = db.addTransaction(TransactionType.OPENLOAN, customer.getUid(), -1,
+                    amount, currency, -1, -1, collateral);
+            if(t != null)customer.addTransaction(t);
             return true;
 
         }
@@ -158,7 +180,7 @@ public class Bank {
 
             Transaction t = db.addTransaction(TransactionType.TRANSFER,fromBank.getUSER_ID(),fromBank.getAccountID(),amount,
                     fromBank.getCurrency(),toBank.getUSER_ID(),toBank.getAccountID(),null);
-            c.addTransaction(t);
+            if(t != null)c.addTransaction(t);
 
             fromBank.setBalance(fromBank.getBalance().subtract(amount));
             toBank.setBalance(toBank.getBalance().add(amount));
@@ -195,22 +217,32 @@ public class Bank {
 
     //Function to charge an amount to the bank account
     public void chargeFee(BankAccount account, BigDecimal amount) {
-        account.setBalance(account.getBalance().subtract(amount));
-        db.updateAmount(account.getAccountID(),account.getBalance());
+
+        if(db.updateAmount(account.getAccountID(),account.getBalance().subtract(amount))){
+            account.setBalance(account.getBalance().subtract(amount));
+        }
     }
 
     //Function to apply interest on a loan
     public void applyLoanInterest(Loan loan, BigDecimal percentage) {
         BigDecimal perc = new BigDecimal("1" ).add(percentage);
-        loan.setAmount(loan.getAmount().multiply(perc));
-        db.updateLoanAmount(loan.getLid(),loan.getAmount());
+
+        if(db.updateLoanAmount(loan.getLid(),loan.getAmount().multiply(perc))){
+
+            loan.setAmount(loan.getAmount().multiply(perc));
+
+        }
     }
 
 
     //Function to apply interest on a savings account
     public void applySavingsInterest(SavingsAccount account, BigDecimal percentage) {
         BigDecimal perc = new BigDecimal("1" ).add(percentage);
-        account.setBalance(account.getBalance().multiply(perc));
-        db.updateAmount(account.getAccountID(),account.getBalance());
+
+        if(db.updateAmount(account.getAccountID(),account.getBalance().multiply(perc))){
+
+            account.setBalance(account.getBalance().multiply(perc));
+
+        }
     }
 }
