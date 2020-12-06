@@ -158,7 +158,7 @@ public class DBManager {
             stmt = conn.prepareStatement(sql);
             stmt.setInt(1, c.getUid());
             stmt.setString(2, type.toString());
-            stmt.setString(4, currency);
+            stmt.setString(3, currency);
 
             ResultSet rs = stmt.executeQuery();
             switch(type.toString()) {
