@@ -23,7 +23,7 @@ public class Bank {
         }
         db.addUser(name,username,password,Role.CUSTOMER);
         Customer c = (Customer) db.getPerson(username);
-        db.addTransaction(TransactionType.SIGNUP,c.getUid(),-1,null,null,-1,-1);
+        db.addTransaction(TransactionType.SIGNUP,c.getUid(),-1,null,null,-1,-1, null);
         return c;
 
     }
@@ -47,11 +47,11 @@ public class Bank {
             return false;
         }
         //create the new checking account
-        CheckingAccount account = (CheckingAccount) db.addAccount(customer.getUid(),AccountType.CHECKING,amount, currency);
+        CheckingAccount account = (CheckingAccount) db.addAccount(customer,AccountType.CHECKING,amount, currency);
         chargeFee(account,Constants.openAccountFee);
         customer.addBankAccount(account);
-        db.addTransaction(TransactionType.OPENCHECKING,customer.getUid(),account.getAccountID(),amount,currency,-1,-1);
-
+        Transaction t = db.addTransaction(TransactionType.OPENCHECKING,customer.getUid(),account.getAccountID(),amount,currency,-1,-1,null);
+        customer.addTransaction(t);
         return true;
 
 
@@ -63,22 +63,22 @@ public class Bank {
         if(!isValidAcc) {
             return false;
         }
-        SavingsAccount account = (SavingsAccount) db.addAccount(customer.getUid(),AccountType.SAVINGS,amount, currency);
+        SavingsAccount account = (SavingsAccount) db.addAccount(customer,AccountType.SAVINGS,amount, currency);
         chargeFee(account,Constants.openAccountFee);
         customer.addBankAccount(account);
-        db.addTransaction(TransactionType.OPENSAVINGS,customer.getUid(),account.getAccountID(),amount,currency,-1,-1);
+        Transaction t = db.addTransaction(TransactionType.OPENSAVINGS,customer.getUid(),account.getAccountID(),amount,currency,-1,-1,null);
+        customer.addTransaction(t);
 
         return true;
 
     }
 
     //close the given bank account
-    public boolean closeAccount(BankAccount bankAccount){
+    public boolean closeAccount(Customer c, BankAccount bankAccount){
 
 
-        if (db.deleteAccount(bankAccount.getAccountID())){
+        if (db.deleteAccount(c, bankAccount.getAccountID())){
 
-            db.addTransaction(TransactionType.CLOSE,bankAccount.getUSER_ID(),bankAccount.getAccountID(),null,null,-1,-1);
 
             return true;
         }
@@ -108,12 +108,13 @@ public class Bank {
     }
 
     //deposit amount to a bank account
-    protected boolean deposit(BankAccount ba, BigDecimal amount) {
+    protected boolean deposit(Customer c, BankAccount ba, BigDecimal amount) {
 
         if(db.updateAmount(ba.getAccountID(), ba.getBalance().add(amount))){
 
-            db.addTransaction(TransactionType.DEPOSIT, ba.getUSER_ID(), ba.getAccountID(),
-                    amount, ba.getCurrency(), -1, -1);
+            Transaction t = db.addTransaction(TransactionType.DEPOSIT, ba.getUSER_ID(), ba.getAccountID(),
+                    amount, ba.getCurrency(), -1, -1, null);
+            c.addTransaction(t);
             ba.deposit(amount);
             return true;
 
@@ -128,7 +129,7 @@ public class Bank {
         if(db.updateAmount(ba.getAccountID(), ba.getBalance().subtract(amount))){
 
             db.addTransaction(TransactionType.WITHDRAW, ba.getUSER_ID(), ba.getAccountID(),
-                    amount, ba.getCurrency(), -1, -1);
+                    amount, ba.getCurrency(), -1, -1, null);
             ba.withdraw(amount);
             return true;
 
@@ -138,7 +139,7 @@ public class Bank {
 
     protected boolean requestLoan(Customer customer, BigDecimal amount, String currency, String collateral) {
 
-        Loan loan = db.addLoan(customer.getUid(), amount, currency, collateral);
+        Loan loan = db.addLoan(customer, amount, currency, collateral);
 
         if (loan != null){
 
@@ -151,12 +152,13 @@ public class Bank {
     }
 
     //Function to transfer money from one account to another
-    public boolean transferMoney(BankAccount fromBank, BankAccount toBank, BigDecimal amount) {
+    public boolean transferMoney(Customer c, BankAccount fromBank, BankAccount toBank, BigDecimal amount) {
 
         if (db.transferMoney(fromBank.getAccountID(), toBank.getAccountID(), fromBank.getBalance(), toBank.getBalance() )){
 
-            db.addTransaction(TransactionType.TRANSFER,fromBank.getUSER_ID(),fromBank.getAccountID(),amount,
-                    fromBank.getCurrency(),toBank.getUSER_ID(),toBank.getAccountID());
+            Transaction t = db.addTransaction(TransactionType.TRANSFER,fromBank.getUSER_ID(),fromBank.getAccountID(),amount,
+                    fromBank.getCurrency(),toBank.getUSER_ID(),toBank.getAccountID(),null);
+            c.addTransaction(t);
 
             fromBank.setBalance(fromBank.getBalance().subtract(amount));
             toBank.setBalance(toBank.getBalance().add(amount));

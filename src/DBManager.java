@@ -75,6 +75,7 @@ public class DBManager {
                     "CURRENCY TEXT, " +
                     "TARGETACCOUNTID INTEGER, " +
                     "TARGETUSERID INTEGER, " +
+                    "COLLATERAL TEXT, " +
                     "DATE TEXT NOT NULL, " +
                     "PRIMARY KEY(ID AUTOINCREMENT))";
             stmt.execute(sql);
@@ -134,6 +135,7 @@ public class DBManager {
             stmt.setString(4, role.toString());
             stmt.execute();
             stmt.close();
+
         } catch (SQLException e) {
             System.out.println(e.getMessage());
             return false;
@@ -141,12 +143,12 @@ public class DBManager {
         return true;
     }
 
-    public BankAccount addAccount(int userid, AccountType type, BigDecimal amount, String currency) {
+    public BankAccount addAccount(Customer c, AccountType type, BigDecimal amount, String currency) {
         String sql = "INSERT INTO ACCOUNTS(USERID,TYPE,AMOUNT,CURRENCY) VALUES (?,?,?,?)";
         BankAccount account = null;
         try {
             PreparedStatement stmt = conn.prepareStatement(sql);
-            stmt.setInt(1, userid);
+            stmt.setInt(1, c.getUid());
             stmt.setString(2, type.toString());
             stmt.setBigDecimal(3, amount);
             stmt.setString(4, currency);
@@ -154,22 +156,24 @@ public class DBManager {
 
             sql = "SELECT ID FROM ACCOUNTS WHERE USERID = ? AND TYPE = ? AND CURRENCY = ? ";
             stmt = conn.prepareStatement(sql);
-            stmt.setInt(1, userid);
+            stmt.setInt(1, c.getUid());
             stmt.setString(2, type.toString());
             stmt.setString(4, currency);
 
             ResultSet rs = stmt.executeQuery();
             switch(type.toString()) {
                 case "CHECKING":
-                    account = new CheckingAccount(rs.getInt(1),userid,currency,amount);
+                    account = new CheckingAccount(rs.getInt(1),c.getUid(),currency,amount);
                 case "SAVINGS":
-                    account = new SavingsAccount(rs.getInt(1),userid,currency,amount);
+                    account = new SavingsAccount(rs.getInt(1),c.getUid(),currency,amount);
                 case "SECURITIES":
-                    account = new SecuritiesAccount(rs.getInt(1),userid,currency,amount);
+                    account = new SecuritiesAccount(rs.getInt(1),c.getUid(),currency,amount);
 
             }
 
             stmt.close();
+
+
         } catch (SQLException e) {
             System.out.println(e.getMessage());
             return null;
@@ -177,8 +181,8 @@ public class DBManager {
         return account;
     }
 
-    public Transaction addTransaction(TransactionType type,int userid, int accountId, BigDecimal amount, String currency, int targetUserId, int targetAccountId ) {
-        String sql = "INSERT INTO TRANSACTIONS(DATE,TYPE,AMOUNT,CURRENCY,USERID,ACCOUNTID,TARGETUSERID,TARGETACCOUNTID) VALUES (?,?,?,?,?,?,?,?)";
+    public Transaction addTransaction(TransactionType type,int userid, int accountId, BigDecimal amount, String currency, int targetUserId, int targetAccountId, String collateral) {
+        String sql = "INSERT INTO TRANSACTIONS(DATE,TYPE,AMOUNT,CURRENCY,USERID,ACCOUNTID,TARGETUSERID,TARGETACCOUNTID,COLLATERAL) VALUES (?,?,?,?,?,?,?,?,?)";
         Transaction t = null;
         try {
             PreparedStatement stmt = conn.prepareStatement(sql);
@@ -193,6 +197,7 @@ public class DBManager {
             stmt.setInt(6, accountId);
             stmt.setInt(7, targetUserId);
             stmt.setInt(8, targetAccountId);
+            stmt.setString(9, collateral);
             stmt.execute();
 
             sql = "SELECT MAX(ID) FROM TRANSACTIONS";
@@ -200,7 +205,7 @@ public class DBManager {
             ResultSet rs = stmt.executeQuery();
 
             
-            t = new Transaction(rs.getInt(1),date,type,amount,currency,userid,accountId,targetUserId,targetAccountId);
+            t = new Transaction(rs.getInt(1),date,type,amount,currency,userid,accountId,targetUserId, targetAccountId, collateral);
 
             stmt.close();
         } catch (SQLException e) {
@@ -210,13 +215,15 @@ public class DBManager {
         return t;
     }
 
-    public boolean deleteAccount(int accountId) {
+    public boolean deleteAccount(Customer c, int accountId) {
         String sql = "DELETE FROM ACCOUNTS WHERE ID = ?";
         try {
             PreparedStatement stmt = conn.prepareStatement(sql);
             stmt.setInt(1, accountId);
             stmt.execute();
             stmt.close();
+            Transaction t  = addTransaction(TransactionType.CLOSE,c.getUid(), accountId, null,null,-1,-1, null);
+            c.addTransaction(t);
         } catch (SQLException e) {
             System.out.println(e.getMessage());
             return false;
@@ -236,6 +243,7 @@ public class DBManager {
             stmt.setInt(3, accountId);
             stmt.execute();
             stmt.close();
+
         } catch (SQLException e) {
             System.out.println(e.getMessage());
             return false;
@@ -243,13 +251,13 @@ public class DBManager {
         return true;
     }
 
-    public Loan addLoan(int userid, BigDecimal amount, String currency, String collateral) {
+    public Loan addLoan(Customer c, BigDecimal amount, String currency, String collateral) {
         String sql = "INSERT INTO LOANS(USERID,AMOUNT,CURRENCY,COLLATERAL) VALUES (?,?,?,?)";
         Loan loan = null;
 
         try {
             PreparedStatement stmt = conn.prepareStatement(sql);
-            stmt.setInt(1, userid);
+            stmt.setInt(1, c.getUid());
             stmt.setBigDecimal(2, amount);
             stmt.setString(3, currency);
             stmt.setString(4, collateral);
@@ -258,8 +266,9 @@ public class DBManager {
 
             ResultSet rs = stmt.executeQuery();
 
-            loan = new Loan(rs.getInt(1), userid, currency, amount, collateral);
-
+            loan = new Loan(rs.getInt(1), c.getUid(), currency, amount, collateral);
+            Transaction t  = addTransaction(TransactionType.OPENLOAN,c.getUid(), loan.getLid(), amount,currency,  -1,-1,null);
+            c.addTransaction(t);
 
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -287,13 +296,15 @@ public class DBManager {
         return true;
     }
 
-    public boolean deleteLoan(int id) {
+    public boolean deleteLoan(Customer c, int id) {
         String sql = "DELETE FROM ACCOUNTS WHERE ID = ?";
         try {
             PreparedStatement stmt = conn.prepareStatement(sql);
             stmt.setInt(1, id);
             stmt.execute();
             stmt.close();
+            Transaction t  = addTransaction(TransactionType.CLOSELOAN,c.getUid(), id, null,null,  -1,-1,null);
+            c.addTransaction(t);
         } catch (SQLException e) {
             System.out.println(e.getMessage());
             return false;
@@ -517,7 +528,7 @@ public class DBManager {
     public Transaction getTransaction(int id) {
         Transaction t = null;
         try {
-            String sql = "SELECT ID, DATE, TYPE ,AMOUNT, CURRENCY, USERID, ACCOUNTID, TARGETACCOUNTID, TARGETUSERID FROM TRANSACTIONS WHERE ID = ?";
+            String sql = "SELECT ID, DATE, TYPE ,AMOUNT, CURRENCY, USERID, ACCOUNTID, TARGETACCOUNTID, TARGETUSERID, COLLATERAL FROM TRANSACTIONS WHERE ID = ?";
 
             PreparedStatement stmt = conn.prepareStatement(sql);
             stmt.setInt(1, id);
@@ -532,7 +543,8 @@ public class DBManager {
                     rs.getInt(6),
                     rs.getInt(7),
                     rs.getInt(8),
-                    rs.getInt(9));
+                    rs.getInt(9),
+                    rs.getString(10));
 
         } catch (Exception e) {
             System.out.println(e.getMessage());

@@ -70,9 +70,9 @@ public class ATM {
         startLogin();
     }
 
-    public boolean closeAccount(BankAccount bankAccount){
+    public boolean closeAccount(Customer c, BankAccount bankAccount){
 
-        if(bank.closeAccount(bankAccount)){
+        if(bank.closeAccount(c, bankAccount)){
 
             //TODO - display the fees and info for closing account
 
@@ -94,14 +94,14 @@ public class ATM {
         return bank.createSavingsAccount(getLoggedInCustomer(), currency, startingBalance);//will return boolean indicate success or not
     }
 
-    private boolean deposit(BankAccount ba, BigDecimal amount) {
+    private boolean deposit(Customer c, BankAccount ba, BigDecimal amount) {
 
         //TODO - database error checking
 
         //make sure deposit is positive number
         if (isPositive(amount)) {
 
-            return bank.deposit(ba, amount);//will return boolean indicate success or not
+            return bank.deposit(c, ba, amount);//will return boolean indicate success or not
 
         }
 
@@ -134,13 +134,13 @@ public class ATM {
         return false;
     }
 
-    private boolean transferMoney(BankAccount fromBank, BankAccount toBank, BigDecimal amount) {
+    private boolean transferMoney(Customer c, BankAccount fromBank, BankAccount toBank, BigDecimal amount) {
 
         //TODO - database error checking
 
         if (isPositive(amount) && fromBank.hasEnoughBalance(amount)) {
 
-            return bank.transferMoney(fromBank, toBank, amount);
+            return bank.transferMoney(c, fromBank, toBank, amount);
 
         }
         return false;
