@@ -17,10 +17,10 @@ public class Currency {
 
     private static void init() {
         currencyList = new ArrayList<>();
-        String _;
+        String str;
         try (Scanner sc = new Scanner(new File(System.getProperty("user.dir") + "/src/data/currencies.csv"))) {
             sc.useDelimiter("\\n");
-            _ = sc.next();
+            str = sc.next();
             while (sc.hasNext())
             {
                 String[] split = sc.next().split(",");
