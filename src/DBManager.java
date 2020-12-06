@@ -594,7 +594,7 @@ public class DBManager {
     }
 
     public boolean isDistinctAccount(int userid, String currency, AccountType type) {
-        String sql = "SELECT COUNT(*) FROM ACCOUNT WHERE USERID = ? AND CURRENCY = ? AND TYPE = ?";
+        String sql = "SELECT COUNT(*) FROM ACCOUNTS WHERE USERID = ? AND CURRENCY = ? AND TYPE = ?";
         boolean res = false;
         try {
             PreparedStatement stmt  = conn.prepareStatement(sql);
