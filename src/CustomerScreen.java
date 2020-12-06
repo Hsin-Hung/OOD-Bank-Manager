@@ -27,6 +27,7 @@ public class CustomerScreen extends BaseScreen {
         // TODO disable stock button for non vips
         // stocksBtn.setEnabled(customer.isVIP());
 
+        this.userNameLabel.setText(owner.getLoggedInCustomer().getName());
         this.owner = owner;
 
         logoutBtn.addMouseListener(new MouseAdapter() {
