@@ -52,6 +52,8 @@ public class ElementsScreen extends BaseScreen {
 
     private void addUIElement(IUIElement element) {
         elementsPanel.add(element.$$$getRootComponent$$$());
+        elementsPanel.revalidate();
+        elementsPanel.repaint();
     }
 
     public void refreshUIElements(List<IUIElement> elements) {
