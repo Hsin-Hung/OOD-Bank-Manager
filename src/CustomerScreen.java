@@ -65,10 +65,10 @@ public class CustomerScreen extends BaseScreen {
         List<IUIElement> elements = new ArrayList<>();
         Customer customer = owner.getLoggedInCustomer();
         for (BankAccount bankAccount : customer.getBankAccounts()) {
-            elements.add(new AccountsObject(bankAccount));
+            elements.add(new AccountsObject(owner, bankAccount));
         }
         new ElementsScreen(elements, this::createNewAccount, "Create Account",
-                (ElementsScreen s) -> new AccountsObject(Helper.getLastItem(customer.getBankAccounts())));
+                (ElementsScreen s) -> new AccountsObject(owner, Helper.getLastItem(customer.getBankAccounts())));
     }
 
     private void createLoanScreen() {
@@ -174,4 +174,5 @@ public class CustomerScreen extends BaseScreen {
     public JComponent $$$getRootComponent$$$() {
         return mainPanel;
     }
+
 }

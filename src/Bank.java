@@ -156,7 +156,7 @@ public class Bank {
 
             Transaction t = db.addTransaction(TransactionType.DEPOSIT, ba.getUSER_ID(), ba.getAccountID(),
                     amount, ba.getCurrency(), -1, -1, null);
-            if(t != null)c.addTransaction(t);
+            c.addTransaction(t);
             ba.deposit(amount);
             return true;
 
