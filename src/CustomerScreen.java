@@ -17,6 +17,7 @@ public class CustomerScreen extends BaseScreen {
     private JButton loansBtn;
     private JButton stocksBtn;
     private JButton transactionBtn;
+    private JButton refreshButton;
     private final ATM owner;
 
     public CustomerScreen(ATM owner) {//, Customer customer) {
@@ -25,8 +26,7 @@ public class CustomerScreen extends BaseScreen {
         setSize(700, 700);
         centerScreen();
 
-        // TODO disable stock button for non vips
-        // stocksBtn.setEnabled(customer.isVIP());
+        stocksBtn.setEnabled(owner.isQualifiedForSecuritiesAccount());
 
         this.owner = owner;
 
@@ -53,12 +53,24 @@ public class CustomerScreen extends BaseScreen {
             }
         });
         transactionBtn.addMouseListener(new MouseAdapter() {
-            @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
                 createTransactionsScreen();
             }
         });
+        stocksBtn.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+
+            }
+        });
+        refreshButton.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                stocksBtn.setEnabled(owner.isQualifiedForSecuritiesAccount());
+            }
+        });
+
     }
 
     private void createAccountsScreen() {
@@ -119,19 +131,22 @@ public class CustomerScreen extends BaseScreen {
         mainPanel = new JPanel();
         mainPanel.setLayout(new GridLayoutManager(4, 7, new Insets(0, 0, 0, 0), -1, -1));
         final JPanel panel1 = new JPanel();
-        panel1.setLayout(new GridLayoutManager(2, 3, new Insets(0, 0, 0, 0), -1, -1));
+        panel1.setLayout(new GridLayoutManager(2, 4, new Insets(0, 0, 0, 0), -1, -1));
         mainPanel.add(panel1, new GridConstraints(1, 1, 1, 5, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         final Spacer spacer1 = new Spacer();
-        panel1.add(spacer1, new GridConstraints(1, 0, 1, 3, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        panel1.add(spacer1, new GridConstraints(1, 0, 1, 4, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         userNameLabel = new JLabel();
         userNameLabel.setAlignmentX(0.0f);
         userNameLabel.setText("Username");
         panel1.add(userNameLabel, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         logoutBtn = new JButton();
         logoutBtn.setText("Log out");
-        panel1.add(logoutBtn, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 1, false));
+        panel1.add(logoutBtn, new GridConstraints(0, 3, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 1, false));
         final Spacer spacer2 = new Spacer();
         panel1.add(spacer2, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
+        refreshButton = new JButton();
+        refreshButton.setText("refresh");
+        panel1.add(refreshButton, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final Spacer spacer3 = new Spacer();
         mainPanel.add(spacer3, new GridConstraints(2, 5, 2, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         final Spacer spacer4 = new Spacer();
