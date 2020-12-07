@@ -7,7 +7,7 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-public class ManagerScreen {
+public class ManagerScreen extends BaseScreen {
     private JButton viewCustomerListButton;
     private JButton viewDailyReportButton;
     private JButton incrementInterestButton;
@@ -17,12 +17,31 @@ public class ManagerScreen {
     public ManagerScreen(ATM owner) {
         this.owner = owner;
 
+        setContentPane(mainPanel);
+        setSize(700, 700);
+        centerScreen();
+
         incrementInterestButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
                 owner.updateInterest();
                 JOptionPane.showMessageDialog($$$getRootComponent$$$(), "Interest incremented.");
+            }
+        });
+
+        viewCustomerListButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                new CustomerInfoScreen(owner.checkCustomer());
+            }
+        });
+        viewDailyReportButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                new DailyReportScreen(owner.getDailyReportWithin24hrs());
             }
         });
     }

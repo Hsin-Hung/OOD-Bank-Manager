@@ -346,7 +346,7 @@ public class DBManager {
 
     public List<Customer> getAllCustomers() {
         List<Customer> list = new ArrayList<>();
-        String sql = "SELECT ID, USER FROM USERS WHERE ROLE = ?";
+        String sql = "SELECT ID, USERNAME FROM USERS WHERE ROLE = ?";
 
         try {
             PreparedStatement stmt = conn.prepareStatement(sql);

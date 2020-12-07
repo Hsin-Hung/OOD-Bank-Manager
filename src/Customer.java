@@ -6,8 +6,6 @@ public class Customer extends Person {
     private List<Transaction> transactions;
 
 
-
-
     public Customer( int user_id, String name, String username, String password) {
         super( user_id, name, username,password, Role.CUSTOMER);
         bankAccounts = new ArrayList<>();

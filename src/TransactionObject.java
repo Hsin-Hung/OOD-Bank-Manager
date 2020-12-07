@@ -28,10 +28,10 @@ public class TransactionObject implements IUIElement {
     }
 
     private void setExternalTransaction(boolean external) {
-        targetUserLabel.setVisible(external);
-        targetUserInfoLabel.setVisible(external);
-        targetAccountLabel.setVisible(external);
-        targetAccountInfoLabel.setVisible(external);
+        targetUserLabel.setVisible(!external);
+        targetUserInfoLabel.setVisible(!external);
+        targetAccountLabel.setVisible(!external);
+        targetAccountInfoLabel.setVisible(!external);
     }
 
     {

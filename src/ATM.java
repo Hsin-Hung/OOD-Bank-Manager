@@ -56,7 +56,7 @@ public class ATM {
                     new CustomerScreen(this) ;
                     return true;
                 case MANAGER:
-                    // TODO create new manager screen;
+                    new ManagerScreen(this);
                     return true;
                 default:
                     // TODO exception
@@ -180,25 +180,15 @@ public class ATM {
 
     //helper function
     private boolean isPositive(BigDecimal val) {
-
         return val.compareTo(new BigDecimal(0)) == 1;
-
     }
 
-    private void checkCustomer(){
-
-        //TODO - display info of all customers or specific customer
-        List<Customer> allCustomers = bank.checkCustomer();
-
-
+    public List<Customer> checkCustomer(){
+        return bank.checkCustomer();
     }
 
-    private void getDailyReportWithin24hrs(){
-
-        //TODO - display all transactions within 24 hrs
-        List<Transaction> within24Transactions =  bank.getDailyReportWithin24hrs();
-
-
+    public List<Transaction> getDailyReportWithin24hrs(){
+        return bank.getDailyReportWithin24hrs();
     }
 
 
