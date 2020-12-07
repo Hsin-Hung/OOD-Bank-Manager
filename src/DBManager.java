@@ -204,6 +204,7 @@ public class DBManager {
             stmt.setString(9, collateral);
             stmt.execute();
 
+
             sql = "SELECT MAX(ID) FROM TRANSACTIONS";
             stmt = conn.prepareStatement(sql);
             ResultSet rs = stmt.executeQuery();
@@ -262,13 +263,13 @@ public class DBManager {
             stmt.setString(3, currency);
             stmt.setString(4, collateral);
             stmt.execute();
-            stmt.close();
 
+            sql = "SELECT MAX(ID) FROM LOANS";
+            stmt = conn.prepareStatement(sql);
             ResultSet rs = stmt.executeQuery();
-
+            stmt = conn.prepareStatement(sql);
             loan = new Loan(rs.getInt(1), c.getUid(), currency, amount, collateral);
-            Transaction t  = addTransaction(TransactionType.OPENLOAN,c.getUid(), loan.getLid(), amount,currency,  -1,-1,null);
-            c.addTransaction(t);
+
 
         } catch (SQLException e) {
             System.out.println(e.getMessage());
