@@ -121,6 +121,9 @@ public class ATM {
 
 
     }
+    public void updateInterest() {
+        bank.updateInterests();
+    }
 
     public boolean requestLoan(BigDecimal amount, String currency, String collateral) {
 

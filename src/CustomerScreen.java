@@ -20,6 +20,7 @@ public class CustomerScreen extends BaseScreen {
     private final ATM owner;
 
     public CustomerScreen(ATM owner) {//, Customer customer) {
+        userNameLabel.setText(owner.getLoggedInCustomer().getName());
         setContentPane(mainPanel);
         setSize(700, 700);
         centerScreen();

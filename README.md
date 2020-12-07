@@ -8,5 +8,8 @@ https://docs.google.com/document/d/1Zn7F8lUnsoWattYWEYV1gk3GumoHLplR_2g8bpVYKtA/
 # Execution
 ```java -cp "lib/*;src" App```
 
+If you are on mac or linux, you will need ot do
+```java -cp "lib/*:src" App```
+
 # Clean folder
 ```rm src/*.class```
