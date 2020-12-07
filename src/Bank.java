@@ -24,12 +24,13 @@ public class Bank {
         boolean isValidUser = db.isDistinctUsername(username);
         Customer c = null;
         if(!isValidUser) {
+            System.out.println("not valid");
             return null;
         }
         if (db.addUser(name,username,password,Role.CUSTOMER)){
 
-            Transaction t = db.addTransaction(TransactionType.SIGNUP,c.getUid(),-1,null,null,-1,-1, null);
             c = (Customer) db.getPerson(username);
+            Transaction t = db.addTransaction(TransactionType.SIGNUP,c.getUid(),-1,null,null,-1,-1, null);
             if(t != null)c.addTransaction(t);
         }
         return c;

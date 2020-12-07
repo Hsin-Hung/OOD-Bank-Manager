@@ -22,15 +22,15 @@ public class ATM {
     }
 
     //create a new customer
-    private boolean signUp(String name, String userName, String password) {
+    public boolean signUp(String name, String userName, String password) {
 
         Customer customer = bank.createCustomer(name, userName, password);
         if (customer != null) {
             loggedInPerson = customer;
+            new CustomerScreen(this) ;
             return true;
         } else {
-
-            //TODO - fail to create customer
+            System.out.println("fail to create customer");
             return false;
         }
     }

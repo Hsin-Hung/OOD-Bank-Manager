@@ -593,7 +593,7 @@ public class DBManager {
             System.out.println(e.getMessage());
             return false;
         }
-        return false;
+        return res;
     }
 
     public boolean isDistinctAccount(int userid, String currency, AccountType type) {

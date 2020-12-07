@@ -14,7 +14,7 @@ public class LoginScreen extends BaseScreen {
     private JPanel mainPanel;
     private JPasswordField passwordField;
     private JButton loginButton;
-    private JButton signupButton;
+    private JButton createUserButton;
     private ATM owner;
 
     public LoginScreen(ATM owner) {
@@ -31,6 +31,14 @@ public class LoginScreen extends BaseScreen {
             }
         });
 
+        createUserButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                new SignUpScreen(owner);
+            }
+        });
+
         initialize();
         passwordField.addKeyListener(new KeyAdapter() {
             @Override
@@ -41,6 +49,7 @@ public class LoginScreen extends BaseScreen {
                 }
             }
         });
+
 
         if (Constants.DEV_MODE) {
             devLogin();
@@ -99,9 +108,9 @@ public class LoginScreen extends BaseScreen {
         final JLabel label3 = new JLabel();
         label3.setText("LoginScreen Form");
         mainPanel.add(label3, new GridConstraints(2, 1, 1, 2, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        signupButton = new JButton();
-        signupButton.setText("Signup");
-        mainPanel.add(signupButton, new GridConstraints(6, 1, 1, 2, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        createUserButton = new JButton();
+        createUserButton.setText("CreateUser");
+        mainPanel.add(createUserButton, new GridConstraints(6, 1, 1, 2, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final Spacer spacer5 = new Spacer();
         mainPanel.add(spacer5, new GridConstraints(9, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         final Spacer spacer6 = new Spacer();
@@ -116,4 +125,5 @@ public class LoginScreen extends BaseScreen {
     public JComponent $$$getRootComponent$$$() {
         return mainPanel;
     }
+
 }
