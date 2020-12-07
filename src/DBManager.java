@@ -279,15 +279,11 @@ public class DBManager {
     }
 
     public boolean updateLoanAmount(int id, BigDecimal amount) {
-        String sql = "UPDATE LOANS SET AMOUNT = ?, DATE = ? WHERE ID = ?";
+        String sql = "UPDATE LOANS SET AMOUNT = ? WHERE ID = ?";
         try {
             PreparedStatement stmt = conn.prepareStatement(sql);
             stmt.setBigDecimal(1, amount);
-            Date date = Calendar.getInstance().getTime();
-            DateFormat dateFormat = new SimpleDateFormat("YYYY-MM-dd");
-            String strDate = dateFormat.format(date);
-            stmt.setString(2, strDate);
-            stmt.setInt(3, id);
+            stmt.setInt(2, id);
             stmt.execute();
             stmt.close();
         } catch (SQLException e) {
