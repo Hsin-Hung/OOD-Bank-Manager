@@ -16,20 +16,16 @@ public class AccountsObject implements IUIElement {
     private JButton transferBtn;
     private JButton closeBtn;
     private JLabel typeLabel;
+    private ATM atm;
+    private BankAccount account;
 
     public AccountsObject(ATM atm, BankAccount account) {
         $$$setupUI$$$();
+        this.atm = atm;
+        this.account = account;
 
+        repaint();
 
-        if (atm == null) {
-            withdrawBtn.setVisible(false);
-            closeBtn.setVisible(false);
-            transferBtn.setVisible(false);
-        }
-
-        currencyLabel.setText(account.getCurrency());
-        amountLabel.setText(account.getBalance().toPlainString());
-        typeLabel.setText(account.getType().toString());
         withdrawBtn.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -50,8 +46,20 @@ public class AccountsObject implements IUIElement {
         });
     }
 
+    public void repaint() {
+        if (atm == null) {
+            withdrawBtn.setVisible(false);
+            closeBtn.setVisible(false);
+            transferBtn.setVisible(false);
+        }
+
+        currencyLabel.setText(account.getCurrency());
+        amountLabel.setText(account.getBalance().toPlainString());
+        typeLabel.setText(account.getType().toString());
+    }
+
     private void createWithdrawDepositDialog(ATM atm, BankAccount account) {
-        new WithdrawDialog(atm, account);
+        new WithdrawDialog(atm, account, this);
     }
 
     /**

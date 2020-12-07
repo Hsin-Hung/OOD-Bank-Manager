@@ -15,7 +15,7 @@ public class WithdrawDialog extends JDialog {
     private JButton WithdrawButton;
     private JLabel amountLabel;
 
-    public WithdrawDialog(ATM atm, BankAccount account) {
+    public WithdrawDialog(ATM atm, BankAccount account, AccountsObject object) {
         $$$setupUI$$$();
         setContentPane(contentPane);
         setModal(true);
@@ -24,6 +24,7 @@ public class WithdrawDialog extends JDialog {
         DepositButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 deposit(atm, account);
+                object.repaint();
             }
         });
 
@@ -31,6 +32,8 @@ public class WithdrawDialog extends JDialog {
             @Override
             public void actionPerformed(ActionEvent e) {
                 withdraw(atm, account);
+                object.repaint();
+                object.repaint();
             }
         });
 
@@ -54,6 +57,7 @@ public class WithdrawDialog extends JDialog {
                 onCancel();
             }
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+
         pack();
         setLocationRelativeTo(null);
         setVisible(true);
@@ -62,10 +66,8 @@ public class WithdrawDialog extends JDialog {
     private void withdraw(ATM atm, BankAccount account) {
         // add your code here
         BigDecimal amount = new BigDecimal((int) amountSpin.getValue());
-        System.out.println("WD Initial balance = " + account.getBalance());
 
         atm.withdraw(atm.getLoggedInCustomer(), account, amount);
-        System.out.println("WD Final balance = " + account.getBalance());
 
         dispose();
     }
