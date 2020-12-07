@@ -3,10 +3,7 @@ import com.intellij.uiDesigner.core.GridLayoutManager;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 
 public class CustomerInfoScreen extends BaseScreen {
     private JComboBox customerCombo;
@@ -43,10 +40,10 @@ public class CustomerInfoScreen extends BaseScreen {
                 update();
             }
         });
-        customerCombo.addMouseListener(new MouseAdapter() {
+        
+        customerCombo.addItemListener(new ItemListener() {
             @Override
-            public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
+            public void itemStateChanged(ItemEvent e) {
                 update();
             }
         });

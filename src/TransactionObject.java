@@ -16,10 +16,18 @@ public class TransactionObject implements IUIElement {
     private JLabel targetUserInfoLabel;
     private JLabel targetAccountInfoLabel;
     private JPanel mainPanel;
+    private JLabel accountHint;
+    private JLabel amountHint;
 
     public TransactionObject(Transaction transaction) {
-        setExternalTransaction(transaction.target_account_id == 0);
+        setExternalTransaction(transaction.target_account_id == -1);
 
+        if (transaction.account_id == -1) {
+            accountLabel.setVisible(false);
+            amountLabel.setVisible(false);
+            accountHint.setVisible(false);
+            amountHint.setVisible(false);
+        }
         // TODO Eric: update transaction details.
         dateLabel.setText(Constants.DATE_FORMAT.format(transaction.getDate()));
         typeLabel.setText(transaction.getType().toString());
@@ -68,12 +76,12 @@ public class TransactionObject implements IUIElement {
         mainPanel.add(typeLabel, new GridConstraints(1, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final Spacer spacer1 = new Spacer();
         mainPanel.add(spacer1, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
-        final JLabel label3 = new JLabel();
-        label3.setText("Amount");
-        mainPanel.add(label3, new GridConstraints(1, 3, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        final JLabel label4 = new JLabel();
-        label4.setText("Account");
-        mainPanel.add(label4, new GridConstraints(0, 3, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        amountHint = new JLabel();
+        amountHint.setText("Amount");
+        mainPanel.add(amountHint, new GridConstraints(1, 3, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        accountHint = new JLabel();
+        accountHint.setText("Account");
+        mainPanel.add(accountHint, new GridConstraints(0, 3, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         amountLabel = new JLabel();
         amountLabel.setText("Label");
         mainPanel.add(amountLabel, new GridConstraints(1, 4, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
