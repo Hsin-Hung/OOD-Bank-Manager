@@ -8,6 +8,6 @@ public class Constants {
     public static final BigDecimal closeAccountFee = new BigDecimal("5");
     public static final BigDecimal withdrawFee = new BigDecimal("5");
 
-    public static final boolean DEV_MODE = true;
+    public static final boolean DEV_MODE = false;
     public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
 }
