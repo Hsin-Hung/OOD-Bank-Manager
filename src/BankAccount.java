@@ -55,7 +55,7 @@ public abstract class BankAccount {
     public boolean withdraw(BigDecimal amount) {
 
         if (hasEnoughBalance(amount)) {
-            balance.subtract(amount);
+            balance = balance.subtract(amount);
             return true;
         }
 
@@ -64,6 +64,6 @@ public abstract class BankAccount {
     }
 
     public void deposit(BigDecimal amount) {
-        balance.add(amount);
+        balance = balance.add(amount);
     }
 }

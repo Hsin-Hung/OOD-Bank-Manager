@@ -111,28 +111,30 @@ public class ATM {
 
     }
 
-    private boolean deposit(Customer c, BankAccount ba, BigDecimal amount) {
+    public boolean deposit(Customer c, BankAccount ba, BigDecimal amount) {
 
         //TODO - database error checking
 
         //make sure deposit is positive number
         if (isPositive(amount)) {
 
-            return bank.deposit(c, ba, amount);//will return boolean indicate success or not
+            boolean res = bank.deposit(c, ba, amount);//will return boolean indicate success or not
 
+            return res;
         }
 
         return false;
 
     }
 
-    private boolean withdraw(Customer c, BankAccount ba, BigDecimal amount) {
+    public boolean withdraw(Customer c, BankAccount ba, BigDecimal amount) {
         //TODO - database error checking
 
         //make sure withdraw is positive number
         if (isPositive(amount) && ba.hasEnoughBalance(amount)) {
 
-            return bank.withdraw(c, ba, amount);//will return boolean indicate success or not
+            boolean res = bank.withdraw(c, ba, amount);//will return boolean indicate success or not
+            return res;
         }
         return false;
 
