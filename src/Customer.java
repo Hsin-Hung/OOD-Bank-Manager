@@ -38,13 +38,29 @@ public class Customer extends Person {
 
     public void removeBankAccount(BankAccount ba) { bankAccounts.remove(ba); }
 
-    public SavingsAccount getSavingsAccount() {
+    public SavingsAccount getSavingsAccount(String currency) {
 
         for(BankAccount ba : bankAccounts){
 
-            if(ba.getType() == AccountType.SAVINGS){
+            if(ba.getType() == AccountType.SAVINGS && ba.getCurrency().equals(currency)){
 
                 return (SavingsAccount) ba;
+
+            }
+
+        }
+
+        return null;
+
+    }
+
+    public SecuritiesAccount getSecuritiesAccount() {
+
+        for(BankAccount ba : bankAccounts){
+
+            if(ba.getType() == AccountType.SECURITIES){
+
+                return (SecuritiesAccount) ba;
 
             }
 

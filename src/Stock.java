@@ -2,20 +2,14 @@ import java.math.BigDecimal;
 
 public class Stock {
 
-    private int sid;
-    private String symbol;
+    private String symbol;// this uniquely identifies the stock
     private String name;
     private BigDecimal marketVal; // current market value
 
-    public Stock(int sid, String symbol, String name, BigDecimal marketVal) {
-        this.sid = sid;
+    public Stock(String symbol, String name, BigDecimal marketVal) {
         this.symbol = symbol;
         this.name = name;
         this.marketVal = marketVal;
-    }
-
-    public int getSid() {
-        return sid;
     }
 
     public String getSymbol() {
@@ -30,7 +24,7 @@ public class Stock {
         return marketVal;
     }
 
-    public void setMarketVal(BigDecimal marketVal) {
+    public void updateMarketVal(BigDecimal marketVal) {
         this.marketVal = marketVal;
     }
 }

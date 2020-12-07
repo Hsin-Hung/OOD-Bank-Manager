@@ -85,25 +85,24 @@ public class ATM {
 
 
     public boolean createCheckingAccount(String currency, BigDecimal startingBalance) {
-        //TODO - database error checking
+
         return bank.createCheckingAccount(getLoggedInCustomer(), currency, startingBalance);//will return boolean indicate success or not
     }
 
     public boolean createSavingsAccount(String currency, BigDecimal startingBalance) {
-        //TODO - database error checking
+
         return bank.createSavingsAccount(getLoggedInCustomer(), currency, startingBalance);//will return boolean indicate success or not
     }
 
-    public boolean createSecuritiesAccount(String currency, BigDecimal startingBalance) {
-        //TODO - database error checking
+    public boolean createSecuritiesAccount(BigDecimal startingBalance) {
 
-        SavingsAccount savingsAccount = getLoggedInCustomer().getSavingsAccount();
+        SavingsAccount savingsAccount = getLoggedInCustomer().getSavingsAccount("USD");
 
         //check if saving account is >= 5000, if starting balance of securities account is >= 1000, if saving account can maintain 2500
-        if(savingsAccount.hasEnoughBalance(new BigDecimal(5000)) && startingBalance.compareTo(new BigDecimal(1000)) >=0
+        if(startingBalance.compareTo(new BigDecimal(1000)) >=0
                 && (savingsAccount.getBalance().subtract(startingBalance).compareTo(new BigDecimal(2500))>=0)){
 
-            return bank.createSecuritiesAccount(getLoggedInCustomer(), currency, startingBalance);//will return boolean indicate success or not
+            return bank.createSecuritiesAccount(getLoggedInCustomer(), "USD", startingBalance);//will return boolean indicate success or not
 
         }
 
@@ -111,9 +110,29 @@ public class ATM {
 
     }
 
-    public boolean deposit(Customer c, BankAccount ba, BigDecimal amount) {
+    public boolean buyStock(String symbol, int shares){
 
-        //TODO - database error checking
+        return bank.buyStocks(getLoggedInCustomer(), symbol, shares);
+
+    }
+
+    public boolean sellStock(String symbol, int shares){
+
+        return bank.sellStocks(getLoggedInCustomer(), symbol, shares);
+
+
+    }
+
+    //check if the customer has at least 5000 in USD savings account
+    public boolean isQualifiedForSecuritiesAccount(){
+
+        SavingsAccount savingsAccount = getLoggedInCustomer().getSavingsAccount("USD");
+
+        return (savingsAccount != null) && savingsAccount.hasEnoughBalance(new BigDecimal(5000));
+
+    }
+
+    public boolean deposit(Customer c, BankAccount ba, BigDecimal amount) {
 
         //make sure deposit is positive number
         if (isPositive(amount)) {
@@ -194,14 +213,5 @@ public class ATM {
     }
 
 
-    //starting point when using the ATM, which contains the flow
-    public void useATM() {
-
-
-        //login screen
-        //customer screen
-        //....
-
-    }
 
 }

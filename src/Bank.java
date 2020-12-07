@@ -214,6 +214,36 @@ public class Bank {
         return false;
     }
 
+    public boolean buyStocks(Customer customer, String symbol, int shares){
+
+        SecuritiesAccount securitiesAccount = customer.getSecuritiesAccount();
+
+        if(securitiesAccount != null){
+
+            return securitiesAccount.buyStocks(symbol, shares);
+
+        }
+        return false;
+
+
+    }
+
+    public boolean sellStocks(Customer customer, String symbol, int shares){
+
+        SecuritiesAccount securitiesAccount = customer.getSecuritiesAccount();
+
+        if(securitiesAccount != null){
+
+            return securitiesAccount.sellStocks(symbol, shares);
+
+        }
+
+        return false;
+
+
+
+    }
+
     //get all the customers from the db
     public List<Customer> checkCustomer() {
 
