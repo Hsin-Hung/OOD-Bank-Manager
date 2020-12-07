@@ -26,7 +26,7 @@ public class DBManager {
 //            System.out.println("Tables dropped");
             createTables();
             System.out.println("Tables created");
-            addDefaultManager();
+         //   addDefaultManager();
             System.out.println("Add default manager");
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -158,16 +158,20 @@ public class DBManager {
             stmt = conn.prepareStatement(sql);
             stmt.setInt(1, c.getUid());
             stmt.setString(2, type.toString());
-            stmt.setString(4, currency);
+            stmt.setString(3, currency);
 
             ResultSet rs = stmt.executeQuery();
+
             switch(type.toString()) {
                 case "CHECKING":
                     account = new CheckingAccount(rs.getInt(1),c.getUid(),currency,amount);
+                    break;
                 case "SAVINGS":
                     account = new SavingsAccount(rs.getInt(1),c.getUid(),currency,amount);
+                    break;
                 case "SECURITIES":
                     account = new SecuritiesAccount(rs.getInt(1),c.getUid(),currency,amount);
+                    break;
 
             }
 
@@ -232,15 +236,11 @@ public class DBManager {
     }
 
     public boolean updateAmount(int accountId, BigDecimal amount) {
-        String sql = "UPDATE ACCOUNTS SET AMOUNT = ?, DATE = ? WHERE ID = ?";
+        String sql = "UPDATE ACCOUNTS SET AMOUNT = ? WHERE ID = ?";
         try {
             PreparedStatement stmt = conn.prepareStatement(sql);
             stmt.setBigDecimal(1, amount);
-            Date date = Calendar.getInstance().getTime();
-            DateFormat dateFormat = new SimpleDateFormat("YYYY-MM-dd");
-            String strDate = dateFormat.format(date);
-            stmt.setString(2, strDate);
-            stmt.setInt(3, accountId);
+            stmt.setInt(2, accountId);
             stmt.execute();
             stmt.close();
 
@@ -401,18 +401,21 @@ public class DBManager {
                             rs2.getInt(2),
                             rs2.getString(4),
                             new BigDecimal(rs2.getString(5)));
+                    break;
                 case "SAVINGS":
                     account = new SavingsAccount(
                             rs2.getInt(1),
                             rs2.getInt(2),
                             rs2.getString(4),
                             new BigDecimal(rs2.getString(5)));
+                    break;
                 case "SECURITIES":
                     account = new SecuritiesAccount(
                             rs2.getInt(1),
                             rs2.getInt(2),
                             rs2.getString(4),
                             new BigDecimal(rs2.getString(5)));
+                    break;
             }
 
         } catch (Exception e) {
@@ -594,7 +597,7 @@ public class DBManager {
     }
 
     public boolean isDistinctAccount(int userid, String currency, AccountType type) {
-        String sql = "SELECT COUNT(*) FROM ACCOUNT WHERE USERID = ? AND CURRENCY = ? AND TYPE = ?";
+        String sql = "SELECT COUNT(*) FROM ACCOUNTS WHERE USERID = ? AND CURRENCY = ? AND TYPE = ?";
         boolean res = false;
         try {
             PreparedStatement stmt  = conn.prepareStatement(sql);
@@ -612,7 +615,7 @@ public class DBManager {
             System.out.println(e.getMessage());
             return false;
         }
-        return false;
+        return res;
     }
 
 

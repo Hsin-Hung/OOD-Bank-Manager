@@ -4,4 +4,4 @@
 out/
 *.class
 611-OOD-Bank-Manager.iml
-bin/
+bin/*

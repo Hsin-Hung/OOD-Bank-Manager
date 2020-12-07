@@ -55,10 +55,11 @@ public class Bank {
 
         if (account != null){
 
-            chargeFee(account,Constants.openAccountFee);
+
             customer.addBankAccount(account);
             Transaction t = db.addTransaction(TransactionType.OPENCHECKING,customer.getUid(),account.getAccountID(),amount,currency,-1,-1,null);
             if(t != null)customer.addTransaction(t);
+            chargeFee(customer, account,Constants.openAccountFee);
             return true;
         }
 
@@ -76,9 +77,31 @@ public class Bank {
         SavingsAccount account = (SavingsAccount) db.addAccount(customer,AccountType.SAVINGS,amount, currency);
 
         if(account != null){
-            chargeFee(account,Constants.openAccountFee);
+
             customer.addBankAccount(account);
             Transaction t = db.addTransaction(TransactionType.OPENSAVINGS,customer.getUid(),account.getAccountID(),amount,currency,-1,-1,null);
+            if(t != null)customer.addTransaction(t);
+            chargeFee(customer, account,Constants.openAccountFee);
+            return true;
+        }
+
+        return false;
+
+    }
+
+    //create a security account
+    public boolean createSecuritiesAccount(Customer customer, String currency, BigDecimal amount) {
+
+        boolean isValidAcc = db.isDistinctAccount(customer.getUid(), currency, AccountType.SECURITIES);
+        if(!isValidAcc) {
+            return false;
+        }
+        SecuritiesAccount account = (SecuritiesAccount) db.addAccount(customer,AccountType.SECURITIES,amount, currency);
+
+        if(account != null){
+
+            customer.addBankAccount(account);
+            Transaction t = db.addTransaction(TransactionType.OPENSECURITIES,customer.getUid(),account.getAccountID(),amount,currency,-1,-1,null);
             if(t != null)customer.addTransaction(t);
             return true;
         }
@@ -93,7 +116,7 @@ public class Bank {
 
         if (db.deleteAccount(c, bankAccount.getAccountID())){
 
-            chargeFee(bankAccount,Constants.closeAccountFee);
+            chargeFee(c, bankAccount,Constants.closeAccountFee);
             c.removeBankAccount(bankAccount);
             Transaction t = db.addTransaction(TransactionType.CLOSE,c.getUid(),bankAccount.getAccountID(),null,null,-1,-1,null);
             if(t != null)c.addTransaction(t);
@@ -216,11 +239,12 @@ public class Bank {
 
 
     //Function to charge an amount to the bank account
-    public void chargeFee(BankAccount account, BigDecimal amount) {
+    public void chargeFee(Customer c, BankAccount account, BigDecimal amount) {
 
         if(db.updateAmount(account.getAccountID(),account.getBalance().subtract(amount))){
             account.setBalance(account.getBalance().subtract(amount));
         }
+        c.addTransaction(db.addTransaction(TransactionType.CHARGEFEE,c.getUid(), account.getAccountID(), amount,account.getCurrency(),-1,-1,null));
     }
 
     //Function to apply interest on a loan

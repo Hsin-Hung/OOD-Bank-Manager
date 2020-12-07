@@ -5,6 +5,7 @@ public enum TransactionType {
     OPENSECURITIES,
     OPENLOAN,
     CLOSELOAN,
+    CHARGEFEE,
     CLOSE,
     DEPOSIT,
     WITHDRAW,

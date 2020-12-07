@@ -94,6 +94,23 @@ public class ATM {
         return bank.createSavingsAccount(getLoggedInCustomer(), currency, startingBalance);//will return boolean indicate success or not
     }
 
+    public boolean createSecuritiesAccount(String currency, BigDecimal startingBalance) {
+        //TODO - database error checking
+
+        SavingsAccount savingsAccount = getLoggedInCustomer().getSavingsAccount();
+
+        //check if saving account is >= 5000, if starting balance of securities account is >= 1000, if saving account can maintain 2500
+        if(savingsAccount.hasEnoughBalance(new BigDecimal(5000)) && startingBalance.compareTo(new BigDecimal(1000)) >=0
+                && (savingsAccount.getBalance().subtract(startingBalance).compareTo(new BigDecimal(2500))>=0)){
+
+            return bank.createSecuritiesAccount(getLoggedInCustomer(), currency, startingBalance);//will return boolean indicate success or not
+
+        }
+
+        return false;
+
+    }
+
     private boolean deposit(Customer c, BankAccount ba, BigDecimal amount) {
 
         //TODO - database error checking
