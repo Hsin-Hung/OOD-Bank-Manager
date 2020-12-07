@@ -40,7 +40,7 @@ public class CustomerInfoScreen extends BaseScreen {
                 update();
             }
         });
-        
+
         customerCombo.addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent e) {
