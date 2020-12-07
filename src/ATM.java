@@ -22,15 +22,15 @@ public class ATM {
     }
 
     //create a new customer
-    private boolean signUp(String name, String userName, String password) {
+    public boolean signUp(String name, String userName, String password) {
 
         Customer customer = bank.createCustomer(name, userName, password);
         if (customer != null) {
             loggedInPerson = customer;
+            new CustomerScreen(this) ;
             return true;
         } else {
-
-            //TODO - fail to create customer
+            System.out.println("fail to create customer");
             return false;
         }
     }
@@ -111,28 +111,30 @@ public class ATM {
 
     }
 
-    private boolean deposit(Customer c, BankAccount ba, BigDecimal amount) {
+    public boolean deposit(Customer c, BankAccount ba, BigDecimal amount) {
 
         //TODO - database error checking
 
         //make sure deposit is positive number
         if (isPositive(amount)) {
 
-            return bank.deposit(c, ba, amount);//will return boolean indicate success or not
+            boolean res = bank.deposit(c, ba, amount);//will return boolean indicate success or not
 
+            return res;
         }
 
         return false;
 
     }
 
-    private boolean withdraw(Customer c, BankAccount ba, BigDecimal amount) {
+    public boolean withdraw(Customer c, BankAccount ba, BigDecimal amount) {
         //TODO - database error checking
 
         //make sure withdraw is positive number
         if (isPositive(amount) && ba.hasEnoughBalance(amount)) {
 
-            return bank.withdraw(c, ba, amount);//will return boolean indicate success or not
+            boolean res = bank.withdraw(c, ba, amount);//will return boolean indicate success or not
+            return res;
         }
         return false;
 
