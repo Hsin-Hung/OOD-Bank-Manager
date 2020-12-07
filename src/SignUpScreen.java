@@ -35,10 +35,9 @@ public class SignUpScreen extends BaseScreen {
     }
 
     private void signUp() {
-        if (owner.signUp(userNameField.getText(), userTextField.getText(), new String(passwordField.getPassword()))) {
+        if (owner.signUp(userTextField.getText(), userNameField.getText(), new String(passwordField.getPassword()))) {
             closeScreen();
         }
-
     }
 
     private void initialize() {

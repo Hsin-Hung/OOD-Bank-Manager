@@ -20,13 +20,19 @@ public class AccountsObject implements IUIElement {
     public AccountsObject(ATM atm, BankAccount account) {
         $$$setupUI$$$();
 
+
+        if (atm == null) {
+            withdrawBtn.setVisible(false);
+            closeBtn.setVisible(false);
+            transferBtn.setVisible(false);
+        }
+
         currencyLabel.setText(account.getCurrency());
         amountLabel.setText(account.getBalance().toPlainString());
         typeLabel.setText(account.getType().toString());
         withdrawBtn.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-
                 super.mouseClicked(e);
                 createWithdrawDepositDialog(atm, account);
             }
@@ -39,6 +45,8 @@ public class AccountsObject implements IUIElement {
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
             }
+        });
+        withdrawBtn.addMouseListener(new MouseAdapter() {
         });
     }
 

@@ -64,7 +64,7 @@ public class CustomerInfoScreen extends BaseScreen {
     private void loadAccounts() {
         elementsPanel.removeAll();
         for (BankAccount a : ((Customer) customerCombo.getSelectedItem()).getBankAccounts()) {
-            AccountsObject aa = new AccountsObject(a);
+            AccountsObject aa = new AccountsObject(null, a);
             elementsPanel.add(aa.$$$getRootComponent$$$());
         }
 
