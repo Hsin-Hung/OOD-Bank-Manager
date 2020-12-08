@@ -53,7 +53,7 @@ public class ATM {
             loggedInPerson = person;
             switch (person.getRole()) {
                 case CUSTOMER:
-                    new CustomerScreen(this) ;
+                    new CustomerScreen(this);
                     return true;
                 case MANAGER:
                     new ManagerScreen(this);
@@ -132,7 +132,7 @@ public class ATM {
 
         SavingsAccount savingsAccount = getLoggedInCustomer().getSavingsAccount("USD");
 
-        return (savingsAccount != null) && savingsAccount.hasEnoughBalance(new BigDecimal(5000));
+        return (savingsAccount != null) && savingsAccount.hasEnoughBalance(Constants.vipThreshold);
 
     }
 

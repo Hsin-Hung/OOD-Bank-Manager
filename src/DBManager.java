@@ -739,11 +739,48 @@ public class DBManager {
 
     }
 
+    public StockPosition getStockPosition(String symbol, int userid){
+
+        StockPosition sp = null;
+
+        try {
+            String sql = "SELECT SYMBOL, USERID, SHARES, AVGCOST FROM STOCKS WHERE SYMBOL = ? AND USERID = ?";
+
+            PreparedStatement stmt2 = conn.prepareStatement(sql);
+            stmt2.setString(1, symbol);
+            stmt2.setInt(2, userid);
+            ResultSet rs2 = stmt2.executeQuery();
+
+            sp = new StockPosition(userid, rs2.getString(1), rs2.getInt(3), rs2.getBigDecimal(4));
+
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return null;
+        }
+        return sp;
+
+
+    }
+
     public List<StockPosition> getAllStockPosition(int userid){
 
-        //TODO - implement
-        return new ArrayList<>();
+        List<StockPosition> list = new ArrayList<>();
 
+        try {
+            String sql = "SELECT SYMBOL FROM STOCKS WHERE USERID = ?";
+
+            PreparedStatement stmt2 = conn.prepareStatement(sql);
+            stmt2.setInt(1, userid);
+            ResultSet rs2 = stmt2.executeQuery();
+            while (rs2.next()) {
+                StockPosition stockPosition = getStockPosition(rs2.getString(1),userid);
+                list.add(stockPosition);
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return null;
+        }
+        return list;
 
     }
 

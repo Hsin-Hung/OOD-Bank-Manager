@@ -9,7 +9,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-public class StockObject implements IUIElement {
+public class StockObject extends ElementObject {
     private JPanel panel1;
     private JButton buyButton;
     private JButton sellButton;
