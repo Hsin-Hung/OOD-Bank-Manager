@@ -742,7 +742,7 @@ public class DBManager {
     public List<StockPosition> getAllStockPosition(int userid){
 
         //TODO - implement
-        return null;
+        return new ArrayList<>();
 
 
     }
