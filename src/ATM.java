@@ -156,6 +156,16 @@ public class ATM {
         return false;
     }
 
+    public boolean payOffLoan( Loan loan, BigDecimal amount) {
+        if (isPositive(amount)) {
+            return bank.payOffLoan(getLoggedInCustomer(),loan,amount);
+        } else {
+            return false;
+        }
+    }
+
+
+
     private boolean transferMoney(Customer c, BankAccount fromBank, BankAccount toBank, BigDecimal amount) {
 
         //TODO - database error checking

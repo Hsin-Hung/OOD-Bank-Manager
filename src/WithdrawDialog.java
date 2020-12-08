@@ -34,7 +34,7 @@ public class WithdrawDialog extends JDialog {
             public void actionPerformed(ActionEvent e) {
                 withdraw(atm, account);
                 object.repaint();
-                object.repaint();
+
             }
         });
 
