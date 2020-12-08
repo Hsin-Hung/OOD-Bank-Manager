@@ -293,6 +293,20 @@ public class DBManager {
         return true;
     }
 
+    public boolean removeLoan(int id) {
+        String sql = "DELETE FROM  LOANS WHERE ID = ?";
+        try {
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, id);
+            stmt.execute();
+            stmt.close();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return false;
+        }
+        return true;
+    }
+
     public boolean deleteLoan(Customer c, int id) {
         String sql = "DELETE FROM ACCOUNTS WHERE ID = ?";
         try {

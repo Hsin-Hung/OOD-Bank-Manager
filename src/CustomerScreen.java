@@ -75,11 +75,11 @@ public class CustomerScreen extends BaseScreen {
         List<IUIElement> elements = new ArrayList<>();
         Customer customer = owner.getLoggedInCustomer();
         for (Loan loan : customer.getLoans()) {
-            elements.add(new LoanObject(loan));
+            elements.add(new LoanObject(owner, loan));
         }
 
         new ElementsScreen(elements, this::createNewLoan, "Request New Loan",
-                (ElementsScreen s) -> new LoanObject(Helper.getLastItem(customer.getLoans())));
+                (ElementsScreen s) -> new LoanObject(owner, Helper.getLastItem(customer.getLoans())));
         // TODO Eric create loan screen
     }
 

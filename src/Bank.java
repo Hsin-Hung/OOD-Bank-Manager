@@ -197,6 +197,23 @@ public class Bank {
         return false;
     }
 
+    protected boolean payOffLoan(Customer customer, Loan loan, BigDecimal amount) {
+        if(amount.equals(loan.getAmount())) {
+            customer.removeLoan(loan);
+            db.removeLoan(loan.getLid());
+        } else {
+            BigDecimal amt = loan.getAmount().subtract(amount);
+            db.updateLoanAmount(loan.getLid(), amt);
+
+            loan.setAmount(amt);
+        }
+        Transaction t = db.addTransaction(TransactionType.PAYLOAN,
+                customer.getUid(),
+                loan.getLid(),amount,loan.getCurrency(),-1,-1,loan.getCollateral());
+        customer.addTransaction(t);
+        return true;
+    }
+
     //Function to transfer money from one account to another
     public boolean transferMoney(Customer c, BankAccount fromBank, BankAccount toBank, BigDecimal amount) {
 

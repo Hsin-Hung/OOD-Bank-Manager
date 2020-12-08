@@ -15,7 +15,7 @@ public class LoanObject implements IUIElement {
     private JButton payoffBtn;
     private JLabel collateralLabel;
 
-    public LoanObject(Loan loan) {
+    public LoanObject(ATM atm, Loan loan) {
         $$$setupUI$$$();
 
         currencyLabel.setText(loan.getCurrency());
@@ -26,10 +26,15 @@ public class LoanObject implements IUIElement {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
-
-                // TODO add payoff loan
+                payOffLoan(atm, loan);
             }
         });
+
+
+    }
+
+    private void payOffLoan(ATM atm, Loan loan) {
+        new LoanPayoffDialog(atm, loan);
     }
 
     /**
@@ -81,4 +86,5 @@ public class LoanObject implements IUIElement {
     public JComponent $$$getRootComponent$$$() {
         return panel1;
     }
+
 }
