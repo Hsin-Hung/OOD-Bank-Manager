@@ -14,6 +14,7 @@ public class ElementsScreen extends BaseScreen {
     private JPanel mainPanel;
     private SingleArgMethod<Void, ElementsScreen> func;
     private SingleArgMethod<IUIElement, ElementsScreen> updateFunc;
+    private List<IUIElement> elements;
 
     public ElementsScreen() {
         $$$setupUI$$$();
@@ -36,6 +37,7 @@ public class ElementsScreen extends BaseScreen {
         this();
         this.func = func;
         this.updateFunc = updateFunc;
+        this.elements = elements;
 
         if (func == null) {
             createBtn.setVisible(false);
@@ -50,6 +52,17 @@ public class ElementsScreen extends BaseScreen {
         addUIElement(updateFunc.apply(this));
     }
 
+    public void remove(Object object) {
+        for (IUIElement e : elements) {
+            if (e.equals(object)) {
+                elementsPanel.remove(e.$$$getRootComponent$$$());
+                elementsPanel.revalidate();
+                elementsPanel.repaint();
+                return;
+            }
+        }
+    }
+
     private void addUIElement(IUIElement element) {
         elementsPanel.add(element.$$$getRootComponent$$$());
         elementsPanel.revalidate();
@@ -60,6 +73,7 @@ public class ElementsScreen extends BaseScreen {
         elementsPanel.removeAll();
 
         for (IUIElement element : elements) {
+            element.setOwner(this);
             element.$$$getRootComponent$$$().setAlignmentX(Component.CENTER_ALIGNMENT);
             elementsPanel.add(element.$$$getRootComponent$$$());
         }

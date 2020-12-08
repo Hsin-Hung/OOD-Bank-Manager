@@ -7,8 +7,9 @@ import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.math.BigDecimal;
 
-public class LoanObject implements IUIElement {
+public class LoanObject extends ElementObject {
     private JPanel panel1;
     private JLabel currencyLabel;
     private JLabel amountLabel;
@@ -16,10 +17,13 @@ public class LoanObject implements IUIElement {
     private JLabel collateralLabel;
     private Loan loan;
     private ATM atm;
+
     public LoanObject(ATM atm, Loan loan) {
         $$$setupUI$$$();
         this.loan = loan;
         this.atm = atm;
+
+
         currencyLabel.setText(loan.getCurrency());
         amountLabel.setText(loan.getAmount().toPlainString());
         collateralLabel.setText(loan.getCollateral());
@@ -31,12 +35,17 @@ public class LoanObject implements IUIElement {
                 payOffLoan();
             }
         });
+    }
 
-
+    public boolean equals(Object o) {
+        return loan == o;
     }
 
     private void payOffLoan() {
         new LoanPayoffDialog(atm, loan, this);
+        if (loan.getAmount().compareTo(new BigDecimal(0)) == 0) {
+            owner.remove(loan);
+        }
     }
 
     public void repaint() {

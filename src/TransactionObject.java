@@ -6,7 +6,7 @@ import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
 
-public class TransactionObject implements IUIElement {
+public class TransactionObject extends ElementObject {
     private JLabel dateLabel;
     private JLabel typeLabel;
     private JLabel amountLabel;
@@ -18,9 +18,11 @@ public class TransactionObject implements IUIElement {
     private JPanel mainPanel;
     private JLabel accountHint;
     private JLabel amountHint;
+    private Transaction transaction;
 
     public TransactionObject(Transaction transaction) {
         setExternalTransaction(transaction.target_account_id == -1);
+        this.transaction = transaction;
 
         if (transaction.account_id == -1) {
             accountLabel.setVisible(false);
@@ -33,6 +35,10 @@ public class TransactionObject implements IUIElement {
         typeLabel.setText(transaction.getType().toString());
         accountLabel.setText(Integer.toString(transaction.getAccount_id()));
         amountLabel.setText(transaction.getAmount().toPlainString());
+    }
+
+    public boolean equals(Object o) {
+        return transaction == o;
     }
 
     private void setExternalTransaction(boolean external) {

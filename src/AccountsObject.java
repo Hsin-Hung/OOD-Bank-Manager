@@ -8,7 +8,7 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-public class AccountsObject implements IUIElement {
+public class AccountsObject extends ElementObject {
     private JPanel panel1;
     private JLabel currencyLabel;
     private JLabel amountLabel;
@@ -44,6 +44,10 @@ public class AccountsObject implements IUIElement {
         });
         withdrawBtn.addMouseListener(new MouseAdapter() {
         });
+    }
+
+    public boolean equals(Object o) {
+        return account == o;
     }
 
     public void repaint() {
