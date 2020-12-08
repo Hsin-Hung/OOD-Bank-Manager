@@ -37,6 +37,8 @@ public class SignUpScreen extends BaseScreen {
     private void signUp() {
         if (owner.signUp(userTextField.getText(), userNameField.getText(), new String(passwordField.getPassword()))) {
             closeScreen();
+        } else {
+            JOptionPane.showMessageDialog(mainPanel, "Failed to sign up. Please choose another username.");
         }
     }
 
