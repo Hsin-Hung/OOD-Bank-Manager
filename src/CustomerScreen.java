@@ -99,7 +99,6 @@ public class CustomerScreen extends BaseScreen {
 
         new ElementsScreen(elements, this::createNewLoan, "Request New Loan",
                 (ElementsScreen s) -> new LoanObject(owner, Helper.getLastItem(customer.getLoans())));
-        // TODO Eric create loan screen
     }
 
     private void createTransactionsScreen() {

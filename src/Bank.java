@@ -209,6 +209,7 @@ public class Bank {
         if(amount.equals(loan.getAmount())) {
             customer.removeLoan(loan);
             db.removeLoan(loan.getLid());
+            loan.setAmount(new BigDecimal(0));
         } else {
             BigDecimal amt = loan.getAmount().subtract(amount);
             db.updateLoanAmount(loan.getLid(), amt);

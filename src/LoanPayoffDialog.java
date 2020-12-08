@@ -15,6 +15,8 @@ public class LoanPayoffDialog extends JDialog {
     private JLabel AmountLabel;
 
     public LoanPayoffDialog(ATM atm, Loan loan, LoanObject object) {
+        spinner1.setModel(new SpinnerNumberModel(0, 0, 1000000000, 0.1));
+
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
@@ -64,8 +66,8 @@ public class LoanPayoffDialog extends JDialog {
     }
 
     public void payOffLoan(ATM atm, Loan loan) {
-
-        atm.payOffLoan(loan, new BigDecimal((Double) spinner1.getValue()));
+        BigDecimal amount = new BigDecimal((Double) spinner1.getValue());
+        atm.payOffLoan(loan, amount);
     }
 
     {

@@ -73,9 +73,6 @@ public class ATM {
     public boolean closeAccount(Customer c, BankAccount bankAccount){
 
         if(bank.closeAccount(c, bankAccount)){
-
-            //TODO - display the fees and info for closing account
-
             return true;
         }
 

@@ -40,6 +40,7 @@ public class AccountsObject extends ElementObject {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
+                closeAccount();
             }
         });
         withdrawBtn.addMouseListener(new MouseAdapter() {
@@ -48,6 +49,23 @@ public class AccountsObject extends ElementObject {
 
     public boolean equals(Object o) {
         return account == o;
+    }
+
+    public void closeAccount() {
+        if (atm.closeAccount(atm.getLoggedInCustomer(), account)) {
+
+            atm.getLoggedInCustomer().removeBankAccount(account);
+            String message = "Account has been closed successfully. A fee of " +
+                    Constants.closeAccountFee.toPlainString() + " has been applied. " +
+                    "You are left with " + account.getBalance().subtract(Constants.closeAccountFee);
+            JOptionPane.showMessageDialog(panel1, message);
+
+            owner.remove(account);
+        } else {
+            JOptionPane.showMessageDialog(panel1, "Failed to close account.");
+
+        }
+
     }
 
     public void repaint() {

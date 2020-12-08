@@ -76,11 +76,7 @@ public class WithdrawDialog extends JDialog {
     private void deposit(ATM atm, BankAccount account) {
         // add your code here
         BigDecimal amount = new BigDecimal((Double) amountSpin.getValue());
-        System.out.println("DP Initial balance = " + account.getBalance());
-
         atm.deposit(atm.getLoggedInCustomer(), account, amount);
-        System.out.println("DP Final balance = " + account.getBalance());
-
         dispose();
     }
 
