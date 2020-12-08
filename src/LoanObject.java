@@ -14,10 +14,12 @@ public class LoanObject implements IUIElement {
     private JLabel amountLabel;
     private JButton payoffBtn;
     private JLabel collateralLabel;
-
+    private Loan loan;
+    private ATM atm;
     public LoanObject(ATM atm, Loan loan) {
         $$$setupUI$$$();
-
+        this.loan = loan;
+        this.atm = atm;
         currencyLabel.setText(loan.getCurrency());
         amountLabel.setText(loan.getAmount().toPlainString());
         collateralLabel.setText(loan.getCollateral());
@@ -26,15 +28,25 @@ public class LoanObject implements IUIElement {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
-                payOffLoan(atm, loan);
+                payOffLoan();
             }
         });
 
 
     }
 
-    private void payOffLoan(ATM atm, Loan loan) {
-        new LoanPayoffDialog(atm, loan);
+    private void payOffLoan() {
+        new LoanPayoffDialog(atm, loan, this);
+    }
+
+    public void repaint() {
+        if (atm == null) {
+            payoffBtn.setVisible(false);
+        }
+
+        currencyLabel.setText(loan.getCurrency());
+        amountLabel.setText(loan.getAmount().toPlainString());
+        collateralLabel.setText(loan.getCollateral());
     }
 
     /**

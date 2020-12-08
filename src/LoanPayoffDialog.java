@@ -14,7 +14,7 @@ public class LoanPayoffDialog extends JDialog {
     private JSpinner spinner1;
     private JLabel AmountLabel;
 
-    public LoanPayoffDialog(ATM atm, Loan loan) {
+    public LoanPayoffDialog(ATM atm, Loan loan, LoanObject object) {
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
@@ -22,6 +22,7 @@ public class LoanPayoffDialog extends JDialog {
         buttonOK.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 onOK(atm, loan);
+                object.repaint();
             }
         });
 
