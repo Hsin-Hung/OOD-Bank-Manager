@@ -54,6 +54,14 @@ public class Customer extends Person {
 
     }
 
+    public boolean isVIP() {
+        SavingsAccount account = getSavingsAccount();
+        if (account != null) {
+            return account.getBalance().compareTo(Constants.vipThreshold) != -1;
+        }
+        return false;
+    }
+
     public List<BankAccount> getBankAccounts() {
         return bankAccounts;
     }
