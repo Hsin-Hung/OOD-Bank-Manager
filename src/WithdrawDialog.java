@@ -17,6 +17,7 @@ public class WithdrawDialog extends JDialog {
 
     public WithdrawDialog(ATM atm, BankAccount account, AccountsObject object) {
         $$$setupUI$$$();
+        amountSpin.setModel(new SpinnerNumberModel(0, 0, 1000000000, 0.1));
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(DepositButton);
@@ -88,7 +89,6 @@ public class WithdrawDialog extends JDialog {
         dispose();
     }
 
-
     private void createUIComponents() {
         // TODO: place custom component creation code here
     }
@@ -134,5 +134,4 @@ public class WithdrawDialog extends JDialog {
     public JComponent $$$getRootComponent$$$() {
         return contentPane;
     }
-
 }
