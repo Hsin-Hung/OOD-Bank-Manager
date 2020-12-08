@@ -26,7 +26,7 @@ public class CustomerScreen extends BaseScreen {
         centerScreen();
 
         // TODO disable stock button for non vips
-        // stocksBtn.setEnabled(customer.isVIP());
+         stocksBtn.setEnabled(owner.getLoggedInCustomer().isVIP());
 
         this.owner = owner;
 

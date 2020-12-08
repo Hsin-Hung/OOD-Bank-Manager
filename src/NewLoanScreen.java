@@ -20,6 +20,7 @@ public class NewLoanScreen extends JDialog {
     public NewLoanScreen(ATM atm, ElementsScreen owner) {
         this.atm = atm;
         this.owner = owner;
+        amountSpinner.setModel(new SpinnerNumberModel(0, 0, 1000000000, 0.1));
 
         setContentPane(contentPane);
         setModal(true);

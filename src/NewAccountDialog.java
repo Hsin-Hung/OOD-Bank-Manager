@@ -23,6 +23,7 @@ public class NewAccountDialog extends JDialog {
 
 
         $$$setupUI$$$();
+        amountSpin.setModel(new SpinnerNumberModel(0, 0, 1000000000, 0.1));
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
