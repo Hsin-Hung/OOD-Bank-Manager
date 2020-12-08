@@ -65,7 +65,7 @@ public class LoanPayoffDialog extends JDialog {
 
     public void payOffLoan(ATM atm, Loan loan) {
 
-        atm.payOffLoan(loan, new BigDecimal((Integer) spinner1.getValue()));
+        atm.payOffLoan(loan, new BigDecimal((Double) spinner1.getValue()));
     }
 
     {
