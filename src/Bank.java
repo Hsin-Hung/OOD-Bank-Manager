@@ -97,13 +97,21 @@ public class Bank {
         if(!isValidAcc) {
             return false;
         }
+        SavingsAccount saccount = customer.getSavingsAccount("USD");
         SecuritiesAccount account = (SecuritiesAccount) db.addAccount(customer,AccountType.SECURITIES,amount, currency);
 
         if(account != null){
 
+            Transaction transferT = db.addTransaction(TransactionType.TRANSFER, customer.getUid(), saccount.getAccountID(),amount,
+                    "USD", customer.getUid(), account.getAccountID(),null);
+
+            saccount.withdraw(amount);
+
             customer.addBankAccount(account);
             Transaction t = db.addTransaction(TransactionType.OPENSECURITIES,customer.getUid(),account.getAccountID(),amount,currency,-1,-1,null);
             if(t != null)customer.addTransaction(t);
+            chargeFee(customer, account,Constants.openAccountFee);
+
             return true;
         }
 
@@ -197,6 +205,23 @@ public class Bank {
         return false;
     }
 
+    protected boolean payOffLoan(Customer customer, Loan loan, BigDecimal amount) {
+        if(amount.equals(loan.getAmount())) {
+            customer.removeLoan(loan);
+            db.removeLoan(loan.getLid());
+        } else {
+            BigDecimal amt = loan.getAmount().subtract(amount);
+            db.updateLoanAmount(loan.getLid(), amt);
+
+            loan.setAmount(amt);
+        }
+        Transaction t = db.addTransaction(TransactionType.PAYLOAN,
+                customer.getUid(),
+                loan.getLid(),amount,loan.getCurrency(),-1,-1,loan.getCollateral());
+        customer.addTransaction(t);
+        return true;
+    }
+
     //Function to transfer money from one account to another
     public boolean transferMoney(Customer c, BankAccount fromBank, BankAccount toBank, BigDecimal amount) {
 
@@ -217,30 +242,30 @@ public class Bank {
     public boolean buyStocks(Customer customer, String symbol, int shares){
 
         SecuritiesAccount securitiesAccount = customer.getSecuritiesAccount();
+        Stock stock = StockMarket.getStock(symbol);
+        if(stock==null || securitiesAccount==null)return false;
 
-        if(securitiesAccount != null){
+       if(securitiesAccount.buyStocks(symbol, shares, db)){
 
-            return securitiesAccount.buyStocks(symbol, shares);
+           return withdraw(customer, securitiesAccount, stock.getMarketVal().multiply(new BigDecimal(shares)));
 
-        }
+       }
         return false;
-
 
     }
 
     public boolean sellStocks(Customer customer, String symbol, int shares){
 
         SecuritiesAccount securitiesAccount = customer.getSecuritiesAccount();
+        Stock stock = StockMarket.getStock(symbol);
+        if(securitiesAccount == null)return false;
 
-        if(securitiesAccount != null){
+        if (securitiesAccount.sellStocks(symbol, shares, db)){
 
-            return securitiesAccount.sellStocks(symbol, shares);
+            return deposit(customer, securitiesAccount, stock.getMarketVal().multiply(new BigDecimal(shares)));
 
         }
-
         return false;
-
-
 
     }
 

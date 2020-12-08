@@ -3,21 +3,102 @@ import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
 
 import javax.swing.*;
+import javax.swing.text.View;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ViewStockScreen extends BaseScreen {
     private JButton createSecuritiesAccountButton;
     private JPanel elementPanel;
     private JPanel mainPanel;
+    private JLabel balance;
+    private ATM owner;
 
-    public ViewStockScreen() {
+
+    public ViewStockScreen(ATM owner) {
         $$$setupUI$$$();
         initialize();
+        elementPanel.setLayout(new BoxLayout(elementPanel, BoxLayout.Y_AXIS));
+        this.owner = owner;
 
-        List<Stock> stocks = null;
+        update();
+
+        createSecuritiesAccountButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                createNewSecuritiesAccount();
+            }
+        });
+
+    }
+
+    public void createNewSecuritiesAccount() {
+        new NewSecuritiesAccountDialog(owner, this);
+
+    }
+
+    public void updateBalance() {
+
+        SecuritiesAccount securitiesAccount = owner.getLoggedInCustomer().getSecuritiesAccount();
+        balance.setText(securitiesAccount.getBalance().toPlainString());
+
+    }
+
+    // update the stock display area base on whether the user has a securities account or not
+    public void update() {
+
+        SecuritiesAccount securitiesAccount = owner.getLoggedInCustomer().getSecuritiesAccount();
+
+        if (securitiesAccount == null) {
+
+            createSecuritiesAccountButton.setEnabled(true);
+
+        } else {
+
+            createSecuritiesAccountButton.setEnabled(false);
+            balance.setText(securitiesAccount.getBalance().toPlainString());
+
+            List<IUIElement> elements = new ArrayList<>();
+
+            List<StockPosition> stockPositions = securitiesAccount.getStockPositions();
+
+            //first add the stocks this user owns
+            for (StockPosition sp : stockPositions) {
+
+                elements.add(new StockObject(owner, this, sp));
+
+            }
+            //add the rest of the stocks
+            for (Stock stock : StockMarket.getStocks()) {
+
+                if (!securitiesAccount.hasStock(stock.getSymbol())) {
+
+                    elements.add(new StockObject(owner, this, stock));
+
+                }
 
 
+            }
+
+            refreshUIElements(elements);
+
+        }
+
+
+    }
+
+    public void refreshUIElements(List<IUIElement> elements) {
+        elementPanel.removeAll();
+
+        for (IUIElement element : elements) {
+            element.$$$getRootComponent$$$().setAlignmentX(Component.CENTER_ALIGNMENT);
+            elementPanel.add(element.$$$getRootComponent$$$());
+        }
     }
 
     private void initialize() {
@@ -36,19 +117,23 @@ public class ViewStockScreen extends BaseScreen {
      */
     private void $$$setupUI$$$() {
         mainPanel = new JPanel();
-        mainPanel.setLayout(new GridLayoutManager(2, 3, new Insets(0, 0, 0, 0), -1, -1));
+        mainPanel.setLayout(new GridLayoutManager(2, 4, new Insets(0, 0, 0, 0), -1, -1));
         createSecuritiesAccountButton = new JButton();
         createSecuritiesAccountButton.setText("Create Securities Account");
-        mainPanel.add(createSecuritiesAccountButton, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        mainPanel.add(createSecuritiesAccountButton, new GridConstraints(0, 3, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final JScrollPane scrollPane1 = new JScrollPane();
-        mainPanel.add(scrollPane1, new GridConstraints(1, 0, 1, 3, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        mainPanel.add(scrollPane1, new GridConstraints(1, 0, 1, 4, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         elementPanel = new JPanel();
         elementPanel.setLayout(new GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
         scrollPane1.setViewportView(elementPanel);
         final Spacer spacer1 = new Spacer();
-        mainPanel.add(spacer1, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
-        final Spacer spacer2 = new Spacer();
-        mainPanel.add(spacer2, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
+        mainPanel.add(spacer1, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
+        final JLabel label1 = new JLabel();
+        label1.setText("Balance");
+        mainPanel.add(label1, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        balance = new JLabel();
+        balance.setText("-1");
+        mainPanel.add(balance, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
     }
 
     /**

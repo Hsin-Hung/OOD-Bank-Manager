@@ -63,7 +63,7 @@ public class StockPosition {
     }
 
     //buy stocks of this company
-    public void buyStock(Stock newStock, int shares){
+    public StockPosition buyStock(Stock newStock, int shares){
 
         if(isOfStock(newStock)){
 
@@ -73,19 +73,22 @@ public class StockPosition {
 
             avgCost = getTotalCost().add(buyCost).divide(new BigDecimal(this.shares));
 
+            return this;
+
         }
+        return null;
 
     }
 
     //sell stocks of this company
-    public boolean sellStock(Stock sellStock, int shares){
+    public StockPosition sellStock(Stock sellStock, int shares){
 
         if(isOfStock(sellStock) && (this.shares>=shares)){
 
             this.shares-=shares;
-            return true;
+            return this;
 
         }
-        return false;
+        return null;
     }
 }

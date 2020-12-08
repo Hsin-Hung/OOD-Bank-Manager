@@ -99,7 +99,7 @@ public class ATM {
         SavingsAccount savingsAccount = getLoggedInCustomer().getSavingsAccount("USD");
 
         //check if saving account is >= 5000, if starting balance of securities account is >= 1000, if saving account can maintain 2500
-        if(startingBalance.compareTo(new BigDecimal(1000)) >=0
+        if((getLoggedInCustomer().getSecuritiesAccount()==null) && startingBalance.compareTo(new BigDecimal(1000)) >=0
                 && (savingsAccount.getBalance().subtract(startingBalance).compareTo(new BigDecimal(2500))>=0)){
 
             return bank.createSecuritiesAccount(getLoggedInCustomer(), "USD", startingBalance);//will return boolean indicate success or not
@@ -112,13 +112,17 @@ public class ATM {
 
     public boolean buyStock(String symbol, int shares){
 
-        return bank.buyStocks(getLoggedInCustomer(), symbol, shares);
+        if(shares>=1) return bank.buyStocks(getLoggedInCustomer(), symbol, shares);
+
+        return false;
 
     }
 
     public boolean sellStock(String symbol, int shares){
 
-        return bank.sellStocks(getLoggedInCustomer(), symbol, shares);
+        if(shares>=1) return bank.sellStocks(getLoggedInCustomer(), symbol, shares);
+
+        return false;
 
 
     }
@@ -174,6 +178,16 @@ public class ATM {
         }
         return false;
     }
+
+    public boolean payOffLoan( Loan loan, BigDecimal amount) {
+        if (isPositive(amount)) {
+            return bank.payOffLoan(getLoggedInCustomer(),loan,amount);
+        } else {
+            return false;
+        }
+    }
+
+
 
     private boolean transferMoney(Customer c, BankAccount fromBank, BankAccount toBank, BigDecimal amount) {
 

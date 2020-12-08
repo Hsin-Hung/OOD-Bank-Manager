@@ -80,11 +80,11 @@ public class DBManager {
                     "PRIMARY KEY(ID AUTOINCREMENT))";
             stmt.execute(sql);
             sql = "CREATE TABLE IF NOT EXISTS STOCKS(" +
-                    "ID INTEGER, " +
-                    "NAME TEXT NOT NULL, " +
-                    "BUYAMOUNT REAL NOT NULL, " +
-                    "SELLAMOUNT REAL NOT NULL, " +
-                    "PRIMARY KEY(ID AUTOINCREMENT))";
+                    "SYMBOL TEXT NOT NULL UNIQUE, " +
+                    "USERID INTEGER NOT NULL, " +
+                    "SHARES INTEGER NOT NULL, " +
+                    "AVGCOST REAL NOT NULL, " +
+                    "PRIMARY KEY(SYMBOL))";
             stmt.execute(sql);
             sql = "CREATE TABLE IF NOT EXISTS ACCOUNTS (" +
                     "ID INTEGER NOT NULL UNIQUE," +
@@ -293,6 +293,20 @@ public class DBManager {
         return true;
     }
 
+    public boolean removeLoan(int id) {
+        String sql = "DELETE FROM  LOANS WHERE ID = ?";
+        try {
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, id);
+            stmt.execute();
+            stmt.close();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return false;
+        }
+        return true;
+    }
+
     public boolean deleteLoan(Customer c, int id) {
         String sql = "DELETE FROM ACCOUNTS WHERE ID = ?";
         try {
@@ -327,7 +341,8 @@ public class DBManager {
                 List<BankAccount> accounts = getAllUserAccounts(id);
                 List<Loan> loans = getAllUserLoans(id);
                 List<Transaction> transactions = getAllUserTransaction(id);
-                p = new Customer(id,name,user,password,loans,accounts,transactions);
+                List<StockPosition> stockPositions = getAllStockPosition(id);
+                p = new Customer(id,name,user,password,loans,accounts,transactions, stockPositions);
             } else if (role.equals(Role.MANAGER.toString())) {
                 p = new BankManager(id,name,user,password);
             }
@@ -680,6 +695,78 @@ public class DBManager {
             return false;
         }
         return true;
+
+    }
+
+    public boolean addStockPosition(int userid, String symbol, int shares, BigDecimal avgCost){
+
+        String sql = "INSERT INTO STOCKS(SYMBOL,USERID,SHARES,AVGCOST) VALUES (?,?,?,?)";
+
+        try {
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setString(1, symbol);
+            stmt.setInt(2, userid);
+            stmt.setInt(3, shares);
+            stmt.setBigDecimal(4, avgCost);
+            stmt.execute();
+            return true;
+
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        return false;
+    }
+
+    public boolean deleteStockPosition(int userid, String symbol){
+        String sql = "DELETE FROM STOCKS WHERE USERID = ? AND SYMBOL = ?";
+        try {
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, userid);
+            stmt.setString(2, symbol);
+            stmt.execute();
+            stmt.close();
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return false;
+        }
+        return true;
+
+
+
+
+    }
+
+    public List<StockPosition> getAllStockPosition(int userid){
+
+        //TODO - implement
+        return null;
+
+
+    }
+
+    public boolean updateStockPosition(int userid, String symbol, int shares, BigDecimal avgCost){
+
+        String sql = "UPDATE STOCKS SET SHARES = ?, AVGCOST = ? WHERE SYMBOL = ? AND USERID = ?";
+        try {
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, shares);
+            stmt.setBigDecimal(2, avgCost);
+            stmt.setString(3, symbol);
+            stmt.setInt(4, userid);
+            stmt.execute();
+            stmt.close();
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return false;
+        }
+        return true;
+
+
+
 
     }
 
