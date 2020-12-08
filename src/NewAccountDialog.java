@@ -70,13 +70,13 @@ public class NewAccountDialog extends JDialog {
     private void onOK() {
         switch (typeCombo.getSelectedIndex()) {
             case 0:
-                if (!atm.createSavingsAccount(currencyCombo.getSelectedItem().toString(), new BigDecimal((int) amountSpin.getValue()))) {
+                if (!atm.createSavingsAccount(currencyCombo.getSelectedItem().toString(), new BigDecimal((Double) amountSpin.getValue()))) {
                     JOptionPane.showMessageDialog(contentPane, "Failed to create account");
                     return;
                 }
                 break;
             case 1:
-                if (!atm.createCheckingAccount(currencyCombo.getSelectedItem().toString(), new BigDecimal((int) amountSpin.getValue()))) {
+                if (!atm.createCheckingAccount(currencyCombo.getSelectedItem().toString(), new BigDecimal((Double) amountSpin.getValue()))) {
                     JOptionPane.showMessageDialog(contentPane, "Failed to create account");
                     return;
                 }
