@@ -82,12 +82,16 @@ public class ATM {
 
 
     public boolean createCheckingAccount(String currency, BigDecimal startingBalance) {
-
+        if(startingBalance.compareTo(Constants.minAccountOpeningBalance) < 0) {
+            return false;
+        }
         return bank.createCheckingAccount(getLoggedInCustomer(), currency, startingBalance);//will return boolean indicate success or not
     }
 
     public boolean createSavingsAccount(String currency, BigDecimal startingBalance) {
-
+        if(startingBalance.compareTo(Constants.minAccountOpeningBalance) < 0) {
+            return false;
+        }
         return bank.createSavingsAccount(getLoggedInCustomer(), currency, startingBalance);//will return boolean indicate success or not
     }
 

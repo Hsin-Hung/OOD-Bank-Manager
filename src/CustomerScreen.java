@@ -9,6 +9,9 @@ import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/*
+ * CustomerScreen.java - creates the customer screen gui and child screens
+ */
 public class CustomerScreen extends BaseScreen {
     public JPanel mainPanel;
     private JLabel userNameLabel;
@@ -19,7 +22,7 @@ public class CustomerScreen extends BaseScreen {
     private JButton transactionBtn;
     private final ATM owner;
 
-    public CustomerScreen(ATM owner) {//, Customer customer) {
+    public CustomerScreen(ATM owner) {
         userNameLabel.setText(owner.getLoggedInCustomer().getName());
         setContentPane(mainPanel);
         setSize(700, 700);
@@ -80,6 +83,9 @@ public class CustomerScreen extends BaseScreen {
 
     }
 
+    /*
+     * Function that loads the bank accounts gui
+     */
     private void createAccountsScreen() {
         List<IUIElement> elements = new ArrayList<>();
         Customer customer = owner.getLoggedInCustomer();
@@ -90,6 +96,9 @@ public class CustomerScreen extends BaseScreen {
                 (ElementsScreen s) -> new AccountsObject(owner, Helper.getLastItem(customer.getBankAccounts())));
     }
 
+    /*
+     * Function that loads the loan screen gui
+     */
     private void createLoanScreen() {
         List<IUIElement> elements = new ArrayList<>();
         Customer customer = owner.getLoggedInCustomer();
@@ -101,6 +110,9 @@ public class CustomerScreen extends BaseScreen {
                 (ElementsScreen s) -> new LoanObject(owner, Helper.getLastItem(customer.getLoans())));
     }
 
+    /*
+     * Function that loads the transaction screen gui
+     */
     private void createTransactionsScreen() {
         List<IUIElement> elements = new ArrayList<>();
         for (Transaction transaction : owner.getLoggedInCustomer().getTransactions()) {
@@ -109,11 +121,17 @@ public class CustomerScreen extends BaseScreen {
         new ElementsScreen(elements, null, null, null);
     }
 
+    /*
+     * Function that loads the creating a new account gui
+     */
     private Void createNewAccount(ElementsScreen s) {
         new NewAccountDialog(owner, s);
         return null;
     }
 
+    /*
+     * Function that loads the creating a new loan gui
+     */
     private Void createNewLoan(ElementsScreen s) {
         new NewLoanScreen(owner, s);
         return null;
