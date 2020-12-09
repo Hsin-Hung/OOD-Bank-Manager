@@ -223,6 +223,10 @@ public class ATM {
         return bank.getDailyReportWithin24hrs();
     }
 
+    public HashMap<String, BankMainAccount> getBankBalances() {
+        return bank.getBankBalances();
+    }
 
 
-}
+
+    }

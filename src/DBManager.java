@@ -26,8 +26,8 @@ public class DBManager {
 //            System.out.println("Tables dropped");
             createTables();
             System.out.println("Tables created");
-         //   addDefaultManager();
-            System.out.println("Add default manager");
+//            addDefaultManager();
+//            System.out.println("Add default manager");
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
