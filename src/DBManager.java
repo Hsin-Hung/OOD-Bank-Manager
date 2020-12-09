@@ -185,6 +185,51 @@ public class DBManager {
         return account;
     }
 
+    public BankMainAccount addBankMainAccount( BigDecimal amount, String currency) {
+        String sql = "INSERT INTO ACCOUNTS(USERID,TYPE,AMOUNT,CURRENCY) VALUES (?,?,?,?)";
+        BankMainAccount account = null;
+        try {
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, 1 );
+            stmt.setString(2, AccountType.BANK.toString());
+            stmt.setBigDecimal(3, amount);
+            stmt.setString(4, currency);
+            stmt.execute();
+
+            sql = "SELECT ID FROM ACCOUNTS WHERE USERID = ? AND TYPE = ? AND CURRENCY = ? ";
+            stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, 1);
+            stmt.setString(2, AccountType.BANK.toString());
+            stmt.setString(3, currency);
+
+            ResultSet rs = stmt.executeQuery();
+            account = new BankMainAccount(rs.getInt(1),1,currency,amount);
+
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return null;
+        }
+        return account;
+    }
+
+    public boolean updateBankMainAccount( BigDecimal amount, String currency) {
+        String sql = "UPDATE ACCOUNTS SET AMOUNT = ? WHERE TYPE = ? AND CURRENCY = ?";
+        try {
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setBigDecimal(1, amount);
+            stmt.setString(2, AccountType.BANK.toString());
+            stmt.setString(3, currency);
+            stmt.execute();
+            stmt.close();
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return false;
+        }
+        return true;
+    }
+
+
     public Transaction addTransaction(TransactionType type,int userid, int accountId, BigDecimal amount, String currency, int targetUserId, int targetAccountId, String collateral) {
         String sql = "INSERT INTO TRANSACTIONS(DATE,TYPE,AMOUNT,CURRENCY,USERID,ACCOUNTID,TARGETUSERID,TARGETACCOUNTID,COLLATERAL) VALUES (?,?,?,?,?,?,?,?,?)";
         Transaction t = null;
@@ -356,6 +401,39 @@ public class DBManager {
         return p;
     }
 
+    public Person getPersonFromAccount(int accountId) {
+        String sql = "SELECT NAME FROM USERS, ACCOUNTS WHERE USERS.ID = ACCOUNTS.USERID AND ACCOUNTS.ID = ?";
+        Person p = null;
+        try {
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, accountId);
+            ResultSet rs = stmt.executeQuery();
+            p = getPerson(rs.getString(1));
+
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return p;
+        }
+        return p;
+
+    }
+
+    public Person getPersonFromLoan(int loanId) {
+        String sql = "SELECT NAME FROM USERS, LOANS WHERE USERS.ID = LOANS.USERID AND ACCOUNTS.ID = ?";
+        Person p = null;
+        try {
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, loanId);
+            ResultSet rs = stmt.executeQuery();
+            p = getPerson(rs.getString(1));
+
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return p;
+        }
+        return p;
+
+    }
     public List<Customer> getAllCustomers() {
         List<Customer> list = new ArrayList<>();
         String sql = "SELECT ID, USERNAME FROM USERS WHERE ROLE = ?";
@@ -396,6 +474,24 @@ public class DBManager {
         return accounts;
     }
 
+
+    public List<BankMainAccount> getAllBankMainAccounts() {
+        List<BankMainAccount> accounts = new ArrayList<>();
+        try {
+            String sql = "SELECT ID FROM ACCOUNTS WHERE USERID = 1";
+            PreparedStatement stmt2 = conn.prepareStatement(sql);
+            ResultSet rs2 = stmt2.executeQuery();
+
+            while (rs2.next()) {
+                BankMainAccount a = (BankMainAccount) getAccount(rs2.getInt(1));
+                accounts.add(a);
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return null;
+        }
+        return accounts;
+    }
     public BankAccount getAccount(int id) {
         BankAccount account = null;
         try {

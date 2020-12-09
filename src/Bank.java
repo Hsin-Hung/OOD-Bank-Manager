@@ -1,18 +1,22 @@
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 public class Bank {
     private String name;
     private DBManager db;
-
+    private HashMap<String,BankMainAccount> bankBalances;
 
     public Bank(String name) {
         this.db = new DBManager();
-        // TODO eric remove
-//        db.addTransaction(TransactionType.OPENSAVINGS, 2, 1, new BigDecimal(10000), "USD", -1, -1);
         this.name = name;
+        this.bankBalances = new HashMap<>();
+        List<BankMainAccount> accs = db.getAllBankMainAccounts();
+        for(BankMainAccount acc : accs) {
+            bankBalances.put(acc.getCurrency(), acc);
+        }
     }
 
     public String getName() {
@@ -146,12 +150,14 @@ public class Bank {
     public void updateInterests() {
         List<SavingsAccount> savingsList = db.getHighSavingAccounts();
         for(SavingsAccount sa: savingsList) {
-            applySavingsInterest(sa,Constants.savingsInterestPercentage);
+            Customer c = (Customer)db.getPersonFromAccount(sa.getAccountID());
+            applySavingsInterest(c, sa,Constants.savingsInterestPercentage);
         }
 
         List<Loan> loans = db.getAllLoans();
         for(Loan l: loans) {
-            applyLoanInterest(l,Constants.savingsInterestPercentage);
+            Customer c = (Customer)db.getPersonFromLoan(l.getLid());
+            applyLoanInterest(c,l,Constants.savingsInterestPercentage);
         }
 
 
@@ -198,6 +204,7 @@ public class Bank {
             Transaction t = db.addTransaction(TransactionType.OPENLOAN, customer.getUid(), -1,
                     amount, currency, -1, -1, collateral);
             if(t != null)customer.addTransaction(t);
+            minusBankBalance(loan.getCurrency(), amount);
             return true;
 
         }
@@ -220,6 +227,7 @@ public class Bank {
                 customer.getUid(),
                 loan.getLid(),amount,loan.getCurrency(),-1,-1,loan.getCollateral());
         customer.addTransaction(t);
+        addBankBalance(loan.getCurrency(), amount);
         return true;
     }
 
@@ -302,28 +310,57 @@ public class Bank {
             account.setBalance(account.getBalance().subtract(amount));
         }
         c.addTransaction(db.addTransaction(TransactionType.CHARGEFEE,c.getUid(), account.getAccountID(), amount,account.getCurrency(),-1,-1,null));
+        addBankBalance(account.getCurrency(), amount);
     }
 
     //Function to apply interest on a loan
-    public void applyLoanInterest(Loan loan, BigDecimal percentage) {
-        BigDecimal perc = new BigDecimal("1" ).add(percentage);
+    public void applyLoanInterest(Customer c, Loan loan, BigDecimal percentage) {
+        BigDecimal amt = loan.getAmount().multiply(percentage);
+        if(db.updateLoanAmount(loan.getLid(),loan.getAmount().add(amt))){
 
-        if(db.updateLoanAmount(loan.getLid(),loan.getAmount().multiply(perc))){
-
-            loan.setAmount(loan.getAmount().multiply(perc));
+            loan.setAmount(loan.getAmount().add(amt));
+            Transaction t = db.addTransaction(TransactionType.ADDLOANINTEREST,loan.getUid(),loan.getLid(),amt,loan.getCurrency(),-1,-1,loan.getCollateral());
+            c.addTransaction(t);
 
         }
     }
 
 
     //Function to apply interest on a savings account
-    public void applySavingsInterest(SavingsAccount account, BigDecimal percentage) {
-        BigDecimal perc = new BigDecimal("1" ).add(percentage);
+    public void applySavingsInterest(Customer c, SavingsAccount account, BigDecimal percentage) {
+        BigDecimal amt = account.getBalance().multiply(percentage);
 
-        if(db.updateAmount(account.getAccountID(),account.getBalance().multiply(perc))){
+        if(db.updateAmount(account.getAccountID(),account.getBalance().add(amt))){
 
-            account.setBalance(account.getBalance().multiply(perc));
+            account.setBalance(account.getBalance().add(amt));
+            Transaction t = db.addTransaction(TransactionType.PAYSAVINGSINTEREST, account.getUSER_ID(), account.getAccountID(), amt,account.getCurrency(),-1,-1,null);
+            c.addTransaction(t);
+            minusBankBalance(account.getCurrency(),amt);
 
+        }
+    }
+
+    public HashMap<String, BankMainAccount> getBankBalances() {
+        return bankBalances;
+    }
+
+    public void addBankBalance(String c, BigDecimal amount) {
+        if(bankBalances.containsKey(c)) {
+            bankBalances.get(c).setBalance(bankBalances.get(c).getBalance().add(amount));
+            db.updateBankMainAccount(bankBalances.get(c).getBalance(),c);
+        } else {
+            BankMainAccount acc = db.addBankMainAccount(amount, c);
+            bankBalances.put(c,acc);
+        }
+    }
+
+    public void minusBankBalance(String c, BigDecimal amount) {
+        if(bankBalances.containsKey(c)) {
+            bankBalances.get(c).setBalance(bankBalances.get(c).getBalance().subtract(amount));
+            db.updateBankMainAccount(bankBalances.get(c).getBalance(),c);
+        } else {
+            BankMainAccount acc = db.addBankMainAccount(new BigDecimal(0).subtract(amount), c);
+            bankBalances.put(c,acc);
         }
     }
 }

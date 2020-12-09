@@ -6,6 +6,8 @@ public enum TransactionType {
     OPENLOAN,
     CLOSELOAN,
     CHARGEFEE,
+    PAYSAVINGSINTEREST,
+    ADDLOANINTEREST,
     CLOSE,
     DEPOSIT,
     WITHDRAW,
