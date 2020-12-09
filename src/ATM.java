@@ -185,14 +185,14 @@ public class ATM {
     }
 
 
-
-    private boolean transferMoney(Customer c, BankAccount fromBank, BankAccount toBank, BigDecimal amount) {
+    //fromBank is always gonna be from one of this logged in customer's bank account. can transfer to any existing account in this bank
+    public boolean transferMoney(BankAccount fromBank, int toAccountID, BigDecimal amount) {
 
         //TODO - database error checking
 
-        if (isPositive(amount) && fromBank.hasEnoughBalance(amount)) {
+        if (isPositive(amount) && fromBank.hasEnoughBalance(amount) && fromBank.getAccountID() != toAccountID) {
 
-            return bank.transferMoney(c, fromBank, toBank, amount);
+            return bank.transferMoney(getLoggedInCustomer(), fromBank, toAccountID, amount);
 
         }
         return false;

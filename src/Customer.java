@@ -40,6 +40,18 @@ public class Customer extends Person {
 
     public void removeBankAccount(BankAccount ba) { bankAccounts.remove(ba); }
 
+    public BankAccount getBankAccount(int accountID){
+
+        for (BankAccount bankAccount: bankAccounts){
+
+            if(bankAccount.getAccountID() == accountID)return bankAccount;
+
+        }
+
+        return null;
+
+    }
+
     public SavingsAccount getSavingsAccount(String currency) {
 
         for(BankAccount ba : bankAccounts){

@@ -16,6 +16,7 @@ public class AccountsObject extends ElementObject {
     private JButton transferBtn;
     private JButton closeBtn;
     private JLabel typeLabel;
+    private JLabel accountID;
     private ATM atm;
     private BankAccount account;
 
@@ -43,8 +44,20 @@ public class AccountsObject extends ElementObject {
                 closeAccount();
             }
         });
-        withdrawBtn.addMouseListener(new MouseAdapter() {
+
+        transferBtn.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                transfer();
+            }
         });
+    }
+
+    public BankAccount getAccount() {
+
+        return account;
+
     }
 
     public boolean equals(Object o) {
@@ -68,6 +81,13 @@ public class AccountsObject extends ElementObject {
 
     }
 
+
+    public void transfer() {
+
+        new TransferDialog(atm, this);
+
+    }
+
     public void repaint() {
         if (atm == null) {
             withdrawBtn.setVisible(false);
@@ -78,6 +98,7 @@ public class AccountsObject extends ElementObject {
         currencyLabel.setText(account.getCurrency());
         amountLabel.setText(account.getBalance().toPlainString());
         typeLabel.setText(account.getType().toString());
+        accountID.setText(Integer.toString(account.getAccountID()));
     }
 
     private void createWithdrawDepositDialog(ATM atm, BankAccount account) {
@@ -109,8 +130,6 @@ public class AccountsObject extends ElementObject {
         currencyLabel = new JLabel();
         currencyLabel.setText("USD");
         panel2.add(currencyLabel, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        final Spacer spacer1 = new Spacer();
-        panel2.add(spacer1, new GridConstraints(1, 2, 1, 3, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
         amountLabel = new JLabel();
         amountLabel.setText("$100");
         panel2.add(amountLabel, new GridConstraints(1, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
@@ -129,8 +148,14 @@ public class AccountsObject extends ElementObject {
         typeLabel = new JLabel();
         typeLabel.setText("Label");
         panel2.add(typeLabel, new GridConstraints(0, 3, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        final Spacer spacer2 = new Spacer();
-        panel2.add(spacer2, new GridConstraints(0, 4, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
+        final Spacer spacer1 = new Spacer();
+        panel2.add(spacer1, new GridConstraints(0, 4, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
+        final JLabel label4 = new JLabel();
+        label4.setText("Account ID");
+        panel2.add(label4, new GridConstraints(1, 2, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        accountID = new JLabel();
+        accountID.setText("Label");
+        panel2.add(accountID, new GridConstraints(1, 3, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
     }
 
     /**

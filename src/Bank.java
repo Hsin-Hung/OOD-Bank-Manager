@@ -231,21 +231,38 @@ public class Bank {
         return true;
     }
 
-    //Function to transfer money from one account to another
-    public boolean transferMoney(Customer c, BankAccount fromBank, BankAccount toBank, BigDecimal amount) {
+    //Function to transfer money from one account to another of the same currency
+    public boolean transferMoney(Customer c, BankAccount fromBank, int toAccountID, BigDecimal amount) {
 
-        if (db.transferMoney(fromBank.getAccountID(), toBank.getAccountID(), fromBank.getBalance(), toBank.getBalance() )){
+        BankAccount toBank = getBankAccount(c, toAccountID);
+        if(toBank == null || !toBank.getCurrency().equals(fromBank.getCurrency()))return false;
+
+        BigDecimal fromBankBalance = fromBank.getBalance().subtract(amount), toBankBalance = toBank.getBalance().add(amount);
+
+        if (db.transferMoney(fromBank.getAccountID(), toAccountID, fromBankBalance, toBankBalance)){
 
             Transaction t = db.addTransaction(TransactionType.TRANSFER,fromBank.getUSER_ID(),fromBank.getAccountID(),amount,
                     fromBank.getCurrency(),toBank.getUSER_ID(),toBank.getAccountID(),null);
             if(t != null)c.addTransaction(t);
 
-            fromBank.setBalance(fromBank.getBalance().subtract(amount));
-            toBank.setBalance(toBank.getBalance().add(amount));
+            fromBank.setBalance(fromBankBalance);
+            toBank.setBalance(toBankBalance);
 
             return true;
         }
         return false;
+    }
+
+    //first try to get this account from this customer, if he doesnt have this account, then get it from db
+    public BankAccount getBankAccount(Customer c, int accountID){
+
+            BankAccount bankAccount = c.getBankAccount(accountID);
+            if(bankAccount == null){
+
+                bankAccount = db.getAccount(accountID);
+
+            }
+            return bankAccount;
     }
 
     public boolean buyStocks(Customer customer, String symbol, int shares){
