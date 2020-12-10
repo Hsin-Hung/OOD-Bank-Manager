@@ -5,6 +5,7 @@ import java.util.*;
 public class ATM {
     private List<BaseScreen> screens;
     private Bank bank;// the bank that connects this ATM
+    private CustomerScreen customerScreen;
 
     public Customer getLoggedInCustomer() {
         return (Customer) loggedInPerson;
@@ -55,7 +56,7 @@ public class ATM {
             loggedInPerson = person;
             switch (person.getRole()) {
                 case CUSTOMER:
-                    new CustomerScreen(this);
+                    customerScreen = new CustomerScreen(this);
                     return true;
                 case MANAGER:
                     new ManagerScreen(this);
@@ -201,13 +202,14 @@ public class ATM {
 
     //fromBank is always gonna be from one of this logged in customer's bank account. can transfer to any existing account in this bank
     public boolean transferMoney(BankAccount fromBank, int toAccountID, BigDecimal amount) {
-
-        //TODO - database error checking
-
         if (isPositive(amount) && fromBank.hasEnoughBalance(amount) && fromBank.getAccountID() != toAccountID) {
-
-            return bank.transferMoney(getLoggedInCustomer(), fromBank, toAccountID, amount);
-
+            boolean res = bank.transferMoney(getLoggedInCustomer(), fromBank, toAccountID, amount);
+            if (res) {
+                bank.reloadCustomerAccount(getLoggedInCustomer());
+                screens.get(screens.size() - 1).closeScreen();
+                customerScreen.createScreen();
+                return true;
+            }
         }
         return false;
     }

@@ -1,6 +1,7 @@
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
+import javafx.stage.Screen;
 
 import javax.swing.*;
 import javax.swing.text.View;
@@ -21,9 +22,11 @@ public class CustomerScreen extends BaseScreen {
     private JButton stocksBtn;
     private JButton transactionBtn;
     private final ATM owner;
+    private ScreenMode currentScreenMode;
 
     public CustomerScreen(ATM owner) {
         super(owner);
+        currentScreenMode = ScreenMode.Customer;
 
         userNameLabel.setText(owner.getLoggedInCustomer().getName());
         setContentPane(mainPanel);
@@ -46,27 +49,31 @@ public class CustomerScreen extends BaseScreen {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
-                createAccountsScreen();
+                currentScreenMode = ScreenMode.Accounts;
+                createScreen();
             }
         });
         loansBtn.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
-                createLoanScreen();
+                currentScreenMode = ScreenMode.Loans;
+                createScreen();
             }
         });
         transactionBtn.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
-                createTransactionsScreen();
+                currentScreenMode = ScreenMode.Transactions;
+                createScreen();
             }
         });
-        stocksBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
 
-                new ViewStockScreen(owner);
+        stocksBtn.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                currentScreenMode = ScreenMode.Securities;
+                createScreen();
             }
         });
 
@@ -85,6 +92,24 @@ public class CustomerScreen extends BaseScreen {
 
     }
 
+    public void createScreen() {
+        switch (currentScreenMode) {
+            case Customer:
+                break;
+            case Transactions:
+                createTransactionsScreen();
+                break;
+            case Loans:
+                createLoanScreen();
+                break;
+            case Securities:
+                new ViewStockScreen(owner);
+                break;
+            case Accounts:
+                createAccountsScreen();
+                break;
+        }
+    }
     /*
      * Function that loads the bank accounts gui
      */
@@ -214,4 +239,12 @@ public class CustomerScreen extends BaseScreen {
         return mainPanel;
     }
 
+
+    private enum ScreenMode {
+        Customer,
+        Transactions,
+        Loans,
+        Securities,
+        Accounts,
+    }
 }

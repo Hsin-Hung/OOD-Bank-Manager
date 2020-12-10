@@ -492,6 +492,7 @@ public class DBManager {
         }
         return accounts;
     }
+
     public BankAccount getAccount(int id) {
         BankAccount account = null;
         try {

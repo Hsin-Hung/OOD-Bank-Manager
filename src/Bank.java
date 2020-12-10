@@ -48,6 +48,11 @@ public class Bank {
 
     }
 
+
+    public void reloadCustomerAccount(Customer customer) {
+        customer.reloadAccounts(db.getAllUserAccounts(customer.getUid()));
+    }
+
     //create a checking account
     public boolean createCheckingAccount(Customer customer, String currency, BigDecimal amount) {
 
@@ -55,12 +60,11 @@ public class Bank {
         if(!isValidAcc) {
             return false;
         }
+
         //create the new checking account
         CheckingAccount account = (CheckingAccount) db.addAccount(customer,AccountType.CHECKING,amount, currency);
 
         if (account != null){
-
-
             customer.addBankAccount(account);
             Transaction t = db.addTransaction(TransactionType.OPENCHECKING,customer.getUid(),account.getAccountID(),amount,currency,-1,-1,null);
             if(t != null)customer.addTransaction(t);
