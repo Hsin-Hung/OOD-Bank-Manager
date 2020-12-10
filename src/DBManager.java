@@ -524,6 +524,13 @@ public class DBManager {
                             rs2.getString(4),
                             new BigDecimal(rs2.getString(5)));
                     break;
+                case "BANK":
+                    account = new BankMainAccount(
+                            rs2.getInt(1),
+                            rs2.getInt(2),
+                            rs2.getString(4),
+                            new BigDecimal(rs2.getString(5)));
+                    break;
             }
 
         } catch (Exception e) {
