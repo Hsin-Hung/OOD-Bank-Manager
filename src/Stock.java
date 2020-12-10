@@ -23,10 +23,6 @@ public class Stock {
     public BigDecimal getMarketVal() {
         return marketVal;
     }
-
-    public void updateMarketVal(BigDecimal marketVal) {
-        this.marketVal = marketVal;
-    }
 }
 
 

@@ -8,6 +8,10 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.List;
 
+/**
+ * A common screen that can be used to display a list of IUIElements in a scrollable panel.
+ * Can pass in functions to run when a button is clicked, or functions to run when an update is notified
+ */
 public class ElementsScreen extends BaseScreen {
     private JButton createBtn;
     private JPanel elementsPanel;

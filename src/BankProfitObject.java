@@ -5,15 +5,18 @@ import com.intellij.uiDesigner.core.Spacer;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * UI element for displaying the information for bank profits
+ */
 public class BankProfitObject extends ElementObject {
     private JPanel mainPanel;
     private JLabel CurrencyLbl;
-    private JLabel CurrenyValueLbl;
+    private JLabel CurrentValueLbl;
     private JLabel AmountLbl;
     private JLabel AmountValueLbl;
 
     public BankProfitObject(BankMainAccount acc) {
-        CurrenyValueLbl.setText(acc.getCurrency());
+        CurrentValueLbl.setText(acc.getCurrency());
         AmountValueLbl.setText(acc.getBalance().toPlainString());
     }
 
@@ -37,9 +40,9 @@ public class BankProfitObject extends ElementObject {
         CurrencyLbl = new JLabel();
         CurrencyLbl.setText("Currency");
         mainPanel.add(CurrencyLbl, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        CurrenyValueLbl = new JLabel();
-        CurrenyValueLbl.setText("Label");
-        mainPanel.add(CurrenyValueLbl, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        CurrentValueLbl = new JLabel();
+        CurrentValueLbl.setText("Label");
+        mainPanel.add(CurrentValueLbl, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         AmountLbl = new JLabel();
         AmountLbl.setText("Amount");
         mainPanel.add(AmountLbl, new GridConstraints(0, 3, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));

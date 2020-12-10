@@ -31,6 +31,9 @@ public class StockMarket {
         return null;
     }
 
+    /**
+     * Queries "Financial Modeling Prep"'s stock api to fetch the latest stock prices.
+     */
     public static void updatePrices() {
         List<String> prices = new ArrayList<String>();
         List<String> symbols = new ArrayList<String>();

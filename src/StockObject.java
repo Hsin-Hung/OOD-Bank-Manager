@@ -6,9 +6,10 @@ import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
+/**
+ * UI element for displaying the information for stocks
+ */
 public class StockObject extends ElementObject {
     private JPanel panel1;
     private JButton buyButton;
@@ -94,7 +95,7 @@ public class StockObject extends ElementObject {
 
             SecuritiesAccount securitiesAccount = customer.getSecuritiesAccount();
 
-            StockPosition stockPosition = securitiesAccount.getStockPostition(stock.getSymbol());
+            StockPosition stockPosition = securitiesAccount.getStockPosition(stock.getSymbol());
 
             if (stockPosition != null) {
 

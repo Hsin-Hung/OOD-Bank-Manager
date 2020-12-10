@@ -1,6 +1,4 @@
-import java.lang.management.BufferPoolMXBean;
 import java.math.BigDecimal;
-import java.util.*;
 
 //stock portfolio can hold multiple stocks of the same stock id
 public class StockPosition {
@@ -15,7 +13,6 @@ public class StockPosition {
         this.symbol = symbol;
         this.shares = shares;
         this.avgCost = avgCost;
-
     }
 
     public int getUid() {
@@ -34,60 +31,62 @@ public class StockPosition {
         return avgCost;
     }
 
-    public Stock getStock(){
+    public Stock getStock() {
         return StockMarket.getStock(symbol);
-
     }
 
-    public BigDecimal getMarketValue(){ return getStock().getMarketVal();}
+    public BigDecimal getMarketValue() {
+        return getStock().getMarketVal();
+    }
 
-    public boolean isOfStock(Stock s){
-
+    public boolean isOfStock(Stock s) {
         return symbol.equals(s.getSymbol());
-
     }
 
-    public BigDecimal getTotalCost(){
-
+    /**
+     * Get the total money spent on buying current shares.
+     * @return Total cost
+     */
+    public BigDecimal getTotalCost() {
         return avgCost.multiply(new BigDecimal(shares));
-
     }
 
-    public BigDecimal getTotalReturn(){
-
+    /**
+     * Get the amount of money you'd get if you sold everything
+     * @return Total Return
+     */
+    public BigDecimal getTotalReturn() {
         BigDecimal sellPrice = getMarketValue().multiply(new BigDecimal(shares));
-
         return sellPrice.subtract(getTotalCost());
-
-
     }
 
-    //buy stocks of this company
-    public StockPosition buyStock(Stock newStock, int shares){
-
-        if(isOfStock(newStock)){
-
-            this.shares+=shares;
-
+    /**
+     * Buy stocks of this company
+     * @param newStock stock to be purchased
+     * @param shares amount of shares to buy
+     * @return This Object IF newStock matches the stock position
+     */
+    public StockPosition buyStock(Stock newStock, int shares) {
+        if (isOfStock(newStock)) {
+            this.shares += shares;
             BigDecimal buyCost = newStock.getMarketVal().multiply(new BigDecimal(shares));
-
             avgCost = getTotalCost().add(buyCost).divide(new BigDecimal(this.shares));
-
             return this;
-
         }
         return null;
-
     }
 
-    //sell stocks of this company
-    public StockPosition sellStock(Stock sellStock, int shares){
 
-        if(isOfStock(sellStock) && (this.shares>=shares)){
-
-            this.shares-=shares;
+    /**
+     * Buy stocks of this company
+     * @param sellStock stock to be sold
+     * @param shares amount of shares to sell
+     * @return This Object IF sellStock matches the stock position
+     */
+    public StockPosition sellStock(Stock sellStock, int shares) {
+        if (isOfStock(sellStock) && (this.shares >= shares)) {
+            this.shares -= shares;
             return this;
-
         }
         return null;
     }

@@ -8,6 +8,9 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+/**
+ * UI element for displaying the information for accounts
+ */
 public class AccountsObject extends ElementObject {
     private JPanel panel1;
     private JLabel currencyLabel;

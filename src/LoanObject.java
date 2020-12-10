@@ -9,6 +9,9 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.math.BigDecimal;
 
+/**
+ * UI element for displaying the information for loans
+ */
 public class LoanObject extends ElementObject {
     private JPanel panel1;
     private JLabel currencyLabel;
