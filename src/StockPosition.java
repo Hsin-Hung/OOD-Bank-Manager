@@ -45,6 +45,7 @@ public class StockPosition {
 
     /**
      * Get the total money spent on buying current shares.
+     *
      * @return Total cost
      */
     public BigDecimal getTotalCost() {
@@ -53,6 +54,7 @@ public class StockPosition {
 
     /**
      * Get the amount of money you'd get if you sold everything
+     *
      * @return Total Return
      */
     public BigDecimal getTotalReturn() {
@@ -62,8 +64,9 @@ public class StockPosition {
 
     /**
      * Buy stocks of this company
+     *
      * @param newStock stock to be purchased
-     * @param shares amount of shares to buy
+     * @param shares   amount of shares to buy
      * @return This Object IF newStock matches the stock position
      */
     public StockPosition buyStock(Stock newStock, int shares) {
@@ -79,8 +82,9 @@ public class StockPosition {
 
     /**
      * Buy stocks of this company
+     *
      * @param sellStock stock to be sold
-     * @param shares amount of shares to sell
+     * @param shares    amount of shares to sell
      * @return This Object IF sellStock matches the stock position
      */
     public StockPosition sellStock(Stock sellStock, int shares) {

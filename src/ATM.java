@@ -1,17 +1,14 @@
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
-// all the logics are done in the bank, ATM is just a facade for the bank
+// all the logics are done in the bank, ATM is just a facade between the bank and the users
 public class ATM {
     private List<BaseScreen> screens;
     private Bank bank;// the bank that connects this ATM
     private CustomerScreen customerScreen;
-
-    public Customer getLoggedInCustomer() {
-        return (Customer) loggedInPerson;
-    }
-
-    private Person loggedInPerson;
+    private Person loggedInPerson; // the user who is logged in to this ATM
 
     public ATM(Bank bank) {
         this.bank = bank;
@@ -20,17 +17,29 @@ public class ATM {
         startLogin();
     }
 
+    public Customer getLoggedInCustomer() {
+        return (Customer) loggedInPerson;
+    }
+
     private void startLogin() {
         new LoginScreen(this);
     }
 
-    //create a new customer
+
+    /**
+     * Sign a new user up after checking whether the username is unique or not
+     *
+     * @param name
+     * @param userName
+     * @param password
+     * @return true if sign up is successful
+     */
     public boolean signUp(String name, String userName, String password) {
 
         Customer customer = bank.createCustomer(name, userName, password);
         if (customer != null) {
             loggedInPerson = customer;
-            new CustomerScreen(this) ;
+            new CustomerScreen(this);
             return true;
         } else {
             System.out.println("fail to create customer");
@@ -73,9 +82,9 @@ public class ATM {
         startLogin();
     }
 
-    public boolean closeAccount(Customer c, BankAccount bankAccount){
+    public boolean closeAccount(Customer c, BankAccount bankAccount) {
 
-        if(bank.closeAccount(c, bankAccount)){
+        if (bank.closeAccount(c, bankAccount)) {
             return true;
         }
 
@@ -85,14 +94,14 @@ public class ATM {
 
 
     public boolean createCheckingAccount(String currency, BigDecimal startingBalance) {
-        if(startingBalance.compareTo(Constants.minAccountOpeningBalance) < 0) {
+        if (startingBalance.compareTo(Constants.minAccountOpeningBalance) < 0) {
             return false;
         }
         return bank.createCheckingAccount(getLoggedInCustomer(), currency, startingBalance);//will return boolean indicate success or not
     }
 
     public boolean createSavingsAccount(String currency, BigDecimal startingBalance) {
-        if(startingBalance.compareTo(Constants.minAccountOpeningBalance) < 0) {
+        if (startingBalance.compareTo(Constants.minAccountOpeningBalance) < 0) {
             return false;
         }
         return bank.createSavingsAccount(getLoggedInCustomer(), currency, startingBalance);//will return boolean indicate success or not
@@ -103,8 +112,8 @@ public class ATM {
         SavingsAccount savingsAccount = getLoggedInCustomer().getSavingsAccount("USD");
 
         //check if saving account is >= 5000, if starting balance of securities account is >= 1000, if saving account can maintain 2500
-        if((getLoggedInCustomer().getSecuritiesAccount()==null) && startingBalance.compareTo(new BigDecimal(1000)) >=0
-                && (savingsAccount.getBalance().subtract(startingBalance).compareTo(new BigDecimal(2500))>=0)){
+        if ((getLoggedInCustomer().getSecuritiesAccount() == null) && startingBalance.compareTo(new BigDecimal(1000)) >= 0
+                && (savingsAccount.getBalance().subtract(startingBalance).compareTo(new BigDecimal(2500)) >= 0)) {
 
             return bank.createSecuritiesAccount(getLoggedInCustomer(), "USD", startingBalance);//will return boolean indicate success or not
 
@@ -114,9 +123,9 @@ public class ATM {
 
     }
 
-    public boolean buyStock(String symbol, int shares){
+    public boolean buyStock(String symbol, int shares) {
 
-        if(shares>=1) return bank.buyStocks(getLoggedInCustomer(), symbol, shares);
+        if (shares >= 1) return bank.buyStocks(getLoggedInCustomer(), symbol, shares);
 
         return false;
 
@@ -140,9 +149,9 @@ public class ATM {
         }
     }
 
-    public boolean sellStock(String symbol, int shares){
+    public boolean sellStock(String symbol, int shares) {
 
-        if(shares>=1) return bank.sellStocks(getLoggedInCustomer(), symbol, shares);
+        if (shares >= 1) return bank.sellStocks(getLoggedInCustomer(), symbol, shares);
 
         return false;
 
@@ -151,9 +160,10 @@ public class ATM {
 
     /**
      * Check if customer qualifies for securities (has $5000 in checkings)
+     *
      * @return true if qualifies
      */
-    public boolean isQualifiedForSecuritiesAccount(){
+    public boolean isQualifiedForSecuritiesAccount() {
         SavingsAccount savingsAccount = getLoggedInCustomer().getSavingsAccount("USD");
         return (savingsAccount != null) && savingsAccount.hasEnoughBalance(Constants.vipThreshold);
     }
@@ -181,8 +191,6 @@ public class ATM {
 
     public boolean requestLoan(BigDecimal amount, String currency, String collateral) {
 
-        //TODO - database error checking
-
         if (isPositive(amount)) {
 
             return bank.requestLoan(getLoggedInCustomer(), amount, currency, collateral);//will return boolean indicate success or not
@@ -191,16 +199,23 @@ public class ATM {
         return false;
     }
 
-    public boolean payOffLoan( Loan loan, BigDecimal amount) {
+    public boolean payOffLoan(Loan loan, BigDecimal amount) {
         if (isPositive(amount)) {
-            return bank.payOffLoan(getLoggedInCustomer(),loan,amount);
+            return bank.payOffLoan(getLoggedInCustomer(), loan, amount);
         } else {
             return false;
         }
     }
 
 
-    //fromBank is always gonna be from one of this logged in customer's bank account. can transfer to any existing account in this bank
+    /**
+     * transfer money between two bank accounts of the same currency
+     *
+     * @param fromBank    transfer money from this bank
+     * @param toAccountID transfer money to the bank with this account ID
+     * @param amount      amount to transfer
+     * @return true if transfer succeeded, false otherwise
+     */
     public boolean transferMoney(BankAccount fromBank, int toAccountID, BigDecimal amount) {
         if (isPositive(amount) && fromBank.hasEnoughBalance(amount) && fromBank.getAccountID() != toAccountID) {
             boolean res = bank.transferMoney(getLoggedInCustomer(), fromBank, toAccountID, amount);
@@ -214,28 +229,15 @@ public class ATM {
         return false;
     }
 
-    private void viewTransactions(BankAccount ba) {
-
-        //TODO - show the transaction
-    }
-
-    private void viewBalance(BankAccount ba) {
-
-        BigDecimal balance = ba.getBalance();
-        //TODO - show the balance
-
-    }
-
-    //helper function
     private boolean isPositive(BigDecimal val) {
         return val.compareTo(new BigDecimal(0)) == 1;
     }
 
-    public List<Customer> checkCustomer(){
+    public List<Customer> checkCustomer() {
         return bank.checkCustomer();
     }
 
-    public List<Transaction> getDailyReportWithin24hrs(){
+    public List<Transaction> getDailyReportWithin24hrs() {
         return bank.getDailyReportWithin24hrs();
     }
 
@@ -244,5 +246,4 @@ public class ATM {
     }
 
 
-
-    }
+}

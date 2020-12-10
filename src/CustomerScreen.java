@@ -1,8 +1,6 @@
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
-import javafx.stage.Screen;
-
 import javax.swing.*;
 import javax.swing.text.View;
 import java.awt.*;

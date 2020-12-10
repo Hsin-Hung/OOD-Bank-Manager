@@ -2,12 +2,13 @@ import java.math.BigDecimal;
 import java.sql.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 /*
- * DBManager.java - class that handles all database operations
+ * DBManager.java - class that handles all database operations of the bank
  */
 public class DBManager {
     private Connection conn = null;
@@ -162,15 +163,15 @@ public class DBManager {
 
             ResultSet rs = stmt.executeQuery();
 
-            switch(type.toString()) {
+            switch (type.toString()) {
                 case "CHECKING":
-                    account = new CheckingAccount(rs.getInt(1),c.getUid(),currency,amount);
+                    account = new CheckingAccount(rs.getInt(1), c.getUid(), currency, amount);
                     break;
                 case "SAVINGS":
-                    account = new SavingsAccount(rs.getInt(1),c.getUid(),currency,amount);
+                    account = new SavingsAccount(rs.getInt(1), c.getUid(), currency, amount);
                     break;
                 case "SECURITIES":
-                    account = new SecuritiesAccount(rs.getInt(1),c.getUid(),currency,amount);
+                    account = new SecuritiesAccount(rs.getInt(1), c.getUid(), currency, amount);
                     break;
 
             }
@@ -185,12 +186,12 @@ public class DBManager {
         return account;
     }
 
-    public BankMainAccount addBankMainAccount( BigDecimal amount, String currency) {
+    public BankMainAccount addBankMainAccount(BigDecimal amount, String currency) {
         String sql = "INSERT INTO ACCOUNTS(USERID,TYPE,AMOUNT,CURRENCY) VALUES (?,?,?,?)";
         BankMainAccount account = null;
         try {
             PreparedStatement stmt = conn.prepareStatement(sql);
-            stmt.setInt(1, 1 );
+            stmt.setInt(1, 1);
             stmt.setString(2, AccountType.BANK.toString());
             stmt.setBigDecimal(3, amount);
             stmt.setString(4, currency);
@@ -203,7 +204,7 @@ public class DBManager {
             stmt.setString(3, currency);
 
             ResultSet rs = stmt.executeQuery();
-            account = new BankMainAccount(rs.getInt(1),1,currency,amount);
+            account = new BankMainAccount(rs.getInt(1), 1, currency, amount);
 
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -212,7 +213,7 @@ public class DBManager {
         return account;
     }
 
-    public boolean updateBankMainAccount( BigDecimal amount, String currency) {
+    public boolean updateBankMainAccount(BigDecimal amount, String currency) {
         String sql = "UPDATE ACCOUNTS SET AMOUNT = ? WHERE TYPE = ? AND CURRENCY = ?";
         try {
             PreparedStatement stmt = conn.prepareStatement(sql);
@@ -230,7 +231,7 @@ public class DBManager {
     }
 
 
-    public Transaction addTransaction(TransactionType type,int userid, int accountId, BigDecimal amount, String currency, int targetUserId, int targetAccountId, String collateral) {
+    public Transaction addTransaction(TransactionType type, int userid, int accountId, BigDecimal amount, String currency, int targetUserId, int targetAccountId, String collateral) {
         String sql = "INSERT INTO TRANSACTIONS(DATE,TYPE,AMOUNT,CURRENCY,USERID,ACCOUNTID,TARGETUSERID,TARGETACCOUNTID,COLLATERAL) VALUES (?,?,?,?,?,?,?,?,?)";
         Transaction t = null;
         try {
@@ -254,8 +255,8 @@ public class DBManager {
             stmt = conn.prepareStatement(sql);
             ResultSet rs = stmt.executeQuery();
 
-            
-            t = new Transaction(rs.getInt(1),date,type,amount,currency,userid,accountId,targetUserId, targetAccountId, collateral);
+
+            t = new Transaction(rs.getInt(1), date, type, amount, currency, userid, accountId, targetUserId, targetAccountId, collateral);
 
             stmt.close();
         } catch (SQLException e) {
@@ -272,7 +273,7 @@ public class DBManager {
             stmt.setInt(1, accountId);
             stmt.execute();
             stmt.close();
-            Transaction t  = addTransaction(TransactionType.CLOSE,c.getUid(), accountId, null,null,-1,-1, null);
+            Transaction t = addTransaction(TransactionType.CLOSE, c.getUid(), accountId, null, null, -1, -1, null);
             c.addTransaction(t);
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -359,7 +360,7 @@ public class DBManager {
             stmt.setInt(1, id);
             stmt.execute();
             stmt.close();
-            Transaction t  = addTransaction(TransactionType.CLOSELOAN,c.getUid(), id, null,null,  -1,-1,null);
+            Transaction t = addTransaction(TransactionType.CLOSELOAN, c.getUid(), id, null, null, -1, -1, null);
             c.addTransaction(t);
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -387,9 +388,9 @@ public class DBManager {
                 List<Loan> loans = getAllUserLoans(id);
                 List<Transaction> transactions = getAllUserTransaction(id);
                 List<StockPosition> stockPositions = getAllStockPosition(id);
-                p = new Customer(id,name,user,password,loans,accounts,transactions, stockPositions);
+                p = new Customer(id, name, user, password, loans, accounts, transactions, stockPositions);
             } else if (role.equals(Role.MANAGER.toString())) {
-                p = new BankManager(id,name,user,password);
+                p = new BankManager(id, name, user, password);
             }
             stmt.close();
             rs.close();
@@ -434,6 +435,7 @@ public class DBManager {
         return p;
 
     }
+
     public List<Customer> getAllCustomers() {
         List<Customer> list = new ArrayList<>();
         String sql = "SELECT ID, USERNAME FROM USERS WHERE ROLE = ?";
@@ -442,7 +444,7 @@ public class DBManager {
             PreparedStatement stmt = conn.prepareStatement(sql);
             stmt.setString(1, Role.CUSTOMER.toString());
             ResultSet rs = stmt.executeQuery();
-            while(rs.next()) {
+            while (rs.next()) {
                 Person p = getPerson(rs.getString(2));
                 list.add((Customer) p);
             }
@@ -542,8 +544,6 @@ public class DBManager {
     }
 
 
-
-
     public List<BankAccount> getAllUserAccounts(int id) {
         List<BankAccount> accounts = new ArrayList<>();
         try {
@@ -593,11 +593,11 @@ public class DBManager {
             ResultSet rs2 = stmt2.executeQuery();
 
             loan = new Loan(
-                rs2.getInt(1),
-                rs2.getInt(2),
-                rs2.getString(3),
-                new BigDecimal(rs2.getString(4)),
-                rs2.getString(5));
+                    rs2.getInt(1),
+                    rs2.getInt(2),
+                    rs2.getString(3),
+                    new BigDecimal(rs2.getString(4)),
+                    rs2.getString(5));
 
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -625,6 +625,7 @@ public class DBManager {
         }
         return loans;
     }
+
     public List<Transaction> getAllTransaction() {
         List<Transaction> list = new ArrayList<>();
 
@@ -696,11 +697,11 @@ public class DBManager {
         String sql = "SELECT COUNT(*) FROM USERS WHERE USERNAME = ?";
         boolean res = false;
         try {
-            PreparedStatement stmt  = conn.prepareStatement(sql);
+            PreparedStatement stmt = conn.prepareStatement(sql);
             stmt.setString(1, username);
             ResultSet rs = stmt.executeQuery();
             int count = rs.getInt(1);
-            if(count >= 1) {
+            if (count >= 1) {
                 res = false;
             } else {
                 res = true;
@@ -716,13 +717,13 @@ public class DBManager {
         String sql = "SELECT COUNT(*) FROM ACCOUNTS WHERE USERID = ? AND CURRENCY = ? AND TYPE = ?";
         boolean res = false;
         try {
-            PreparedStatement stmt  = conn.prepareStatement(sql);
-            stmt.setInt(1,userid);
-            stmt.setString(2,currency);
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, userid);
+            stmt.setString(2, currency);
             stmt.setString(3, type.toString());
             ResultSet rs = stmt.executeQuery();
             int count = rs.getInt(1);
-            if(count >= 1) {
+            if (count >= 1) {
                 res = false;
             } else {
                 res = true;
@@ -739,12 +740,12 @@ public class DBManager {
         String sql = "SELECT ID, USERNAME FROM USERS WHERE USERNAME = ? AND PASSWORD = ?";
         Person res = null;
         try {
-            PreparedStatement stmt  = conn.prepareStatement(sql);
+            PreparedStatement stmt = conn.prepareStatement(sql);
             stmt.setString(1, user);
             stmt.setString(2, pass);
             ResultSet rs = stmt.executeQuery();
             int id = rs.getInt(1);
-            if(id == 0) {
+            if (id == 0) {
                 return null;
             }
             res = getPerson(user);
@@ -759,11 +760,11 @@ public class DBManager {
         String sql = "SELECT ID, USERID, TYPE, AMOUNT, CURRENCY FROM ACCOUNTS WHERE AMOUNT >= ? AND TYPE = ?";
         List<SavingsAccount> list = new ArrayList<>();
         try {
-            PreparedStatement stmt  = conn.prepareStatement(sql);
+            PreparedStatement stmt = conn.prepareStatement(sql);
             stmt.setBigDecimal(1, new BigDecimal("5000"));
             stmt.setString(2, AccountType.SAVINGS.toString());
             ResultSet rs = stmt.executeQuery();
-            while(rs.next()) {
+            while (rs.next()) {
                 SavingsAccount acc = new SavingsAccount(rs.getInt(1),
                         rs.getInt(2),
                         rs.getString(3),
@@ -787,13 +788,13 @@ public class DBManager {
 
         try {
             conn.setAutoCommit(false);
-            PreparedStatement stmt  = conn.prepareStatement(sql);
-            stmt.setBigDecimal(1,fromAmount);
-            stmt.setInt(2,fromId);
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setBigDecimal(1, fromAmount);
+            stmt.setInt(2, fromId);
             stmt.executeUpdate();
-            stmt  = conn.prepareStatement(sql);
-            stmt.setBigDecimal(1,toAmount);
-            stmt.setInt(2,toId);
+            stmt = conn.prepareStatement(sql);
+            stmt.setBigDecimal(1, toAmount);
+            stmt.setInt(2, toId);
             stmt.executeUpdate();
             conn.commit();
             conn.setAutoCommit(true);
@@ -804,7 +805,7 @@ public class DBManager {
 
     }
 
-    public boolean addStockPosition(int userid, String symbol, int shares, BigDecimal avgCost){
+    public boolean addStockPosition(int userid, String symbol, int shares, BigDecimal avgCost) {
 
         String sql = "INSERT INTO STOCKS(SYMBOL,USERID,SHARES,AVGCOST) VALUES (?,?,?,?)";
 
@@ -825,7 +826,7 @@ public class DBManager {
         return false;
     }
 
-    public boolean deleteStockPosition(int userid, String symbol){
+    public boolean deleteStockPosition(int userid, String symbol) {
         String sql = "DELETE FROM STOCKS WHERE USERID = ? AND SYMBOL = ?";
         try {
             PreparedStatement stmt = conn.prepareStatement(sql);
@@ -841,11 +842,9 @@ public class DBManager {
         return true;
 
 
-
-
     }
 
-    public StockPosition getStockPosition(String symbol, int userid){
+    public StockPosition getStockPosition(String symbol, int userid) {
 
         StockPosition sp = null;
 
@@ -868,7 +867,7 @@ public class DBManager {
 
     }
 
-    public List<StockPosition> getAllStockPosition(int userid){
+    public List<StockPosition> getAllStockPosition(int userid) {
 
         List<StockPosition> list = new ArrayList<>();
 
@@ -879,7 +878,7 @@ public class DBManager {
             stmt2.setInt(1, userid);
             ResultSet rs2 = stmt2.executeQuery();
             while (rs2.next()) {
-                StockPosition stockPosition = getStockPosition(rs2.getString(1),userid);
+                StockPosition stockPosition = getStockPosition(rs2.getString(1), userid);
                 list.add(stockPosition);
             }
         } catch (Exception e) {
@@ -890,7 +889,7 @@ public class DBManager {
 
     }
 
-    public boolean updateStockPosition(int userid, String symbol, int shares, BigDecimal avgCost){
+    public boolean updateStockPosition(int userid, String symbol, int shares, BigDecimal avgCost) {
 
         String sql = "UPDATE STOCKS SET SHARES = ?, AVGCOST = ? WHERE SYMBOL = ? AND USERID = ?";
         try {
@@ -907,8 +906,6 @@ public class DBManager {
             return false;
         }
         return true;
-
-
 
 
     }
