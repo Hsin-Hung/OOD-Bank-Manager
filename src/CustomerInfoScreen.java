@@ -11,9 +11,9 @@ public class CustomerInfoScreen extends BaseScreen {
     private JRadioButton transactionRadio;
     private JPanel elementsPanel;
     private JPanel mainPanel;
-    private java.util.List<Customer> customers;
 
-    public CustomerInfoScreen(java.util.List<Customer> customers) {
+    public CustomerInfoScreen(ATM atm, java.util.List<Customer> customers) {
+        super(atm);
         setContentPane(mainPanel);
         setSize(700, 700);
         centerScreen();

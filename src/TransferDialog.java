@@ -60,7 +60,9 @@ public class TransferDialog extends JDialog {
     private void onOK() {
 
         try {
-            if (!atm.transferMoney(owner.getAccount(), (int) toAccountID.getValue(), new BigDecimal(transferAmount.getValue().toString()))) {
+            if (atm.transferMoney(owner.getAccount(), (int) toAccountID.getValue(), new BigDecimal(transferAmount.getValue().toString()))) {
+                // TODO
+            } else {
                 JOptionPane.showMessageDialog(contentPane, "Failed to transfer money");
                 return;
             }

@@ -16,7 +16,7 @@ public class SignUpScreen extends BaseScreen {
     private ATM owner;
 
     public SignUpScreen(ATM owner) {
-        super();
+        super(owner);
         $$$setupUI$$$();
 
         this.owner = owner;

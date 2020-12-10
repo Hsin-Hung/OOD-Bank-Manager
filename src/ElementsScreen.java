@@ -16,7 +16,9 @@ public class ElementsScreen extends BaseScreen {
     private SingleArgMethod<IUIElement, ElementsScreen> updateFunc;
     private List<IUIElement> elements;
 
-    public ElementsScreen() {
+    public ElementsScreen(ATM atm) {
+        super(atm);
+
         $$$setupUI$$$();
 
         initialize();
@@ -33,8 +35,8 @@ public class ElementsScreen extends BaseScreen {
         });
     }
 
-    public ElementsScreen(List<IUIElement> elements, SingleArgMethod<Void, ElementsScreen> func, String buttonText, SingleArgMethod<IUIElement, ElementsScreen> updateFunc) {
-        this();
+    public ElementsScreen(ATM atm, List<IUIElement> elements, SingleArgMethod<Void, ElementsScreen> func, String buttonText, SingleArgMethod<IUIElement, ElementsScreen> updateFunc) {
+        this(atm);
         this.func = func;
         this.updateFunc = updateFunc;
         this.elements = elements;
@@ -48,14 +50,22 @@ public class ElementsScreen extends BaseScreen {
         refreshUIElements(elements);
     }
 
+    /**
+     * Calls the update func passed in the constructor
+     */
     public void update() {
         addUIElement(updateFunc.apply(this));
     }
 
+    /**
+     * Remove an object from the elements list, comparison is done by the equals method
+     * @param object object to be removed
+     */
     public void remove(Object object) {
         for (IUIElement e : elements) {
             if (e.equals(object)) {
                 elementsPanel.remove(e.$$$getRootComponent$$$());
+                elements.remove(e);
                 elementsPanel.revalidate();
                 elementsPanel.repaint();
                 return;
@@ -71,6 +81,10 @@ public class ElementsScreen extends BaseScreen {
         elementsPanel.repaint();
     }
 
+    /**
+     * Redraws all the elements to the list.
+     * @param elements element list to be drawn
+     */
     public void refreshUIElements(List<IUIElement> elements) {
         elementsPanel.removeAll();
 
@@ -79,6 +93,7 @@ public class ElementsScreen extends BaseScreen {
             element.$$$getRootComponent$$$().setAlignmentX(Component.CENTER_ALIGNMENT);
             elementsPanel.add(element.$$$getRootComponent$$$());
         }
+        this.elements = elements;
     }
 
     private void initialize() {

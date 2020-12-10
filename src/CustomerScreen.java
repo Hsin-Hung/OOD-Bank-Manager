@@ -23,6 +23,8 @@ public class CustomerScreen extends BaseScreen {
     private final ATM owner;
 
     public CustomerScreen(ATM owner) {
+        super(owner);
+
         userNameLabel.setText(owner.getLoggedInCustomer().getName());
         setContentPane(mainPanel);
         setSize(700, 700);
@@ -92,7 +94,7 @@ public class CustomerScreen extends BaseScreen {
         for (BankAccount bankAccount : customer.getBankAccounts()) {
             elements.add(new AccountsObject(owner, bankAccount));
         }
-        new ElementsScreen(elements, this::createNewAccount, "Create Account",
+        new ElementsScreen(atm, elements, this::createNewAccount, "Create Account",
                 (ElementsScreen s) -> new AccountsObject(owner, Helper.getLastItem(customer.getBankAccounts())));
     }
 
@@ -106,7 +108,7 @@ public class CustomerScreen extends BaseScreen {
             elements.add(new LoanObject(owner, loan));
         }
 
-        new ElementsScreen(elements, this::createNewLoan, "Request New Loan",
+        new ElementsScreen(atm, elements, this::createNewLoan, "Request New Loan",
                 (ElementsScreen s) -> new LoanObject(owner, Helper.getLastItem(customer.getLoans())));
     }
 
@@ -118,7 +120,7 @@ public class CustomerScreen extends BaseScreen {
         for (Transaction transaction : owner.getLoggedInCustomer().getTransactions()) {
             elements.add(new TransactionObject(transaction));
         }
-        new ElementsScreen(elements, null, null, null);
+        new ElementsScreen(atm, elements, null, null, null);
     }
 
     /*

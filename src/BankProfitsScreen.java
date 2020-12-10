@@ -9,7 +9,9 @@ public class BankProfitsScreen extends BaseScreen {
 
     private JPanel mainPanel;
 
-    public BankProfitsScreen(HashMap<String, BankMainAccount> profits) {
+    public BankProfitsScreen(ATM atm, HashMap<String, BankMainAccount> profits) {
+        super(atm);
+
         setSize(700, 700);
         setContentPane(mainPanel);
         centerScreen();

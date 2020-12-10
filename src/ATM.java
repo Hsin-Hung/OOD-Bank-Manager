@@ -1,8 +1,9 @@
 import java.math.BigDecimal;
 import java.util.*;
 
-// all the logics are done in the bank, ATM is just a fascade for the bank
+// all the logics are done in the bank, ATM is just a facade for the bank
 public class ATM {
+    private List<BaseScreen> screens;
     private Bank bank;// the bank that connects this ATM
 
     public Customer getLoggedInCustomer() {
@@ -13,6 +14,7 @@ public class ATM {
 
     public ATM(Bank bank) {
         this.bank = bank;
+        screens = new ArrayList<>();
 
         startLogin();
     }
@@ -119,6 +121,24 @@ public class ATM {
 
     }
 
+    public void newScreen(BaseScreen screen) {
+        if (screens.size() > 0) {
+            screens.get(screens.size() - 1).setVisible(false);
+            screens.get(screens.size() - 1).revalidate();
+            screens.get(screens.size() - 1).repaint();
+        }
+        screens.add(screen);
+    }
+
+    public void closeScreen(BaseScreen screen) {
+        screens.remove(screen);
+        if (screens.size() > 0) {
+            screens.get(screens.size() - 1).setVisible(true);
+            screens.get(screens.size() - 1).revalidate();
+            screens.get(screens.size() - 1).repaint();
+        }
+    }
+
     public boolean sellStock(String symbol, int shares){
 
         if(shares>=1) return bank.sellStocks(getLoggedInCustomer(), symbol, shares);
@@ -128,42 +148,32 @@ public class ATM {
 
     }
 
-    //check if the customer has at least 5000 in USD savings account
+    /**
+     * Check if customer qualifies for securities (has $5000 in checkings)
+     * @return true if qualifies
+     */
     public boolean isQualifiedForSecuritiesAccount(){
-
         SavingsAccount savingsAccount = getLoggedInCustomer().getSavingsAccount("USD");
-
         return (savingsAccount != null) && savingsAccount.hasEnoughBalance(Constants.vipThreshold);
-
     }
 
     public boolean deposit(Customer c, BankAccount ba, BigDecimal amount) {
-
         //make sure deposit is positive number
         if (isPositive(amount)) {
-
-            boolean res = bank.deposit(c, ba, amount);//will return boolean indicate success or not
-
-            return res;
+            return bank.deposit(c, ba, amount);//will return boolean indicate success or not
         }
 
         return false;
-
     }
 
     public boolean withdraw(Customer c, BankAccount ba, BigDecimal amount) {
-        //TODO - database error checking
-
         //make sure withdraw is positive number
         if (isPositive(amount) && ba.hasEnoughBalance(amount)) {
-
-            boolean res = bank.withdraw(c, ba, amount);//will return boolean indicate success or not
-            return res;
+            return bank.withdraw(c, ba, amount); //will return boolean indicate success or not
         }
         return false;
-
-
     }
+
     public void updateInterest() {
         bank.updateInterests();
     }

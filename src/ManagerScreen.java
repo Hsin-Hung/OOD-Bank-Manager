@@ -14,10 +14,9 @@ public class ManagerScreen extends BaseScreen {
     private JPanel mainPanel;
     private JButton ProfitBtn;
     private JButton LogoutBtn;
-    private ATM owner;
 
     public ManagerScreen(ATM owner) {
-        this.owner = owner;
+        super(owner);
 
         setContentPane(mainPanel);
         setSize(700, 700);
@@ -36,21 +35,21 @@ public class ManagerScreen extends BaseScreen {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
-                new CustomerInfoScreen(owner.checkCustomer());
+                new CustomerInfoScreen(atm, owner.checkCustomer());
             }
         });
         viewDailyReportButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
-                new DailyReportScreen(owner.getDailyReportWithin24hrs());
+                new DailyReportScreen(atm, owner.getDailyReportWithin24hrs());
             }
         });
         ProfitBtn.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
-                new BankProfitsScreen(owner.getBankBalances());
+                new BankProfitsScreen(atm, owner.getBankBalances());
             }
         });
         LogoutBtn.addMouseListener(new MouseAdapter() {

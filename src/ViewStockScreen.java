@@ -21,6 +21,7 @@ public class ViewStockScreen extends BaseScreen {
 
 
     public ViewStockScreen(ATM owner) {
+        super(owner);
         $$$setupUI$$$();
         initialize();
         elementPanel.setLayout(new BoxLayout(elementPanel, BoxLayout.Y_AXIS));

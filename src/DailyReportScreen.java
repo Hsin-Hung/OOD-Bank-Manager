@@ -6,7 +6,9 @@ import java.awt.*;
 public class DailyReportScreen extends BaseScreen {
     private JPanel mainPanel;
 
-    public DailyReportScreen(java.util.List<Transaction> transactionList) {
+    public DailyReportScreen(ATM atm, java.util.List<Transaction> transactionList) {
+        super(atm);
+
         setSize(700, 700);
         setContentPane(mainPanel);
         centerScreen();

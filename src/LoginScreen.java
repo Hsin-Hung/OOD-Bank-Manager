@@ -18,7 +18,7 @@ public class LoginScreen extends BaseScreen {
     private ATM owner;
 
     public LoginScreen(ATM owner) {
-        super();
+        super(owner);
         $$$setupUI$$$();
 
         this.owner = owner;

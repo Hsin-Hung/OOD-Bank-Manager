@@ -55,10 +55,8 @@ public class AccountsObject extends ElementObject {
     }
 
     public BankAccount getAccount() {
-
         return account;
-
-    }
+   }
 
     public boolean equals(Object o) {
         return account == o;
@@ -81,11 +79,8 @@ public class AccountsObject extends ElementObject {
 
     }
 
-
     public void transfer() {
-
         new TransferDialog(atm, this);
-
     }
 
     public void repaint() {
@@ -100,6 +95,7 @@ public class AccountsObject extends ElementObject {
         typeLabel.setText(account.getType().toString());
         accountID.setText(Integer.toString(account.getAccountID()));
     }
+
 
     private void createWithdrawDepositDialog(ATM atm, BankAccount account) {
         new WithdrawDialog(atm, account, this);
