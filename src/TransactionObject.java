@@ -34,7 +34,9 @@ public class TransactionObject extends ElementObject {
         dateLabel.setText(Constants.DATE_FORMAT.format(transaction.getDate()));
         typeLabel.setText(transaction.getType().toString());
         accountLabel.setText(Integer.toString(transaction.getAccount_id()));
-        amountLabel.setText(transaction.getAmount().toPlainString());
+        if (transaction.getAmount() != null) amountLabel.setText(transaction.getAmount().toPlainString());
+        targetUserLabel.setText(Integer.toString(transaction.getTarget_uid()));
+        targetAccountLabel.setText(Integer.toString(transaction.getTarget_account_id()));
     }
 
     public boolean equals(Object o) {
@@ -89,7 +91,7 @@ public class TransactionObject extends ElementObject {
         accountHint.setText("Account");
         mainPanel.add(accountHint, new GridConstraints(0, 3, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         amountLabel = new JLabel();
-        amountLabel.setText("Label");
+        amountLabel.setText("-1");
         mainPanel.add(amountLabel, new GridConstraints(1, 4, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         accountLabel = new JLabel();
         accountLabel.setText("Label");
@@ -128,4 +130,5 @@ public class TransactionObject extends ElementObject {
     public JComponent $$$getRootComponent$$$() {
         return mainPanel;
     }
+
 }
