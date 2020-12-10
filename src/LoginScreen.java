@@ -44,16 +44,26 @@ public class LoginScreen extends BaseScreen {
             @Override
             public void keyTyped(KeyEvent e) {
                 super.keyTyped(e);
-                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                if (e.getKeyChar() == '\n') {
                     login();
                 }
             }
         });
 
-
         if (Constants.DEV_MODE) {
             devLogin();
         }
+        passwordField.addKeyListener(new KeyAdapter() {
+        });
+        loginButton.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                super.keyTyped(e);
+                if (e.getKeyChar() == '\n') {
+                    login();
+                }
+            }
+        });
     }
 
     private void initialize() {
@@ -125,5 +135,4 @@ public class LoginScreen extends BaseScreen {
     public JComponent $$$getRootComponent$$$() {
         return mainPanel;
     }
-
 }
