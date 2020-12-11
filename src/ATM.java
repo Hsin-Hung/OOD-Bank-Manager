@@ -108,7 +108,6 @@ public class ATM {
     }
 
     public boolean createSecuritiesAccount(BigDecimal startingBalance) {
-
         SavingsAccount savingsAccount = getLoggedInCustomer().getSavingsAccount("USD");
 
         //check if saving account is >= 5000, if starting balance of securities account is >= 1000, if saving account can maintain 2500
@@ -116,11 +115,9 @@ public class ATM {
                 && (savingsAccount.getBalance().subtract(startingBalance).compareTo(new BigDecimal(2500)) >= 0)) {
 
             return bank.createSecuritiesAccount(getLoggedInCustomer(), "USD", startingBalance);//will return boolean indicate success or not
-
         }
 
         return false;
-
     }
 
     public boolean buyStock(String symbol, int shares) {
@@ -150,12 +147,10 @@ public class ATM {
     }
 
     public boolean sellStock(String symbol, int shares) {
-
-        if (shares >= 1) return bank.sellStocks(getLoggedInCustomer(), symbol, shares);
-
+        if (shares >= 1) {
+            return bank.sellStocks(getLoggedInCustomer(), symbol, shares);
+        }
         return false;
-
-
     }
 
     /**
@@ -164,8 +159,9 @@ public class ATM {
      * @return true if qualifies
      */
     public boolean isQualifiedForSecuritiesAccount() {
+        if (getLoggedInCustomer().getSecuritiesAccount() != null) return true;
         SavingsAccount savingsAccount = getLoggedInCustomer().getSavingsAccount("USD");
-        return (savingsAccount != null) && savingsAccount.hasEnoughBalance(Constants.vipThreshold);
+        return  (savingsAccount != null) && savingsAccount.hasEnoughBalance(Constants.vipThreshold);
     }
 
     public boolean deposit(Customer c, BankAccount ba, BigDecimal amount) {

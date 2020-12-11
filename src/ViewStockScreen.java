@@ -11,6 +11,9 @@ import java.awt.event.FocusEvent;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Screen to view a user's securities and enables stock purchase and sales.
+ */
 public class ViewStockScreen extends BaseScreen {
     private JButton createSecuritiesAccountButton;
     private JPanel elementPanel;

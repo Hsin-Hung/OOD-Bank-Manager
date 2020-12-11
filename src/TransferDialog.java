@@ -7,6 +7,9 @@ import java.awt.*;
 import java.awt.event.*;
 import java.math.BigDecimal;
 
+/**
+ * Dialog to show when a user intends to transfer money from different accounts.
+ */
 public class TransferDialog extends JDialog {
     private JPanel contentPane;
     private JButton buttonOK;

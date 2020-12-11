@@ -24,7 +24,6 @@ public abstract class BankAccount {
         return type;
     }
 
-
     public BigDecimal getBalance() {
         return balance;
     }
@@ -41,13 +40,9 @@ public abstract class BankAccount {
         return CURRENCY;
     }
 
-
     public boolean hasEnoughBalance(BigDecimal amount) {
-
         int res = balance.compareTo(amount);
-
         return res == 0 || res == 1;
-
     }
 
     public boolean withdraw(BigDecimal amount) {

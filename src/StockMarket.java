@@ -37,10 +37,11 @@ public class StockMarket {
 
     /**
      * Queries "Financial Modeling Prep"'s stock api to fetch the latest stock prices.
+     * @return true if the update was successful
      */
-    public static void updatePrices() {
-        List<String> prices = new ArrayList<String>();
-        List<String> symbols = new ArrayList<String>();
+    public static boolean updatePrices() {
+        List<String> prices = new ArrayList<>();
+        List<String> symbols = new ArrayList<>();
 
         try {
             List<String> query = new ArrayList<>();
@@ -92,6 +93,7 @@ public class StockMarket {
              */
         } catch (Exception e) {
             e.printStackTrace();
+            return false;
         }
 
         try {
@@ -103,7 +105,12 @@ public class StockMarket {
             myWriter.close();
         } catch (Exception e) {
             e.printStackTrace();
+            return false;
         }
+
+        init();
+
+        return true;
     }
 
     private static void init() {

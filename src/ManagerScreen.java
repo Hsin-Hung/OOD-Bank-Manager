@@ -7,6 +7,9 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+/**
+ * A screen that displays the actions a manager can perform. Shown when the logged in user is a manager.
+ */
 public class ManagerScreen extends BaseScreen {
     private JButton viewCustomerListButton;
     private JButton viewDailyReportButton;
@@ -65,8 +68,11 @@ public class ManagerScreen extends BaseScreen {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
-                StockMarket.updatePrices();
-                JOptionPane.showMessageDialog($$$getRootComponent$$$(), "Stock updated");
+                if (StockMarket.updatePrices()) {
+                    JOptionPane.showMessageDialog($$$getRootComponent$$$(), "Stock updated");
+                } else {
+                    JOptionPane.showMessageDialog($$$getRootComponent$$$(), "Stock failed to update, are you connected to the internet? If not, you will need to manually update the file");
+                }
             }
         });
     }

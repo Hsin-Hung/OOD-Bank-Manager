@@ -23,7 +23,10 @@ public class Customer extends Person {
         this.loans = loans;
         this.transactions = transactions;
         SecuritiesAccount securitiesAccount = getSecuritiesAccount();
-        if (securitiesAccount != null) securitiesAccount.setStockPositions(stockPositions);
+        if (securitiesAccount != null) {
+            securitiesAccount.setStockPositions(stockPositions);
+            getSavingsAccount("USD").setAsSecurityBackingAccount();
+        }
     }
 
     public void addLoan(Loan loan) {
