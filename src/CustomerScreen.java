@@ -72,8 +72,10 @@ public class CustomerScreen extends BaseScreen {
         stocksBtn.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
-                currentScreenMode = ScreenMode.Securities;
-                createScreen();
+                if (owner.isQualifiedForSecuritiesAccount()) {
+                    currentScreenMode = ScreenMode.Securities;
+                    createScreen();
+                }
             }
         });
 
