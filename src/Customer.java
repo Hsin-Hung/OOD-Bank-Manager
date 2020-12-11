@@ -1,27 +1,29 @@
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
+// this represents a bank customer, which is a person
 public class Customer extends Person {
     private List<Loan> loans;
     private List<BankAccount> bankAccounts;
     private List<Transaction> transactions;
 
 
-    public Customer( int user_id, String name, String username, String password) {
-        super( user_id, name, username,password, Role.CUSTOMER);
+    public Customer(int user_id, String name, String username, String password) {
+        super(user_id, name, username, password, Role.CUSTOMER);
         bankAccounts = new ArrayList<>();
         loans = new ArrayList<>();
         transactions = new ArrayList<>();
     }
 
 
-    public Customer( int user_id, String name, String username, String password, List<Loan> loans,
-                     List<BankAccount> bankAccounts, List<Transaction> transactions, List<StockPosition> stockPositions) {
-        super( user_id, name, username,password, Role.CUSTOMER);
+    public Customer(int user_id, String name, String username, String password, List<Loan> loans,
+                    List<BankAccount> bankAccounts, List<Transaction> transactions, List<StockPosition> stockPositions) {
+        super(user_id, name, username, password, Role.CUSTOMER);
         this.bankAccounts = bankAccounts;
         this.loans = loans;
         this.transactions = transactions;
         SecuritiesAccount securitiesAccount = getSecuritiesAccount();
-        if(securitiesAccount != null)securitiesAccount.setStockPositions(stockPositions);
+        if (securitiesAccount != null) securitiesAccount.setStockPositions(stockPositions);
     }
 
     public void addLoan(Loan loan) {
@@ -32,21 +34,25 @@ public class Customer extends Person {
         loans.remove(loan);
     }
 
-    public void addTransaction(Transaction transaction){ transactions.add(transaction); }
+    public void addTransaction(Transaction transaction) {
+        transactions.add(transaction);
+    }
 
     public void addBankAccount(BankAccount ba) {
         bankAccounts.add(ba);
     }
 
-    public void removeBankAccount(BankAccount ba) { bankAccounts.remove(ba); }
+    public void removeBankAccount(BankAccount ba) {
+        bankAccounts.remove(ba);
+    }
 
     public void reloadAccounts(List<BankAccount> accounts) {
         this.bankAccounts = accounts;
     }
 
-    public BankAccount getBankAccount(int accountID){
-        for (BankAccount bankAccount: bankAccounts){
-            if(bankAccount.getAccountID() == accountID) {
+    public BankAccount getBankAccount(int accountID) {
+        for (BankAccount bankAccount : bankAccounts) {
+            if (bankAccount.getAccountID() == accountID) {
                 return bankAccount;
             }
         }
@@ -55,9 +61,9 @@ public class Customer extends Person {
 
     public SavingsAccount getSavingsAccount(String currency) {
 
-        for(BankAccount ba : bankAccounts){
+        for (BankAccount ba : bankAccounts) {
 
-            if(ba.getType() == AccountType.SAVINGS && ba.getCurrency().equals(currency)){
+            if (ba.getType() == AccountType.SAVINGS && ba.getCurrency().equals(currency)) {
 
                 return (SavingsAccount) ba;
 
@@ -71,9 +77,9 @@ public class Customer extends Person {
 
     public SecuritiesAccount getSecuritiesAccount() {
 
-        for(BankAccount ba : bankAccounts){
+        for (BankAccount ba : bankAccounts) {
 
-            if(ba.getType() == AccountType.SECURITIES){
+            if (ba.getType() == AccountType.SECURITIES) {
 
                 return (SecuritiesAccount) ba;
 

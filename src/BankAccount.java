@@ -1,14 +1,14 @@
 import java.math.BigDecimal;
-import java.util.*;
 
+// this is an abstract class and can represent any type of BankAccount
 public abstract class BankAccount {
-    private int ACCOUNT_ID;//id that uniquely identifies this bank account
-    private int USER_ID;// the user who owns it
-    private String CURRENCY;
-    private AccountType type;
+    private final int ACCOUNT_ID;//id that uniquely identifies this bank account
+    private final int USER_ID;// the user who owns it
+    private final String CURRENCY;
+    private final AccountType type;
     private BigDecimal balance = new BigDecimal(0);
 
-    public BankAccount(int account_id,int user_id,  String currency, BigDecimal balance, AccountType type ) {
+    public BankAccount(int account_id, int user_id, String currency, BigDecimal balance, AccountType type) {
         this.ACCOUNT_ID = account_id;
         this.USER_ID = user_id;
         this.CURRENCY = currency;
@@ -46,9 +46,7 @@ public abstract class BankAccount {
 
         int res = balance.compareTo(amount);
 
-        if (res == 0 || res == 1) return true;
-
-        return false;
+        return res == 0 || res == 1;
 
     }
 

@@ -4,9 +4,10 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
+// the bank is the backend which deals with all the logics and executes instructions that are sent from the ATM
 public class Bank {
-    private String name;
-    private DBManager db;
+    private String name; // name of the bank
+    private DBManager db; //bank database
     private HashMap<String, BankMainAccount> bankBalances;
 
     public Bank(String name) {
@@ -23,7 +24,15 @@ public class Bank {
         return name;
     }
 
-    //create and return the customer object
+    /**
+     * create a customer object if the given username is unique
+     * and database added the new customer successfully
+     *
+     * @param name
+     * @param username
+     * @param password
+     * @return the customer object
+     */
     public Customer createCustomer(String name, String username, String password) {
         boolean isValidUser = db.isDistinctUsername(username);
         Customer c = null;
@@ -40,7 +49,13 @@ public class Bank {
         return c;
     }
 
-    //authenticate username and password and return the customer if there is one
+    /**
+     * authenticate given username and password
+     *
+     * @param username
+     * @param password
+     * @return the authenticated Person
+     */
     public Person userAuth(String username, String password) {
         return db.isValidUserAuth(username, password);
     }
@@ -89,7 +104,7 @@ public class Bank {
         return false;
     }
 
-    //create a security account
+    //create a securities account
     public boolean createSecuritiesAccount(Customer customer, String currency, BigDecimal amount) {
 
         boolean isValidAcc = db.isDistinctAccount(customer.getUid(), currency, AccountType.SECURITIES);
@@ -208,7 +223,7 @@ public class Bank {
         return true;
     }
 
-    //Function to transfer money from one account to another of the same currency
+    // transfer money from one bank account to another of the same currency
     public boolean transferMoney(Customer c, BankAccount fromBank, int toAccountID, BigDecimal amount) {
         BankAccount toBank = getBankAccount(c, toAccountID);
 

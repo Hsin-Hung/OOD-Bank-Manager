@@ -18,6 +18,7 @@ public class SecuritiesAccount extends BankAccount {
 
     /**
      * Used to initialize stock position from the customer
+     *
      * @param stockPositions List of stock position to be stored
      */
     public void setStockPositions(List<StockPosition> stockPositions) {
@@ -26,6 +27,7 @@ public class SecuritiesAccount extends BankAccount {
 
     /**
      * Get the corresponding stock position for this stock
+     *
      * @param symbol Symbol of the stock to be looked up
      * @return The StockPosition of the symbol if owned, otherwise null
      */
@@ -40,6 +42,7 @@ public class SecuritiesAccount extends BankAccount {
 
     /**
      * Check if the securities account owns shares of this stock
+     *
      * @param symbol Stock symbol of the stock to be checked
      * @return true if stock is owned
      */
@@ -52,9 +55,10 @@ public class SecuritiesAccount extends BankAccount {
 
     /**
      * Buy stocks, log it to the database, and take the money away from the security account.
+     *
      * @param symbol Symbol of stock to buy
      * @param shares Amount of shares to buy
-     * @param db DBManager reference
+     * @param db     DBManager reference
      * @return true if the purchase was successful
      */
     public boolean buyStocks(String symbol, int shares, DBManager db) {
@@ -81,9 +85,10 @@ public class SecuritiesAccount extends BankAccount {
 
     /**
      * Sells stocks, log it to the database, and add the money to the security account.
+     *
      * @param symbol Symbol of stock to sell
      * @param shares Amount of shares to sell
-     * @param db DBManager reference
+     * @param db     DBManager reference
      * @return true if the sell was successful
      */
     public boolean sellStocks(String symbol, int shares, DBManager db) {

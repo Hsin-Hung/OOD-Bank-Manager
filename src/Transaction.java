@@ -67,5 +67,7 @@ public class Transaction {
         return target_account_id;
     }
 
-    public String getCollateral() { return this.collateral; }
+    public String getCollateral() {
+        return this.collateral;
+    }
 }

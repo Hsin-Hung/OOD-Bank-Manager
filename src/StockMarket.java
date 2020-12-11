@@ -18,13 +18,17 @@ public class StockMarket {
     private static List<Stock> stocks;
     private static List<String> rawSymbols;
 
+    static {
+        init();
+    }
+
     public static List<Stock> getStocks() {
         return stocks;
     }
 
-    public static Stock getStock(String symbol){
-        for(Stock s: stocks){
-            if(s.getSymbol().equals(symbol)){
+    public static Stock getStock(String symbol) {
+        for (Stock s : stocks) {
+            if (s.getSymbol().equals(symbol)) {
                 return s;
             }
         }
@@ -37,7 +41,7 @@ public class StockMarket {
     public static void updatePrices() {
         List<String> prices = new ArrayList<String>();
         List<String> symbols = new ArrayList<String>();
-        
+
         try {
             List<String> query = new ArrayList<>();
             for (String stock : rawSymbols) {
@@ -48,7 +52,7 @@ public class StockMarket {
                 URL url = new URL("https://financialmodelingprep.com/api/v3/quote/" + String.join(",", query) + "?apikey=f713a83175295761a138c51218623e24");
 
                 try (BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream(), "UTF-8"))) {
-                    for (String line; (line = reader.readLine()) != null;) {
+                    for (String line; (line = reader.readLine()) != null; ) {
                         if (line.contains("\"symbol\" :")) {
                             symbols.add(line.split(": ")[1].split(",")[0].replace('"', '\0'));
                         }
@@ -102,10 +106,6 @@ public class StockMarket {
         }
     }
 
-    static {
-        init();
-    }
-
     private static void init() {
         stocks = new ArrayList<>();
         rawSymbols = new ArrayList<>();
@@ -117,10 +117,10 @@ public class StockMarket {
 
             boolean skipFirst = true;
             for (String price : prices) {
-                    if (skipFirst) {
-                        skipFirst = false;
-                        continue;
-                    }
+                if (skipFirst) {
+                    skipFirst = false;
+                    continue;
+                }
                 String[] split = price.split(",");
                 String symbol = split[0];
                 BigDecimal marketVal = new BigDecimal(split[1].replace("\"", ""));
