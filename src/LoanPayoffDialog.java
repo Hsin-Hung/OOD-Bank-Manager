@@ -66,13 +66,7 @@ public class LoanPayoffDialog extends JDialog {
     }
 
     public void payOffLoan(ATM atm, Loan loan) {
-        BigDecimal amount = Helper.checkSpinnnerMoneyValue(spinner1);
-
-        if (amount == null) {
-            JOptionPane.showMessageDialog(contentPane, "Amount entered is not valid.");
-            return;
-        }
-        
+        BigDecimal amount = new BigDecimal((Double) spinner1.getValue());
         atm.payOffLoan(loan, amount);
     }
 

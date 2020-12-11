@@ -14,8 +14,6 @@ public class NewAccountDialog extends JDialog {
     private JComboBox typeCombo;
     private JComboBox currencyCombo;
     private JSpinner amountSpin;
-    private JLabel FeeLabel;
-    private JLabel MinLabel;
     private ATM atm;
     private ElementsScreen owner;
 
@@ -36,10 +34,6 @@ public class NewAccountDialog extends JDialog {
         for (String s : Currency.getCurrencyList()) {
             currencyCombo.addItem(s);
         }
-
-        FeeLabel.setText("A fee of $" + Constants.openAccountFee.toPlainString() + " will be applied to the amount.");
-        MinLabel.setText("Minimum amount of " + Constants.minAccountOpeningBalance.toPlainString() + " is needed to open an account.");
-
 
         buttonOK.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -74,22 +68,15 @@ public class NewAccountDialog extends JDialog {
     }
 
     private void onOK() {
-        //Add check for 2 decimal places.
-        BigDecimal amount = Helper.checkSpinnnerMoneyValue(amountSpin);
-
-        if (amount == null) {
-            JOptionPane.showMessageDialog(contentPane, "Amount entered is not valid.");
-            return;
-        }
         switch (typeCombo.getSelectedIndex()) {
             case 0:
-                if (!atm.createSavingsAccount(currencyCombo.getSelectedItem().toString(), amount)) {
+                if (!atm.createSavingsAccount(currencyCombo.getSelectedItem().toString(), new BigDecimal((Double) amountSpin.getValue()))) {
                     JOptionPane.showMessageDialog(contentPane, "Failed to create account");
                     return;
                 }
                 break;
             case 1:
-                if (!atm.createCheckingAccount(currencyCombo.getSelectedItem().toString(), amount)) {
+                if (!atm.createCheckingAccount(currencyCombo.getSelectedItem().toString(), new BigDecimal((Double) amountSpin.getValue()))) {
                     JOptionPane.showMessageDialog(contentPane, "Failed to create account");
                     return;
                 }
@@ -114,25 +101,19 @@ public class NewAccountDialog extends JDialog {
         contentPane = new JPanel();
         contentPane.setLayout(new GridLayoutManager(2, 1, new Insets(10, 10, 10, 10), -1, -1));
         final JPanel panel1 = new JPanel();
-        panel1.setLayout(new GridLayoutManager(2, 2, new Insets(0, 0, 0, 0), -1, -1));
+        panel1.setLayout(new GridLayoutManager(1, 2, new Insets(0, 0, 0, 0), -1, -1));
         contentPane.add(panel1, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, 1, null, null, null, 0, false));
+        final Spacer spacer1 = new Spacer();
+        panel1.add(spacer1, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
         final JPanel panel2 = new JPanel();
-        panel2.setLayout(new GridLayoutManager(1, 3, new Insets(0, 0, 0, 0), -1, -1));
+        panel2.setLayout(new GridLayoutManager(1, 2, new Insets(0, 0, 0, 0), -1, -1, true, false));
         panel1.add(panel2, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         buttonOK = new JButton();
         buttonOK.setText("OK");
-        panel2.add(buttonOK, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        panel2.add(buttonOK, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         buttonCancel = new JButton();
         buttonCancel.setText("Cancel");
-        panel2.add(buttonCancel, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        final Spacer spacer1 = new Spacer();
-        panel2.add(spacer1, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
-        MinLabel = new JLabel();
-        MinLabel.setText("Minimum amount to create an account is $10.");
-        panel1.add(MinLabel, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        FeeLabel = new JLabel();
-        FeeLabel.setText("Creating new account fee is$5.");
-        panel1.add(FeeLabel, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        panel2.add(buttonCancel, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final JPanel panel3 = new JPanel();
         panel3.setLayout(new GridLayoutManager(3, 2, new Insets(10, 10, 10, 10), -1, -1));
         contentPane.add(panel3, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
@@ -159,5 +140,4 @@ public class NewAccountDialog extends JDialog {
     public JComponent $$$getRootComponent$$$() {
         return contentPane;
     }
-
 }

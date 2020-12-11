@@ -75,9 +75,6 @@ public class LoginScreen extends BaseScreen {
     private void login() {
         if (owner.login(userTextField.getText(), new String(passwordField.getPassword()))) {
             closeScreen();
-        } else {
-            JOptionPane.showMessageDialog(mainPanel, "Failed to login. Incorrect user/pass");
-
         }
     }
 

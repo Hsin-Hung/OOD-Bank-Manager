@@ -66,12 +66,7 @@ public class WithdrawDialog extends JDialog {
 
     private void withdraw(ATM atm, BankAccount account) {
         // add your code here
-        BigDecimal amount = Helper.checkSpinnnerMoneyValue(amountSpin);
-
-        if (amount == null) {
-            JOptionPane.showMessageDialog(contentPane, "Amount entered is not valid.");
-            return;
-        }
+        BigDecimal amount = new BigDecimal((int) amountSpin.getValue());
 
         atm.withdraw(atm.getLoggedInCustomer(), account, amount);
 
@@ -80,16 +75,10 @@ public class WithdrawDialog extends JDialog {
 
     private void deposit(ATM atm, BankAccount account) {
         // add your code here
-        BigDecimal amount = Helper.checkSpinnnerMoneyValue(amountSpin);
-
-        if (amount == null) {
-            JOptionPane.showMessageDialog(contentPane, "Amount entered is not valid.");
-            return;
-        }
+        BigDecimal amount = new BigDecimal((Double) amountSpin.getValue());
         atm.deposit(atm.getLoggedInCustomer(), account, amount);
         dispose();
     }
-
 
     private void onCancel() {
         // add your code here if necessary
@@ -141,5 +130,4 @@ public class WithdrawDialog extends JDialog {
     public JComponent $$$getRootComponent$$$() {
         return contentPane;
     }
-
 }
