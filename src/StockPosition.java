@@ -3,8 +3,8 @@ import java.math.BigDecimal;
 //stock portfolio can hold multiple stocks of the same stock id
 public class StockPosition {
 
-    private int uid; // the customer who owns this stock position
-    private String symbol;
+    private final int uid; // the customer who owns this stock position
+    private final String symbol;
     private int shares; // number of shares
     private BigDecimal avgCost;
 
@@ -78,7 +78,6 @@ public class StockPosition {
         }
         return null;
     }
-
 
     /**
      * Buy stocks of this company

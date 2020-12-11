@@ -2,10 +2,7 @@ import java.math.BigDecimal;
 import java.sql.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
-import java.util.*;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -112,7 +109,6 @@ public class DBManager {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
             return false;
-
         }
         return true;
     }
@@ -139,7 +135,6 @@ public class DBManager {
             stmt.setString(4, role.toString());
             stmt.execute();
             stmt.close();
-
         } catch (SQLException e) {
             System.out.println(e.getMessage());
             return false;
@@ -176,12 +171,9 @@ public class DBManager {
                 case "SECURITIES":
                     account = new SecuritiesAccount(rs.getInt(1), c.getUid(), currency, amount);
                     break;
-
             }
 
             stmt.close();
-
-
         } catch (SQLException e) {
             System.out.println(e.getMessage());
             return null;
@@ -208,7 +200,6 @@ public class DBManager {
 
             ResultSet rs = stmt.executeQuery();
             account = new BankMainAccount(rs.getInt(1), 1, currency, amount);
-
         } catch (Exception e) {
             System.out.println(e.getMessage());
             return null;
@@ -225,14 +216,12 @@ public class DBManager {
             stmt.setString(3, currency);
             stmt.execute();
             stmt.close();
-
         } catch (SQLException e) {
             System.out.println(e.getMessage());
             return false;
         }
         return true;
     }
-
 
     public Transaction addTransaction(TransactionType type, int userid, int accountId, BigDecimal amount, String currency, int targetUserId, int targetAccountId, String collateral) {
         String sql = "INSERT INTO TRANSACTIONS(DATE,TYPE,AMOUNT,CURRENCY,USERID,ACCOUNTID,TARGETUSERID,TARGETACCOUNTID,COLLATERAL) VALUES (?,?,?,?,?,?,?,?,?)";
@@ -253,11 +242,9 @@ public class DBManager {
             stmt.setString(9, collateral);
             stmt.execute();
 
-
             sql = "SELECT MAX(ID) FROM TRANSACTIONS";
             stmt = conn.prepareStatement(sql);
             ResultSet rs = stmt.executeQuery();
-
 
             t = new Transaction(rs.getInt(1), date, type, amount, currency, userid, accountId, targetUserId, targetAccountId, collateral);
 
@@ -293,7 +280,6 @@ public class DBManager {
             stmt.setInt(2, accountId);
             stmt.execute();
             stmt.close();
-
         } catch (SQLException e) {
             System.out.println(e.getMessage());
             return false;
@@ -318,8 +304,6 @@ public class DBManager {
             ResultSet rs = stmt.executeQuery();
             stmt = conn.prepareStatement(sql);
             loan = new Loan(rs.getInt(1), c.getUid(), currency, amount, collateral);
-
-
         } catch (SQLException e) {
             System.out.println(e.getMessage());
             return null;
@@ -413,13 +397,11 @@ public class DBManager {
             stmt.setInt(1, accountId);
             ResultSet rs = stmt.executeQuery();
             p = getPerson(rs.getString(1));
-
         } catch (Exception e) {
             System.out.println(e.getMessage());
             return p;
         }
         return p;
-
     }
 
     public Person getPersonFromLoan(int loanId) {
@@ -430,13 +412,11 @@ public class DBManager {
             stmt.setInt(1, loanId);
             ResultSet rs = stmt.executeQuery();
             p = getPerson(rs.getString(1));
-
         } catch (Exception e) {
             System.out.println(e.getMessage());
             return p;
         }
         return p;
-
     }
 
     public List<Customer> getAllCustomers() {
@@ -479,7 +459,6 @@ public class DBManager {
         return accounts;
     }
 
-
     public List<BankMainAccount> getAllBankMainAccounts() {
         List<BankMainAccount> accounts = new ArrayList<>();
         try {
@@ -505,7 +484,6 @@ public class DBManager {
             PreparedStatement stmt2 = conn.prepareStatement(sql);
             stmt2.setInt(1, id);
             ResultSet rs2 = stmt2.executeQuery();
-
 
             String accType = rs2.getString(3);
             switch (accType) {
@@ -538,14 +516,12 @@ public class DBManager {
                             new BigDecimal(rs2.getString(5)));
                     break;
             }
-
         } catch (Exception e) {
             System.out.println(e.getMessage());
             return null;
         }
         return account;
     }
-
 
     public List<BankAccount> getAllUserAccounts(int id) {
         List<BankAccount> accounts = new ArrayList<>();
@@ -601,7 +577,6 @@ public class DBManager {
                     rs2.getString(3),
                     new BigDecimal(rs2.getString(4)),
                     rs2.getString(5));
-
         } catch (Exception e) {
             System.out.println(e.getMessage());
             return null;
@@ -690,7 +665,6 @@ public class DBManager {
                     rs.getInt(8),
                     rs.getInt(9),
                     rs.getString(10));
-
         } catch (Exception e) {
             System.out.println(e.getMessage());
             return null;
@@ -726,11 +700,7 @@ public class DBManager {
             stmt.setString(1, username);
             ResultSet rs = stmt.executeQuery();
             int count = rs.getInt(1);
-            if (count >= 1) {
-                res = false;
-            } else {
-                res = true;
-            }
+            res = count < 1;
         } catch (Exception e) {
             System.out.println(e.getMessage());
             return false;
@@ -748,18 +718,13 @@ public class DBManager {
             stmt.setString(3, type.toString());
             ResultSet rs = stmt.executeQuery();
             int count = rs.getInt(1);
-            if (count >= 1) {
-                res = false;
-            } else {
-                res = true;
-            }
+            res = count < 1;
         } catch (Exception e) {
             System.out.println(e.getMessage());
             return false;
         }
         return res;
     }
-
 
     public Person isValidUserAuth(String user, String pass) {
         String sql = "SELECT ID, USERNAME FROM USERS WHERE USERNAME = ? AND PASSWORD = ?";
@@ -796,14 +761,11 @@ public class DBManager {
                         rs.getBigDecimal(4));
                 list.add(acc);
             }
-
-
         } catch (Exception e) {
             System.out.println(e.getMessage());
             return null;
         }
         return list;
-
     }
 
     public boolean transferMoney(int fromId, int toId, BigDecimal fromAmount, BigDecimal toAmount) {
@@ -827,7 +789,6 @@ public class DBManager {
             System.out.println(e.getMessage());
         }
         return true;
-
     }
 
     public boolean addStockPosition(int userid, String symbol, int shares, BigDecimal avgCost) {
@@ -842,8 +803,6 @@ public class DBManager {
             stmt.setBigDecimal(4, avgCost);
             stmt.execute();
             return true;
-
-
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
@@ -859,14 +818,11 @@ public class DBManager {
             stmt.setString(2, symbol);
             stmt.execute();
             stmt.close();
-
         } catch (SQLException e) {
             System.out.println(e.getMessage());
             return false;
         }
         return true;
-
-
     }
 
     public StockPosition getStockPosition(String symbol, int userid) {
@@ -882,14 +838,11 @@ public class DBManager {
             ResultSet rs2 = stmt2.executeQuery();
 
             sp = new StockPosition(userid, rs2.getString(1), rs2.getInt(3), rs2.getBigDecimal(4));
-
         } catch (Exception e) {
             System.out.println(e.getMessage());
             return null;
         }
         return sp;
-
-
     }
 
     public List<StockPosition> getAllStockPosition(int userid) {
@@ -911,7 +864,6 @@ public class DBManager {
             return null;
         }
         return list;
-
     }
 
     public boolean updateStockPosition(int userid, String symbol, int shares, BigDecimal avgCost) {
@@ -925,15 +877,10 @@ public class DBManager {
             stmt.setInt(4, userid);
             stmt.execute();
             stmt.close();
-
         } catch (SQLException e) {
             System.out.println(e.getMessage());
             return false;
         }
         return true;
-
-
     }
-
-
 }

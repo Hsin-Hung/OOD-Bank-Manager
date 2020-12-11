@@ -14,8 +14,8 @@ public class NewLoanScreen extends JDialog {
     private JSpinner amountSpinner;
     private JComboBox currencyCombo;
     private JTextField collateralText;
-    private ATM atm;
-    private ElementsScreen owner;
+    private final ATM atm;
+    private final ElementsScreen owner;
 
     public NewLoanScreen(ATM atm, ElementsScreen owner) {
         this.atm = atm;

@@ -15,7 +15,7 @@ public class LoginScreen extends BaseScreen {
     private JPasswordField passwordField;
     private JButton loginButton;
     private JButton createUserButton;
-    private ATM owner;
+    private final ATM owner;
 
     public LoginScreen(ATM owner) {
         super(owner);
@@ -77,7 +77,6 @@ public class LoginScreen extends BaseScreen {
             closeScreen();
         } else {
             JOptionPane.showMessageDialog(mainPanel, "Failed to login. Incorrect user/pass");
-
         }
     }
 

@@ -16,13 +16,12 @@ public class NewAccountDialog extends JDialog {
     private JSpinner amountSpin;
     private JLabel FeeLabel;
     private JLabel MinLabel;
-    private ATM atm;
-    private ElementsScreen owner;
+    private final ATM atm;
+    private final ElementsScreen owner;
 
     public NewAccountDialog(ATM atm, ElementsScreen owner) {
         this.atm = atm;
         this.owner = owner;
-
 
         $$$setupUI$$$();
         amountSpin.setModel(new SpinnerNumberModel(0, 0, 1000000000, 0.1));
@@ -39,7 +38,6 @@ public class NewAccountDialog extends JDialog {
 
         FeeLabel.setText("A fee of $" + Constants.openAccountFee.toPlainString() + " will be applied to the amount.");
         MinLabel.setText("Minimum amount of " + Constants.minAccountOpeningBalance.toPlainString() + " is needed to open an account.");
-
 
         buttonOK.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -159,5 +157,4 @@ public class NewAccountDialog extends JDialog {
     public JComponent $$$getRootComponent$$$() {
         return contentPane;
     }
-
 }

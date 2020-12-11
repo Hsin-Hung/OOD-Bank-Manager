@@ -15,6 +15,7 @@ import java.util.List;
  * Screen to view a user's securities and enables stock purchase and sales.
  */
 public class ViewStockScreen extends BaseScreen {
+    private final String HINT_TEXT = "Enter a stock symbol";
     private JButton createSecuritiesAccountButton;
     private JPanel elementPanel;
     private JPanel mainPanel;
@@ -22,9 +23,7 @@ public class ViewStockScreen extends BaseScreen {
     private JTextField searchField;
     private JButton searchButton;
     private JPanel searchPane;
-    private ATM owner;
-
-    private final String HINT_TEXT = "Enter a stock symbol";
+    private final ATM owner;
 
     public ViewStockScreen(ATM owner) {
         super(owner);

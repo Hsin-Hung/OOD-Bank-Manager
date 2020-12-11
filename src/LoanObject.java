@@ -18,14 +18,13 @@ public class LoanObject extends ElementObject {
     private JLabel amountLabel;
     private JButton payoffBtn;
     private JLabel collateralLabel;
-    private Loan loan;
-    private ATM atm;
+    private final Loan loan;
+    private final ATM atm;
 
     public LoanObject(ATM atm, Loan loan) {
         $$$setupUI$$$();
         this.loan = loan;
         this.atm = atm;
-
 
         currencyLabel.setText(loan.getCurrency());
         amountLabel.setText(loan.getAmount().toPlainString());
@@ -110,5 +109,4 @@ public class LoanObject extends ElementObject {
     public JComponent $$$getRootComponent$$$() {
         return panel1;
     }
-
 }

@@ -10,16 +10,16 @@ public class WithdrawDialog extends JDialog {
     private JPanel contentPane;
     private JButton DepositButton;
     private JButton buttonCancel;
-
     private JSpinner amountSpin;
     private JButton WithdrawButton;
     private JLabel amountLabel;
 
     /**
      * A dialog that shows up to allow users to withdraw or deposit money.
-     * @param atm Reference to the current ATM object.
+     *
+     * @param atm     Reference to the current ATM object.
      * @param account The account the actions will be performed on.
-     * @param object A reference to the AccountObject that generated this dialog.
+     * @param object  A reference to the AccountObject that generated this dialog.
      */
     public WithdrawDialog(ATM atm, BankAccount account, AccountsObject object) {
         $$$setupUI$$$();
@@ -40,7 +40,6 @@ public class WithdrawDialog extends JDialog {
             public void actionPerformed(ActionEvent e) {
                 withdraw(atm, account);
                 object.repaint();
-
             }
         });
 
@@ -88,7 +87,6 @@ public class WithdrawDialog extends JDialog {
 
             JOptionPane.showMessageDialog(contentPane, message);
         }
-
     }
 
     private void deposit(ATM atm, BankAccount account) {
@@ -101,13 +99,11 @@ public class WithdrawDialog extends JDialog {
         }
         if (atm.deposit(atm.getLoggedInCustomer(), account, amount)) {
             JOptionPane.showMessageDialog(contentPane, "Deposit " + account.getCurrency() + " " + amount.toPlainString() + " success.");
-
         } else {
             JOptionPane.showMessageDialog(contentPane, "Deposit action failed.");
         }
         dispose();
     }
-
 
     private void onCancel() {
         dispose();
@@ -154,5 +150,4 @@ public class WithdrawDialog extends JDialog {
     public JComponent $$$getRootComponent$$$() {
         return contentPane;
     }
-
 }

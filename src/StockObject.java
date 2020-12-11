@@ -27,9 +27,9 @@ public class StockObject extends ElementObject {
     private JLabel avgCostTitle;
     private JLabel totalReturnTitle;
     private JPanel innerPanel;
-    private ATM atm;
-    private Stock stock;
-    private ViewStockScreen owner;
+    private final ATM atm;
+    private final Stock stock;
+    private final ViewStockScreen owner;
 
     public StockObject(ATM atm, ViewStockScreen owner, Stock stock) {
         $$$setupUI$$$();

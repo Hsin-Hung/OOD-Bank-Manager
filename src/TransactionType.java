@@ -12,5 +12,5 @@ public enum TransactionType {
     DEPOSIT,
     WITHDRAW,
     TRANSFER,
-    PAYLOAN;
+    PAYLOAN
 }

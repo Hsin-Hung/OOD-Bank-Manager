@@ -1,6 +1,5 @@
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
-import com.intellij.uiDesigner.core.Spacer;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
@@ -18,7 +17,7 @@ public class TransactionObject extends ElementObject {
     private JPanel mainPanel;
     private JLabel accountHint;
     private JLabel amountHint;
-    private Transaction transaction;
+    private final Transaction transaction;
 
     public TransactionObject(Transaction transaction) {
         setExternalTransaction(transaction.target_account_id == -1);

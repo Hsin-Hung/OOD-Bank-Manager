@@ -20,8 +20,8 @@ public class AccountsObject extends ElementObject {
     private JButton closeBtn;
     private JLabel typeLabel;
     private JLabel accountID;
-    private ATM atm;
-    private BankAccount account;
+    private final ATM atm;
+    private final BankAccount account;
 
     public AccountsObject(ATM atm, BankAccount account) {
         $$$setupUI$$$();
@@ -36,8 +36,6 @@ public class AccountsObject extends ElementObject {
                 super.mouseClicked(e);
                 createWithdrawDepositDialog(atm, account);
             }
-
-
         });
 
         closeBtn.addMouseListener(new MouseAdapter() {
@@ -59,7 +57,7 @@ public class AccountsObject extends ElementObject {
 
     public BankAccount getAccount() {
         return account;
-   }
+    }
 
     public boolean equals(Object o) {
         return account == o;
@@ -77,9 +75,7 @@ public class AccountsObject extends ElementObject {
             owner.remove(account);
         } else {
             JOptionPane.showMessageDialog(panel1, "Failed to close account.");
-
         }
-
     }
 
     public void transfer() {
@@ -98,7 +94,6 @@ public class AccountsObject extends ElementObject {
         typeLabel.setText(account.getType().toString());
         accountID.setText(Integer.toString(account.getAccountID()));
     }
-
 
     private void createWithdrawDepositDialog(ATM atm, BankAccount account) {
         new WithdrawDialog(atm, account, this);
@@ -163,5 +158,4 @@ public class AccountsObject extends ElementObject {
     public JComponent $$$getRootComponent$$$() {
         return panel1;
     }
-
 }

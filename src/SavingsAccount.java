@@ -2,8 +2,9 @@ import java.math.BigDecimal;
 
 public class SavingsAccount extends BankAccount {
     private boolean SecurityBackingAccount = false;
-    public SavingsAccount( int account_id,int user_id,  String currency, BigDecimal balance) {
-        super (  account_id,user_id, currency,balance, AccountType.SAVINGS);
+
+    public SavingsAccount(int account_id, int user_id, String currency, BigDecimal balance) {
+        super(account_id, user_id, currency, balance, AccountType.SAVINGS);
     }
 
     public void setAsSecurityBackingAccount() {

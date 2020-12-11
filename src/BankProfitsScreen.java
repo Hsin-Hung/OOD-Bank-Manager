@@ -3,10 +3,8 @@ import com.intellij.uiDesigner.core.GridLayoutManager;
 import javax.swing.*;
 import java.awt.*;
 import java.util.HashMap;
-import java.util.Set;
 
 public class BankProfitsScreen extends BaseScreen {
-
     private JPanel mainPanel;
 
     public BankProfitsScreen(ATM atm, HashMap<String, BankMainAccount> profits) {
@@ -18,11 +16,9 @@ public class BankProfitsScreen extends BaseScreen {
 
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
 
-
         for (String key : profits.keySet()) {
             mainPanel.add(new BankProfitObject(profits.get(key)).$$$getRootComponent$$$());
         }
-
     }
 
     {

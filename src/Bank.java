@@ -1,14 +1,12 @@
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
 // the bank is the backend which deals with all the logics and executes instructions that are sent from the ATM
 public class Bank {
-    private String name; // name of the bank
-    private DBManager db; //bank database
-    private HashMap<String, BankMainAccount> bankBalances;
+    private final String name; // name of the bank
+    private final DBManager db; //bank database
+    private final HashMap<String, BankMainAccount> bankBalances;
 
     public Bank(String name) {
         this.db = new DBManager();
@@ -170,9 +168,8 @@ public class Bank {
                     amount, ba.getCurrency(), -1, -1, null);
             c.addTransaction(t);
             ba.deposit(amount);
-            if(ba.getType().equals(AccountType.CHECKING)) {
-                chargeFee(c,ba,Constants.checkingFee);
-
+            if (ba.getType().equals(AccountType.CHECKING)) {
+                chargeFee(c, ba, Constants.checkingFee);
             }
             return true;
         }
@@ -187,7 +184,7 @@ public class Bank {
                     amount, ba.getCurrency(), -1, -1, null);
             if (t != null) c.addTransaction(t);
             ba.withdraw(amount);
-            chargeFee(c,ba,Constants.withdrawFee);
+            chargeFee(c, ba, Constants.withdrawFee);
             return true;
         }
         return false;
@@ -242,16 +239,14 @@ public class Bank {
 
             fromBank.setBalance(fromBankBalance);
             toBank.setBalance(toBankBalance);
-            if(fromBank.getType().equals(AccountType.CHECKING)) {
-                chargeFee(c,fromBank,Constants.checkingFee);
+            if (fromBank.getType().equals(AccountType.CHECKING)) {
+                chargeFee(c, fromBank, Constants.checkingFee);
             }
-            if(toBank.getType().equals(AccountType.CHECKING)) {
-                chargeFee(c,toBank,Constants.checkingFee);
+            if (toBank.getType().equals(AccountType.CHECKING)) {
+                chargeFee(c, toBank, Constants.checkingFee);
             }
             return true;
         }
-
-
 
         return false;
     }

@@ -5,8 +5,8 @@ import java.util.List;
 
 // all the logics are done in the bank, ATM is just a facade between the bank and the users
 public class ATM {
-    private List<BaseScreen> screens;
-    private Bank bank;// the bank that connects this ATM
+    private final List<BaseScreen> screens;
+    private final Bank bank;// the bank that connects this ATM
     private CustomerScreen customerScreen;
     private Person loggedInPerson; // the user who is logged in to this ATM
 
@@ -24,7 +24,6 @@ public class ATM {
     private void startLogin() {
         new LoginScreen(this);
     }
-
 
     /**
      * Sign a new user up after checking whether the username is unique or not
@@ -57,7 +56,6 @@ public class ATM {
     public boolean login(String userName, String password) {
         System.out.println("User name: " + userName + " Password: " + password);
 
-        // TODO check login with db, transition into customer or manager. return results.
         Person person = bank.userAuth(userName, password);
         if (person == null) {
             return false;
@@ -83,15 +81,8 @@ public class ATM {
     }
 
     public boolean closeAccount(Customer c, BankAccount bankAccount) {
-
-        if (bank.closeAccount(c, bankAccount)) {
-            return true;
-        }
-
-        return false;
-
+        return bank.closeAccount(c, bankAccount);
     }
-
 
     public boolean createCheckingAccount(String currency, BigDecimal startingBalance) {
         if (startingBalance.compareTo(Constants.minAccountOpeningBalance) < 0) {
@@ -121,11 +112,9 @@ public class ATM {
     }
 
     public boolean buyStock(String symbol, int shares) {
-
         if (shares >= 1) return bank.buyStocks(getLoggedInCustomer(), symbol, shares);
 
         return false;
-
     }
 
     public void newScreen(BaseScreen screen) {
@@ -161,7 +150,7 @@ public class ATM {
     public boolean isQualifiedForSecuritiesAccount() {
         if (getLoggedInCustomer().getSecuritiesAccount() != null) return true;
         SavingsAccount savingsAccount = getLoggedInCustomer().getSavingsAccount("USD");
-        return  (savingsAccount != null) && savingsAccount.hasEnoughBalance(Constants.vipThreshold);
+        return (savingsAccount != null) && savingsAccount.hasEnoughBalance(Constants.vipThreshold);
     }
 
     public boolean deposit(Customer c, BankAccount ba, BigDecimal amount) {
@@ -186,11 +175,8 @@ public class ATM {
     }
 
     public boolean requestLoan(BigDecimal amount, String currency, String collateral) {
-
         if (isPositive(amount)) {
-
             return bank.requestLoan(getLoggedInCustomer(), amount, currency, collateral);//will return boolean indicate success or not
-
         }
         return false;
     }
@@ -202,7 +188,6 @@ public class ATM {
             return false;
         }
     }
-
 
     /**
      * transfer money between two bank accounts of the same currency
@@ -240,6 +225,4 @@ public class ATM {
     public HashMap<String, BankMainAccount> getBankBalances() {
         return bank.getBankBalances();
     }
-
-
 }

@@ -37,6 +37,7 @@ public class StockMarket {
 
     /**
      * Queries "Financial Modeling Prep"'s stock api to fetch the latest stock prices.
+     *
      * @return true if the update was successful
      */
     public static boolean updatePrices() {
@@ -52,7 +53,7 @@ public class StockMarket {
                 }
                 URL url = new URL("https://financialmodelingprep.com/api/v3/quote/" + String.join(",", query) + "?apikey=f713a83175295761a138c51218623e24");
 
-                try (BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream(), "UTF-8"))) {
+                try (BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream(), StandardCharsets.UTF_8))) {
                     for (String line; (line = reader.readLine()) != null; ) {
                         if (line.contains("\"symbol\" :")) {
                             symbols.add(line.split(": ")[1].split(",")[0].replace('"', '\0'));

@@ -72,7 +72,7 @@ public class LoanPayoffDialog extends JDialog {
             JOptionPane.showMessageDialog(contentPane, "Amount entered is not valid.");
             return;
         }
-        
+
         atm.payOffLoan(loan, amount);
     }
 
@@ -125,5 +125,4 @@ public class LoanPayoffDialog extends JDialog {
     public JComponent $$$getRootComponent$$$() {
         return contentPane;
     }
-
 }

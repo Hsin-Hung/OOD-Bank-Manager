@@ -68,7 +68,6 @@ public class ElementsScreen extends BaseScreen {
 
     /**
      * Remove an object from the elements list, comparison is done by the equals method
-     *
      * @param object object to be removed
      */
     public void remove(Object object) {
@@ -93,7 +92,6 @@ public class ElementsScreen extends BaseScreen {
 
     /**
      * Redraws all the elements to the list.
-     *
      * @param elements element list to be drawn
      */
     public void refreshUIElements(List<IUIElement> elements) {
@@ -148,5 +146,4 @@ public class ElementsScreen extends BaseScreen {
     public JComponent $$$getRootComponent$$$() {
         return mainPanel;
     }
-
 }

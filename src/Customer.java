@@ -3,10 +3,9 @@ import java.util.List;
 
 // this represents a bank customer, which is a person
 public class Customer extends Person {
-    private List<Loan> loans;
+    private final List<Loan> loans;
     private List<BankAccount> bankAccounts;
-    private List<Transaction> transactions;
-
+    private final List<Transaction> transactions;
 
     public Customer(int user_id, String name, String username, String password) {
         super(user_id, name, username, password, Role.CUSTOMER);
@@ -14,7 +13,6 @@ public class Customer extends Person {
         loans = new ArrayList<>();
         transactions = new ArrayList<>();
     }
-
 
     public Customer(int user_id, String name, String username, String password, List<Loan> loans,
                     List<BankAccount> bankAccounts, List<Transaction> transactions, List<StockPosition> stockPositions) {
@@ -69,13 +67,10 @@ public class Customer extends Person {
             if (ba.getType() == AccountType.SAVINGS && ba.getCurrency().equals(currency)) {
 
                 return (SavingsAccount) ba;
-
             }
-
         }
 
         return null;
-
     }
 
     public SecuritiesAccount getSecuritiesAccount() {
@@ -85,13 +80,10 @@ public class Customer extends Person {
             if (ba.getType() == AccountType.SECURITIES) {
 
                 return (SecuritiesAccount) ba;
-
             }
-
         }
 
         return null;
-
     }
 
     public List<BankAccount> getBankAccounts() {
