@@ -58,10 +58,15 @@ public class TransferDialog extends JDialog {
     }
 
     private void onOK() {
+        BigDecimal amount = Helper.checkSpinnnerMoneyValue(transferAmount);
 
+        if (amount == null) {
+            JOptionPane.showMessageDialog(contentPane, "Amount entered is not valid.");
+            return;
+        }
         try {
-            if (atm.transferMoney(owner.getAccount(), (int) toAccountID.getValue(), new BigDecimal(transferAmount.getValue().toString()))) {
-                // TODO
+            if (atm.transferMoney(owner.getAccount(), (int) toAccountID.getValue(), amount)) {
+                JOptionPane.showMessageDialog(contentPane, "Transfer success!");
             } else {
                 JOptionPane.showMessageDialog(contentPane, "Failed to transfer money");
                 return;
