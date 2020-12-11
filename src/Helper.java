@@ -42,7 +42,12 @@ public class Helper {
         boolean isCorrectAmount = Helper.isCorrectMoney(new BigDecimal(amount));
 
         if(isCorrectAmount) {
-            return new BigDecimal(amount);
+            BigDecimal dec =  new BigDecimal(amount);
+            if(dec.compareTo(new BigDecimal(0)) < 0) {
+                return null;
+            } else {
+                return dec;
+            }
         } else {
             return null;
         }

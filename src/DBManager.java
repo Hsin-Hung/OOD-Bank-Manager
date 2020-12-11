@@ -406,7 +406,7 @@ public class DBManager {
     }
 
     public Person getPersonFromAccount(int accountId) {
-        String sql = "SELECT NAME FROM USERS, ACCOUNTS WHERE USERS.ID = ACCOUNTS.USERID AND ACCOUNTS.ID = ?";
+        String sql = "SELECT USERNAME FROM USERS, ACCOUNTS WHERE USERS.ID = ACCOUNTS.USERID AND ACCOUNTS.ID = ?";
         Person p = null;
         try {
             PreparedStatement stmt = conn.prepareStatement(sql);
@@ -423,7 +423,7 @@ public class DBManager {
     }
 
     public Person getPersonFromLoan(int loanId) {
-        String sql = "SELECT NAME FROM USERS, LOANS WHERE USERS.ID = LOANS.USERID AND ACCOUNTS.ID = ?";
+        String sql = "SELECT USERNAME FROM USERS, LOANS WHERE USERS.ID = LOANS.USERID AND LOANS.ID = ?";
         Person p = null;
         try {
             PreparedStatement stmt = conn.prepareStatement(sql);
@@ -786,7 +786,7 @@ public class DBManager {
         List<SavingsAccount> list = new ArrayList<>();
         try {
             PreparedStatement stmt = conn.prepareStatement(sql);
-            stmt.setBigDecimal(1, new BigDecimal("5000"));
+            stmt.setBigDecimal(1, Constants.vipThreshold);
             stmt.setString(2, AccountType.SAVINGS.toString());
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {

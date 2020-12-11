@@ -16,6 +16,8 @@ public class ElementsScreen extends BaseScreen {
     private JButton createBtn;
     private JPanel elementsPanel;
     private JPanel mainPanel;
+    private JLabel CheckingFeeLbl;
+    private JLabel WithdrawFeeLbl;
     private SingleArgMethod<Void, ElementsScreen> func;
     private SingleArgMethod<IUIElement, ElementsScreen> updateFunc;
     private List<IUIElement> elements;
@@ -26,6 +28,9 @@ public class ElementsScreen extends BaseScreen {
         $$$setupUI$$$();
 
         initialize();
+        CheckingFeeLbl.setText("A charge fee of $" + Constants.checkingFee + " will be applied to Checking account transactions");
+
+        WithdrawFeeLbl.setText("A charge fee of $" + Constants.withdrawFee + " will be applied to all withdrawls.");
         elementsPanel.setLayout(new BoxLayout(elementsPanel, BoxLayout.Y_AXIS));
         ElementsScreen s = this;
         createBtn.addMouseListener(new MouseAdapter() {
@@ -63,6 +68,7 @@ public class ElementsScreen extends BaseScreen {
 
     /**
      * Remove an object from the elements list, comparison is done by the equals method
+     *
      * @param object object to be removed
      */
     public void remove(Object object) {
@@ -87,6 +93,7 @@ public class ElementsScreen extends BaseScreen {
 
     /**
      * Redraws all the elements to the list.
+     *
      * @param elements element list to be drawn
      */
     public void refreshUIElements(List<IUIElement> elements) {
@@ -115,18 +122,24 @@ public class ElementsScreen extends BaseScreen {
      */
     private void $$$setupUI$$$() {
         mainPanel = new JPanel();
-        mainPanel.setLayout(new GridLayoutManager(2, 5, new Insets(10, 10, 10, 10), -1, -1));
+        mainPanel.setLayout(new GridLayoutManager(3, 5, new Insets(10, 10, 10, 10), -1, -1));
         mainPanel.setMinimumSize(new Dimension(500, 500));
         createBtn = new JButton();
         createBtn.setText("Create New");
         mainPanel.add(createBtn, new GridConstraints(0, 4, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        final Spacer spacer1 = new Spacer();
-        mainPanel.add(spacer1, new GridConstraints(0, 1, 1, 3, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
         final JScrollPane scrollPane1 = new JScrollPane();
-        mainPanel.add(scrollPane1, new GridConstraints(1, 0, 1, 5, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        mainPanel.add(scrollPane1, new GridConstraints(2, 0, 1, 5, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         elementsPanel = new JPanel();
         elementsPanel.setLayout(new GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
         scrollPane1.setViewportView(elementsPanel);
+        CheckingFeeLbl = new JLabel();
+        CheckingFeeLbl.setText("Label");
+        mainPanel.add(CheckingFeeLbl, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        WithdrawFeeLbl = new JLabel();
+        WithdrawFeeLbl.setText("Label");
+        mainPanel.add(WithdrawFeeLbl, new GridConstraints(1, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        final Spacer spacer1 = new Spacer();
+        mainPanel.add(spacer1, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
     }
 
     /**
@@ -135,4 +148,5 @@ public class ElementsScreen extends BaseScreen {
     public JComponent $$$getRootComponent$$$() {
         return mainPanel;
     }
+
 }

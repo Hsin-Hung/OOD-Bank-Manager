@@ -124,7 +124,6 @@ public class Bank {
             customer.addBankAccount(account);
             Transaction t = db.addTransaction(TransactionType.OPENSECURITIES, customer.getUid(), account.getAccountID(), amount, currency, -1, -1, null);
             if (t != null) customer.addTransaction(t);
-            chargeFee(customer, account, Constants.openAccountFee);
 
             return true;
         }
@@ -171,6 +170,10 @@ public class Bank {
                     amount, ba.getCurrency(), -1, -1, null);
             c.addTransaction(t);
             ba.deposit(amount);
+            if(ba.getType().equals(AccountType.CHECKING)) {
+                chargeFee(c,ba,Constants.checkingFee);
+
+            }
             return true;
         }
 
@@ -184,6 +187,7 @@ public class Bank {
                     amount, ba.getCurrency(), -1, -1, null);
             if (t != null) c.addTransaction(t);
             ba.withdraw(amount);
+            chargeFee(c,ba,Constants.withdrawFee);
             return true;
         }
         return false;
@@ -238,8 +242,16 @@ public class Bank {
 
             fromBank.setBalance(fromBankBalance);
             toBank.setBalance(toBankBalance);
+            if(fromBank.getType().equals(AccountType.CHECKING)) {
+                chargeFee(c,fromBank,Constants.checkingFee);
+            }
+            if(toBank.getType().equals(AccountType.CHECKING)) {
+                chargeFee(c,toBank,Constants.checkingFee);
+            }
             return true;
         }
+
+
 
         return false;
     }
