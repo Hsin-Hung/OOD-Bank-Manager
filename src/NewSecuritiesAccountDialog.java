@@ -59,8 +59,14 @@ public class NewSecuritiesAccountDialog extends JDialog {
     }
 
     private void onOK() {
+        BigDecimal amount = Helper.checkSpinnnerMoneyValue(spinner1);
 
-        if (!atm.createSecuritiesAccount(new BigDecimal((int) spinner1.getValue()))) {
+        if (amount == null) {
+            JOptionPane.showMessageDialog(contentPane, "Amount entered is not valid.");
+            return;
+        }
+
+        if (!atm.createSecuritiesAccount(amount)) {
             JOptionPane.showMessageDialog(contentPane, "Failed to create account");
             return;
         }
