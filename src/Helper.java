@@ -32,6 +32,11 @@ public class Helper {
 
     }
 
+    /**
+     * Function to check if spinner has valid money amount
+     * @param spinner
+     * @return BigDecimal value of spinner
+     */
     public static BigDecimal checkSpinnnerMoneyValue(JSpinner spinner) {
         String amount = spinner.getValue().toString();
         boolean isCorrectAmount = Helper.isCorrectMoney(new BigDecimal(amount));
