@@ -2,6 +2,9 @@ import java.math.BigDecimal;
 import java.sql.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.Calendar;
 import java.util.Date;
@@ -625,6 +628,29 @@ public class DBManager {
         }
         return loans;
     }
+
+    public List<Transaction> get24hrTransactions() {
+        List<Transaction> list = new ArrayList<>();
+
+        try {
+            String sql = "SELECT ID FROM TRANSACTIONS WHERE DATE = ? OR DATE = ?";
+
+            PreparedStatement stmt2 = conn.prepareStatement(sql);
+            long day = 24 * 60 * 60 * 1000;
+            stmt2.setString(1, Constants.DATE_FORMAT.format(System.currentTimeMillis()));
+            stmt2.setString(2, Constants.DATE_FORMAT.format(System.currentTimeMillis() - day));
+            ResultSet rs2 = stmt2.executeQuery();
+            while (rs2.next()) {
+                Transaction l = getTransaction(rs2.getInt(1));
+                list.add(l);
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return null;
+        }
+        return list;
+    }
+
     public List<Transaction> getAllTransaction() {
         List<Transaction> list = new ArrayList<>();
 

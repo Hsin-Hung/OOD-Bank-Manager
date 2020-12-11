@@ -1,3 +1,4 @@
+import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 
 import javax.swing.*;
@@ -5,6 +6,7 @@ import java.awt.*;
 
 public class DailyReportScreen extends BaseScreen {
     private JPanel mainPanel;
+    private JPanel elementPanel;
 
     public DailyReportScreen(ATM atm, java.util.List<Transaction> transactionList) {
         super(atm);
@@ -13,10 +15,10 @@ public class DailyReportScreen extends BaseScreen {
         setContentPane(mainPanel);
         centerScreen();
 
-        mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
+        elementPanel.setLayout(new BoxLayout(elementPanel, BoxLayout.Y_AXIS));
 
         for (Transaction transaction : transactionList) {
-            mainPanel.add(new TransactionObject(transaction).$$$getRootComponent$$$());
+            elementPanel.add(new TransactionObject(transaction).$$$getRootComponent$$$());
         }
     }
 
@@ -37,6 +39,11 @@ public class DailyReportScreen extends BaseScreen {
     private void $$$setupUI$$$() {
         mainPanel = new JPanel();
         mainPanel.setLayout(new GridLayoutManager(1, 1, new Insets(10, 10, 10, 10), -1, -1));
+        final JScrollPane scrollPane1 = new JScrollPane();
+        mainPanel.add(scrollPane1, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        elementPanel = new JPanel();
+        elementPanel.setLayout(new GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
+        scrollPane1.setViewportView(elementPanel);
     }
 
     /**
