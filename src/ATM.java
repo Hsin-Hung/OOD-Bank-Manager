@@ -3,7 +3,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-// all the logics are done in the bank, ATM is just a facade between the bank and the users
+/*
+ * ATM.java - class that implements all the logics are done in the bank
+ * ATM is just a facade between the bank and the users
+ */
 public class ATM {
     private final List<BaseScreen> screens;
     private final Bank bank;// the bank that connects this ATM
@@ -13,14 +16,20 @@ public class ATM {
     public ATM(Bank bank) {
         this.bank = bank;
         screens = new ArrayList<>();
-
         startLogin();
     }
 
+    /**
+     * Function that returns the current customer that is logged in.
+     * @return Customer that is logged in.
+     */
     public Customer getLoggedInCustomer() {
         return (Customer) loggedInPerson;
     }
 
+    /**
+     * Function that calls and create login screen for users.
+     */
     private void startLogin() {
         new LoginScreen(this);
     }
@@ -111,10 +120,13 @@ public class ATM {
 
     public boolean buyStock(String symbol, int shares) {
         if (shares >= 1) return bank.buyStocks(getLoggedInCustomer(), symbol, shares);
-
         return false;
     }
 
+    /**
+     * Function to refresh the current screen.
+     * @param screen
+     */
     public void newScreen(BaseScreen screen) {
         if (screens.size() > 0) {
             screens.get(screens.size() - 1).setVisible(false);
