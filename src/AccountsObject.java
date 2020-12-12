@@ -65,11 +65,9 @@ public class AccountsObject extends ElementObject {
 
     public void closeAccount() {
         if (atm.closeAccount(atm.getLoggedInCustomer(), account)) {
-
-            atm.getLoggedInCustomer().removeBankAccount(account);
             String message = "Account has been closed successfully. A fee of " +
                     Constants.closeAccountFee.toPlainString() + " has been applied. " +
-                    "You are left with " + account.getBalance().subtract(Constants.closeAccountFee);
+                    "You are left with " + account.getBalance();
             JOptionPane.showMessageDialog(panel1, message);
 
             owner.remove(account);

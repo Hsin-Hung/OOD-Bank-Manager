@@ -134,8 +134,6 @@ public class Bank {
         if (db.deleteAccount(c, bankAccount.getAccountID())) {
             chargeFee(c, bankAccount, Constants.closeAccountFee);
             c.removeBankAccount(bankAccount);
-            Transaction t = db.addTransaction(TransactionType.CLOSE, c.getUid(), bankAccount.getAccountID(), null, null, -1, -1, null);
-            if (t != null) c.addTransaction(t);
             return true;
         }
 
