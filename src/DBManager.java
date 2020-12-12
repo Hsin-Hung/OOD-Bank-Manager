@@ -587,7 +587,7 @@ public class DBManager {
         List<Loan> loans = new ArrayList<>();
 
         try {
-            String sql = "SELECT ID FROM LOANS WHERE USERID = ?";
+            String sql = "SELECT ID FROM LOANS WHERE USERID = ? AND AMOUNT > 0";
 
             PreparedStatement stmt2 = conn.prepareStatement(sql);
             stmt2.setInt(1, id);

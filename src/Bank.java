@@ -205,7 +205,7 @@ public class Bank {
     }
 
     protected boolean payOffLoan(Customer customer, Loan loan, BigDecimal amount) {
-        if (amount.equals(loan.getAmount())) {
+        if (amount.compareTo(loan.getAmount()) == 0) {
             customer.removeLoan(loan);
             db.removeLoan(loan.getLid());
             loan.setAmount(new BigDecimal(0));
