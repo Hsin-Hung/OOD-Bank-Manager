@@ -263,8 +263,7 @@ public class DBManager {
             stmt.setInt(1, accountId);
             stmt.execute();
             stmt.close();
-            Transaction t = addTransaction(TransactionType.CLOSE, c.getUid(), accountId, null, null, -1, -1, null);
-            c.addTransaction(t);
+
         } catch (SQLException e) {
             System.out.println(e.getMessage());
             return false;
@@ -757,7 +756,7 @@ public class DBManager {
             while (rs.next()) {
                 SavingsAccount acc = new SavingsAccount(rs.getInt(1),
                         rs.getInt(2),
-                        rs.getString(3),
+                        rs.getString(5),
                         rs.getBigDecimal(4));
                 list.add(acc);
             }
