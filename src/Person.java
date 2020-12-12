@@ -1,3 +1,5 @@
+
+//this abstract class represents any type of person
 public abstract class Person {
     private final Role role;
     private final int user_id;

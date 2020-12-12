@@ -1,5 +1,6 @@
 import java.math.BigDecimal;
 
+//this class represents a type of stock
 public class Stock {
 
     private final String symbol;// this uniquely identifies the stock

@@ -2,6 +2,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+//this class represents a securities account, which is a type of bank account
 public class SecuritiesAccount extends BankAccount {
     private List<StockPosition> stockPositions = new ArrayList<>();
 
