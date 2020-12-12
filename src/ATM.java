@@ -3,7 +3,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-/*
+/**
  * ATM.java - class that implements all the logics are done in the bank
  * ATM is just a facade between the bank and the users
  */

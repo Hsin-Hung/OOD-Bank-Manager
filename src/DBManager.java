@@ -7,7 +7,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-/*
+/**
  * DBManager.java - class that handles all database operations of the bank
  */
 public class DBManager {

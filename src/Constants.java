@@ -2,7 +2,7 @@ import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 
-/*
+/**
  * Constants.java - class that keeps track of all the hard coded constants needed for bank.
  */
 public class Constants {

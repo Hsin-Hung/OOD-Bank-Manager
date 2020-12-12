@@ -1,6 +1,9 @@
 import javax.swing.*;
 import java.awt.event.WindowEvent;
 
+/**
+ * The base screen for all custom screens.
+ */
 public abstract class BaseScreen extends JFrame {
     private static int openWindows = 0;
     protected final ATM atm;

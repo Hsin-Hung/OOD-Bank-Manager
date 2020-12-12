@@ -2,6 +2,9 @@ import javax.swing.*;
 import java.math.BigDecimal;
 import java.util.List;
 
+/**
+ * Helper class that holds some static helper functions for the whole project to use
+ */
 public class Helper {
 
     /**

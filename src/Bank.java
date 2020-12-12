@@ -2,7 +2,7 @@ import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 
-/*
+/**
  * Bank.java - class that handles the backend which deals with all the logics and executes instructions that are sent from the ATM
  */
 public class Bank {
