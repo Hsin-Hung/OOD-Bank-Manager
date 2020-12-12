@@ -1,5 +1,6 @@
 import java.math.BigDecimal;
 
+//this class represents a loan and it contains all the details of the loan
 public class Loan {
     private int lid;
     private int uid;

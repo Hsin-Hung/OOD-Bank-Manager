@@ -51,6 +51,7 @@ public class Customer extends Person {
         this.bankAccounts = accounts;
     }
 
+    //get the bank account with the given account id
     public BankAccount getBankAccount(int accountID) {
         for (BankAccount bankAccount : bankAccounts) {
             if (bankAccount.getAccountID() == accountID) {
@@ -60,6 +61,7 @@ public class Customer extends Person {
         return null;
     }
 
+    //get the savings account of a given currency
     public SavingsAccount getSavingsAccount(String currency) {
 
         for (BankAccount ba : bankAccounts) {

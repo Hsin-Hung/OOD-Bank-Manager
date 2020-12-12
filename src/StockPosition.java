@@ -1,7 +1,7 @@
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
-//stock portfolio can hold multiple stocks of the same stock id
+//this class represents a stock position a user holds
 public class StockPosition {
 
     private final int uid; // the customer who owns this stock position
