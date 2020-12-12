@@ -2,7 +2,9 @@ import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 
-// the bank is the backend which deals with all the logics and executes instructions that are sent from the ATM
+/*
+ * Bank.java - class that handles the backend which deals with all the logics and executes instructions that are sent from the ATM
+ */
 public class Bank {
     private final String name; // name of the bank
     private final DBManager db; //bank database
@@ -58,6 +60,10 @@ public class Bank {
         return db.isValidUserAuth(username, password);
     }
 
+    /**
+     * Function that reloads the accounts that a customer has.
+     * @param customer
+     */
     public void reloadCustomerAccount(Customer customer) {
         customer.reloadAccounts(db.getAllUserAccounts(customer.getUid()));
     }
@@ -129,7 +135,12 @@ public class Bank {
         return false;
     }
 
-    //close the given bank account
+    /**
+     * Function that close the given bank account
+     * @param c
+     * @param bankAccount
+     * @return true if able to close account, false if not able to.
+     */
     public boolean closeAccount(Customer c, BankAccount bankAccount) {
         if (db.deleteAccount(c, bankAccount.getAccountID())) {
             chargeFee(c, bankAccount, Constants.closeAccountFee);
@@ -142,11 +153,18 @@ public class Bank {
         return false;
     }
 
+    /**
+     * Function that return account type of selected account
+     * @param ba - BANKACCOUNT
+     * @return String
+     */
     public String getAccountType(BankAccount ba) {
         return ba.getType().toString();
     }
 
-    //update interests for all loans and all bank account
+    /**
+     * Function to update interests for all loans and all bank account
+     */
     public void updateInterests() {
         List<SavingsAccount> savingsList = db.getHighSavingAccounts();
         for (SavingsAccount sa : savingsList) {

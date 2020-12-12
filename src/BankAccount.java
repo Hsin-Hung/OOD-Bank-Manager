@@ -1,6 +1,8 @@
 import java.math.BigDecimal;
 
-// this is an abstract class and can represent any type of BankAccount
+/**
+ * BankAccount.java - Abstract class and can represent any type of BankAccount
+ */
 public abstract class BankAccount {
     private final int ACCOUNT_ID;//id that uniquely identifies this bank account
     private final int USER_ID;// the user who owns it
