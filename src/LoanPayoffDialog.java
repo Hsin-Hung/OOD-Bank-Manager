@@ -15,7 +15,7 @@ public class LoanPayoffDialog extends JDialog {
     private JLabel AmountLabel;
 
     public LoanPayoffDialog(ATM atm, Loan loan, LoanObject object) {
-        spinner1.setModel(new SpinnerNumberModel(0, 0, 1000000000, 0.1));
+        spinner1.setModel(new SpinnerNumberModel(0, 0, loan.getAmount().doubleValue(), 0.01));
 
         setContentPane(contentPane);
         setModal(true);
@@ -55,13 +55,11 @@ public class LoanPayoffDialog extends JDialog {
     }
 
     private void onOK(ATM atm, Loan loan) {
-        // add your code here
         payOffLoan(atm, loan);
         dispose();
     }
 
     private void onCancel() {
-        // add your code here if necessary
         dispose();
     }
 

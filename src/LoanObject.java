@@ -27,7 +27,7 @@ public class LoanObject extends ElementObject {
         this.atm = atm;
 
         currencyLabel.setText(loan.getCurrency());
-        amountLabel.setText(loan.getAmount().toPlainString());
+        amountLabel.setText(Constants.CURRENCY_FORMAT.format(loan.getAmount().doubleValue()));
         collateralLabel.setText(loan.getCollateral());
 
         payoffBtn.addMouseListener(new MouseAdapter() {

@@ -45,7 +45,7 @@ public class StockObject extends ElementObject {
 
         stockName.setText(stock.getName());
         symbol.setText(stock.getSymbol());
-        marketVal.setText(stock.getMarketVal().toString());
+        marketVal.setText(Constants.CURRENCY_FORMAT.format(stock.getMarketVal().doubleValue()));
 
         boldJlabel(nameTitle);
         boldJlabel(symbolTitle);
@@ -102,8 +102,8 @@ public class StockObject extends ElementObject {
     public void updateStockPosition(StockPosition stockPosition) {
         sellButton.setEnabled(true);
         shares.setText(Integer.toString(stockPosition.getShares()));
-        avgCost.setText(stockPosition.getAvgCost().toPlainString());
-        totalReturn.setText(stockPosition.getTotalReturn().toPlainString());
+        avgCost.setText(Constants.CURRENCY_FORMAT.format(stockPosition.getAvgCost().doubleValue()));
+        totalReturn.setText(Constants.CURRENCY_FORMAT.format(stockPosition.getTotalReturn().doubleValue()));
     }
 
     /**
