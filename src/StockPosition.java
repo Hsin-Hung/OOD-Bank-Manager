@@ -1,4 +1,5 @@
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 //stock portfolio can hold multiple stocks of the same stock id
 public class StockPosition {
@@ -72,8 +73,9 @@ public class StockPosition {
     public StockPosition buyStock(Stock newStock, int shares) {
         if (isOfStock(newStock)) {
             this.shares += shares;
-            BigDecimal buyCost = newStock.getMarketVal().multiply(new BigDecimal(shares));
-            avgCost = getTotalCost().add(buyCost).divide(new BigDecimal(this.shares));
+            BigDecimal buyCost = newStock.getMarketVal().multiply(new BigDecimal(shares)).stripTrailingZeros();
+            
+            avgCost = getTotalCost().add(buyCost).divide(new BigDecimal(Integer.toString(this.shares)),2, RoundingMode.CEILING);
             return this;
         }
         return null;

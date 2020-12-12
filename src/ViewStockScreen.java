@@ -69,7 +69,12 @@ public class ViewStockScreen extends BaseScreen {
 
     private void updateBalance() {
         SecuritiesAccount securitiesAccount = owner.getLoggedInCustomer().getSecuritiesAccount();
-        balance.setText(securitiesAccount.getBalance().toPlainString());
+        if (securitiesAccount != null) {
+            balance.setText(securitiesAccount.getBalance().toPlainString());
+        } else {
+            balance.setText("0");
+        }
+
     }
 
     // update the stock display area base on whether the user has a securities account or not
@@ -182,4 +187,5 @@ public class ViewStockScreen extends BaseScreen {
     public JComponent $$$getRootComponent$$$() {
         return mainPanel;
     }
+
 }
