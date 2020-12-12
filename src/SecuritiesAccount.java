@@ -41,6 +41,14 @@ public class SecuritiesAccount extends BankAccount {
     }
 
     /**
+     * We can always close a security
+     * @return true
+     */
+    public boolean canClose() {
+        return true;
+    }
+
+    /**
      * Check if the securities account owns shares of this stock
      *
      * @param symbol Stock symbol of the stock to be checked

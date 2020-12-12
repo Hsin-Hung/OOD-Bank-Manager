@@ -42,7 +42,11 @@ public class AccountsObject extends ElementObject {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
-                closeAccount();
+                if (account.canClose()) {
+                    closeAccount();
+                } else {
+                    JOptionPane.showMessageDialog(panel1, "You are not allowed to close this account");
+                }
             }
         });
 

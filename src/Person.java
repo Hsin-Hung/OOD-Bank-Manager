@@ -1,3 +1,6 @@
+/**
+ * The base class
+ */
 public abstract class Person {
     private final Role role;
     private final int user_id;

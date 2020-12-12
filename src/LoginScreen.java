@@ -9,6 +9,9 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+/**
+ * The initial screen users see when they open the ATM. Allows either login or jumping to a sign up screen.
+ */
 public class LoginScreen extends BaseScreen {
     private JTextField userTextField;
     private JPanel mainPanel;

@@ -7,6 +7,9 @@ import java.awt.*;
 import java.awt.event.*;
 import java.math.BigDecimal;
 
+/**
+ * A simple pop up dialog for customers to enter the amount of money they want to put in to pay off loans
+ */
 public class LoanPayoffDialog extends JDialog {
     private JPanel contentPane;
     private JButton buttonOK;

@@ -20,6 +20,10 @@ public class SavingsAccount extends BankAccount {
         return super.hasEnoughBalance(amount);
     }
 
+    public boolean canClose() {
+        return !isSecurityBackingAccount();
+    }
+
     public boolean isSecurityBackingAccount() {
         return SecurityBackingAccount;
     }

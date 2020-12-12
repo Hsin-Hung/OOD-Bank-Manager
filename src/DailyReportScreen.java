@@ -4,6 +4,9 @@ import com.intellij.uiDesigner.core.GridLayoutManager;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * A screen that shows the the transactions that happened in the past 24hrs for the bank manager to review.
+ */
 public class DailyReportScreen extends BaseScreen {
     private JPanel mainPanel;
     private JPanel elementPanel;

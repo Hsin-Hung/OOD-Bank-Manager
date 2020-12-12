@@ -7,6 +7,9 @@ import java.awt.*;
 import java.awt.event.*;
 import java.math.BigDecimal;
 
+/**
+ * A simple dialog that allows user to create new accounts (savings and checkings)
+ */
 public class NewAccountDialog extends JDialog {
     private JPanel contentPane;
     private JButton buttonOK;

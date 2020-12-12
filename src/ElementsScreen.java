@@ -11,6 +11,7 @@ import java.util.List;
 /**
  * A common screen that can be used to display a list of IUIElements in a scrollable panel.
  * Can pass in functions to run when a button is clicked, or functions to run when an update is notified
+ * Implements the strategy pattern
  */
 public class ElementsScreen extends BaseScreen {
     private JButton createBtn;

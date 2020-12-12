@@ -6,6 +6,9 @@ import java.awt.*;
 import java.awt.event.*;
 import java.math.BigDecimal;
 
+/**
+ * A dialog that shows up to allow users to withdraw or deposit money.
+ */
 public class WithdrawDialog extends JDialog {
     private JPanel contentPane;
     private JButton DepositButton;
@@ -16,14 +19,13 @@ public class WithdrawDialog extends JDialog {
 
     /**
      * A dialog that shows up to allow users to withdraw or deposit money.
-     *
      * @param atm     Reference to the current ATM object.
      * @param account The account the actions will be performed on.
      * @param object  A reference to the AccountObject that generated this dialog.
      */
     public WithdrawDialog(ATM atm, BankAccount account, AccountsObject object) {
         $$$setupUI$$$();
-        amountSpin.setModel(new SpinnerNumberModel(0, 0, 1000000000, 0.1));
+        amountSpin.setModel(new SpinnerNumberModel(0, 0, 1000000000, 0.01));
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(DepositButton);
