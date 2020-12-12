@@ -18,6 +18,7 @@ public class ElementsScreen extends BaseScreen {
     private JPanel mainPanel;
     private JLabel CheckingFeeLbl;
     private JLabel WithdrawFeeLbl;
+    private JLabel CloseOpenLabel;
     private SingleArgMethod<Void, ElementsScreen> func;
     private SingleArgMethod<IUIElement, ElementsScreen> updateFunc;
     private List<IUIElement> elements;
@@ -30,7 +31,10 @@ public class ElementsScreen extends BaseScreen {
         initialize();
         CheckingFeeLbl.setText("A charge fee of $" + Constants.checkingFee + " will be applied to Checking account transactions");
 
-        WithdrawFeeLbl.setText("A charge fee of $" + Constants.withdrawFee + " will be applied to all withdrawls.");
+        WithdrawFeeLbl.setText("A charge fee of $" + Constants.withdrawFee + " will be applied to all withdrawals.");
+
+
+
         elementsPanel.setLayout(new BoxLayout(elementsPanel, BoxLayout.Y_AXIS));
         ElementsScreen s = this;
         createBtn.addMouseListener(new MouseAdapter() {
