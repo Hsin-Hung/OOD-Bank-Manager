@@ -6,6 +6,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
+/**
+ * A dialog that allows users to buy/sell stocks.
+ */
 public class StockActionDialog extends JDialog {
     private JPanel contentPane;
     private JButton buttonOK;
@@ -15,6 +18,12 @@ public class StockActionDialog extends JDialog {
     private final StockObject owner;
     private final boolean isBuy;
 
+    /**
+     * Initializes a new dialog
+     * @param atm A reference to the current ATM session
+     * @param owner The Stock Object that triggered this dialog
+     * @param isBuy Whether the dialog is for buy or sell
+     */
     public StockActionDialog(ATM atm, StockObject owner, boolean isBuy) {
         this.atm = atm;
         this.owner = owner;
@@ -58,7 +67,6 @@ public class StockActionDialog extends JDialog {
     }
 
     private void onOK() {
-
         if (isBuy) {
             if (!atm.buyStock(owner.getStock().getSymbol(), (int) shares.getValue())) {
                 JOptionPane.showMessageDialog(contentPane, "Failed to buy stock");
@@ -77,7 +85,6 @@ public class StockActionDialog extends JDialog {
     }
 
     private void onCancel() {
-        // add your code here if necessary
         dispose();
     }
 

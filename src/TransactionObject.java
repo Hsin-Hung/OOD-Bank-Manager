@@ -5,6 +5,9 @@ import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
 
+/**
+ * IUIElement to display the details of a transaction to a user
+ */
 public class TransactionObject extends ElementObject {
     private JLabel dateLabel;
     private JLabel typeLabel;
@@ -24,16 +27,18 @@ public class TransactionObject extends ElementObject {
         this.transaction = transaction;
 
         if (transaction.account_id == -1) {
-            accountLabel.setVisible(false);
-            amountLabel.setVisible(false);
-            accountHint.setVisible(false);
-            amountHint.setVisible(false);
+            accountLabel.setForeground(new Color(0, true));
+            amountLabel.setForeground(new Color(0, true));
+            accountHint.setForeground(new Color(0, true));
+            amountHint.setForeground(new Color(0, true));
         }
-        // TODO Eric: update transaction details.
+
         dateLabel.setText(Constants.DATE_FORMAT.format(transaction.getDate()));
         typeLabel.setText(transaction.getType().toString());
         accountLabel.setText(Integer.toString(transaction.getAccount_id()));
-        if (transaction.getAmount() != null) amountLabel.setText(transaction.getAmount().toPlainString());
+        if (transaction.getAmount() != null) {
+            amountLabel.setText(transaction.getAmount().toPlainString() + transaction.getCurrency());
+        }
         targetUserLabel.setText(Integer.toString(transaction.getTarget_uid()));
         targetAccountLabel.setText(Integer.toString(transaction.getTarget_account_id()));
     }
@@ -43,10 +48,10 @@ public class TransactionObject extends ElementObject {
     }
 
     private void setExternalTransaction(boolean external) {
-        targetUserLabel.setVisible(!external);
-        targetUserInfoLabel.setVisible(!external);
-        targetAccountLabel.setVisible(!external);
-        targetAccountInfoLabel.setVisible(!external);
+        targetUserLabel.setForeground(new Color(0, true));
+        targetUserInfoLabel.setForeground(new Color(0, true));
+        targetAccountLabel.setForeground(new Color(0, true));
+        targetAccountInfoLabel.setForeground(new Color(0, true));
     }
 
     {
@@ -65,28 +70,16 @@ public class TransactionObject extends ElementObject {
      */
     private void $$$setupUI$$$() {
         mainPanel = new JPanel();
-        mainPanel.setLayout(new GridLayoutManager(2, 6, new Insets(10, 10, 10, 10), -1, -1, true, false));
+        mainPanel.setLayout(new GridLayoutManager(2, 6, new Insets(10, 10, 10, 10), 1, -1));
         mainPanel.setMaximumSize(new Dimension(2147483647, 90));
-        mainPanel.setMinimumSize(new Dimension(700, 90));
+        mainPanel.setMinimumSize(new Dimension(500, 90));
         mainPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.black), null, TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
-        final JLabel label1 = new JLabel();
-        label1.setText("Date");
-        mainPanel.add(label1, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, 1, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        final JLabel label2 = new JLabel();
-        label2.setText("Type");
-        mainPanel.add(label2, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, 1, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        dateLabel = new JLabel();
-        dateLabel.setText("Label");
-        mainPanel.add(dateLabel, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        typeLabel = new JLabel();
-        typeLabel.setText("Label");
-        mainPanel.add(typeLabel, new GridConstraints(1, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         amountHint = new JLabel();
         amountHint.setText("Amount");
-        mainPanel.add(amountHint, new GridConstraints(1, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, 1, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        mainPanel.add(amountHint, new GridConstraints(1, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         accountHint = new JLabel();
         accountHint.setText("Account");
-        mainPanel.add(accountHint, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, 1, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        mainPanel.add(accountHint, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         amountLabel = new JLabel();
         amountLabel.setText("-1");
         mainPanel.add(amountLabel, new GridConstraints(1, 3, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
@@ -95,16 +88,28 @@ public class TransactionObject extends ElementObject {
         mainPanel.add(accountLabel, new GridConstraints(0, 3, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         targetUserInfoLabel = new JLabel();
         targetUserInfoLabel.setText("Target User");
-        mainPanel.add(targetUserInfoLabel, new GridConstraints(0, 4, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, 1, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        mainPanel.add(targetUserInfoLabel, new GridConstraints(0, 4, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         targetAccountInfoLabel = new JLabel();
         targetAccountInfoLabel.setText("Target Account");
-        mainPanel.add(targetAccountInfoLabel, new GridConstraints(1, 4, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, 1, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        mainPanel.add(targetAccountInfoLabel, new GridConstraints(1, 4, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         targetUserLabel = new JLabel();
         targetUserLabel.setText("Label");
         mainPanel.add(targetUserLabel, new GridConstraints(0, 5, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         targetAccountLabel = new JLabel();
         targetAccountLabel.setText("Label");
         mainPanel.add(targetAccountLabel, new GridConstraints(1, 5, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        final JLabel label1 = new JLabel();
+        label1.setText("Date");
+        mainPanel.add(label1, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        final JLabel label2 = new JLabel();
+        label2.setText("Type");
+        mainPanel.add(label2, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        dateLabel = new JLabel();
+        dateLabel.setText("Label");
+        mainPanel.add(dateLabel, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, new Dimension(150, -1), new Dimension(150, -1), new Dimension(150, -1), 1, false));
+        typeLabel = new JLabel();
+        typeLabel.setText("Label");
+        mainPanel.add(typeLabel, new GridConstraints(1, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, new Dimension(150, -1), new Dimension(150, -1), new Dimension(150, -1), 1, false));
     }
 
     /**

@@ -8,7 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 /**
- * UI element for displaying the information for stocks
+ * IUIElement for displaying the information of stocks to users
  */
 public class StockObject extends ElementObject {
     private JPanel panel1;
@@ -31,6 +31,12 @@ public class StockObject extends ElementObject {
     private final Stock stock;
     private final ViewStockScreen owner;
 
+    /**
+     * Create a new stock object
+     * @param atm Reference to the current ATM session.
+     * @param owner The stock screen view that will be holding this IUIElement
+     * @param stock The stock that this will be about.
+     */
     public StockObject(ATM atm, ViewStockScreen owner, Stock stock) {
         $$$setupUI$$$();
         this.atm = atm;
@@ -63,45 +69,57 @@ public class StockObject extends ElementObject {
         });
     }
 
-    //passing through this constructor indicates the customer owns this stock
+    /**
+     * Initialize a stock object where the customer already owns some of the stocks
+     * @param atm A reference to the current ATM session.
+     * @param owner The stock screen view that will be holding this element.
+     * @param stockPosition The respective stock position the current logged in customer has.
+     */
     public StockObject(ATM atm, ViewStockScreen owner, StockPosition stockPosition) {
         this(atm, owner, stockPosition.getStock());
 
         updateStockPosition(stockPosition);
     }
 
+    /**
+     * Pop up a dialog box for buying stocks
+     */
     public void buyEvent() {
         new StockActionDialog(atm, this, true);
     }
 
+    /**
+     * Pop up a dialog box for selling stocks
+     */
     public void sellEvent() {
         new StockActionDialog(atm, this, false);
     }
 
+    /**
+     * Refreshes the object so that it displays updated information on how much the customer owns.
+     * @param stockPosition
+     */
     public void updateStockPosition(StockPosition stockPosition) {
-
         sellButton.setEnabled(true);
         shares.setText(Integer.toString(stockPosition.getShares()));
         avgCost.setText(stockPosition.getAvgCost().toPlainString());
         totalReturn.setText(stockPosition.getTotalReturn().toPlainString());
     }
 
+    /**
+     * Trigger the object to check for the latest status, and update the element accordingly.
+     */
     public void update() {
-
-        Customer customer = atm.getLoggedInCustomer();
         owner.update();
+        Customer customer = atm.getLoggedInCustomer();
 
         if (customer != null) {
-
             SecuritiesAccount securitiesAccount = customer.getSecuritiesAccount();
-
             StockPosition stockPosition = securitiesAccount.getStockPosition(stock.getSymbol());
 
             if (stockPosition != null) {
-
                 updateStockPosition(stockPosition);
             } else {
-
                 sellButton.setEnabled(false);
                 shares.setText("0");
                 avgCost.setText("-1");
@@ -115,7 +133,6 @@ public class StockObject extends ElementObject {
     }
 
     private void boldJlabel(JLabel jLabel) {
-
         jLabel.setText("<html><B>" + jLabel.getText() + "</B></html>");
     }
 

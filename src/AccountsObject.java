@@ -90,7 +90,7 @@ public class AccountsObject extends ElementObject {
         }
 
         currencyLabel.setText(account.getCurrency());
-        amountLabel.setText(account.getBalance().toPlainString());
+        amountLabel.setText(Constants.CURRENCY_FORMAT.format(account.getBalance().doubleValue()));
         typeLabel.setText(account.getType().toString());
         accountID.setText(Integer.toString(account.getAccountID()));
     }
@@ -125,8 +125,9 @@ public class AccountsObject extends ElementObject {
         currencyLabel.setText("USD");
         panel2.add(currencyLabel, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         amountLabel = new JLabel();
+        amountLabel.setBackground(new Color(-12828863));
         amountLabel.setText("$100");
-        panel2.add(amountLabel, new GridConstraints(1, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        panel2.add(amountLabel, new GridConstraints(1, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, new Dimension(130, -1), new Dimension(130, -1), new Dimension(150, -1), 0, false));
         withdrawBtn = new JButton();
         withdrawBtn.setText("Withdraw/Deposit");
         panel2.add(withdrawBtn, new GridConstraints(0, 5, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));

@@ -70,7 +70,6 @@ public class WithdrawDialog extends JDialog {
     }
 
     private void withdraw(ATM atm, BankAccount account) {
-        // add your code here
         BigDecimal amount = Helper.checkSpinnnerMoneyValue(amountSpin);
 
         if (amount == null) {
@@ -90,7 +89,6 @@ public class WithdrawDialog extends JDialog {
     }
 
     private void deposit(ATM atm, BankAccount account) {
-        // add your code here
         BigDecimal amount = Helper.checkSpinnnerMoneyValue(amountSpin);
 
         if (amount == null) {
