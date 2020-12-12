@@ -13,7 +13,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-//this class represents the stock market, which contains all types of stocks in the market
+/**
+ * this class represents the stock market, which contains all types of stocks in the market
+ */
 public class StockMarket {
 
     private static List<Stock> stocks;

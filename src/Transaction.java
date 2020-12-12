@@ -1,7 +1,9 @@
 import java.math.BigDecimal;
 import java.util.Date;
 
-//this class represents a particular transaction and it contains all the transaction details
+/**
+ * this class represents a particular transaction and it contains all the transaction details
+ */
 public class Transaction {
     protected int tid;
     protected Date date;

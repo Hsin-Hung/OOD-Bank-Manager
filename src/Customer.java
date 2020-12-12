@@ -1,7 +1,9 @@
 import java.util.ArrayList;
 import java.util.List;
 
-// this represents a bank customer, which is a person
+/**
+ * this represents a bank customer, which is a person
+ */
 public class Customer extends Person {
     private final List<Loan> loans;
     private List<BankAccount> bankAccounts;

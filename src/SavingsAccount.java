@@ -1,6 +1,8 @@
 import java.math.BigDecimal;
 
-//this class represents the savings account, which is a type of bank account
+/**
+ * this class represents the savings account, which is a type of bank account
+ */
 public class SavingsAccount extends BankAccount {
     private boolean SecurityBackingAccount = false;
 

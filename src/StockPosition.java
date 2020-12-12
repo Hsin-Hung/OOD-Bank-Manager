@@ -1,7 +1,9 @@
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
-//this class represents a stock position a user holds
+/**
+ * this class represents a stock position a user holds
+ */
 public class StockPosition {
 
     private final int uid; // the customer who owns this stock position

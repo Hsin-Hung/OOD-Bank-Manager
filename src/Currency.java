@@ -6,7 +6,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-// this class represents currency and it contains different types of currencies
+/**
+ * this class represents currency and it contains different types of currencies
+ */
 public class Currency {
     private static List<String> currencyList;
 

@@ -1,4 +1,6 @@
-//this enum represents all types of transactions
+/**
+ * this enum represents all types of transactions
+ */
 public enum TransactionType {
     SIGNUP,
     OPENCHECKING,
