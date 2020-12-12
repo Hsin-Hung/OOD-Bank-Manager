@@ -26,19 +26,28 @@ public class TransactionObject extends ElementObject {
         setExternalTransaction(transaction.target_account_id == -1);
         this.transaction = transaction;
 
-        if (transaction.account_id == -1) {
-            accountLabel.setForeground(new Color(0, true));
-            amountLabel.setForeground(new Color(0, true));
-            accountHint.setForeground(new Color(0, true));
-            amountHint.setForeground(new Color(0, true));
-        }
+
 
         dateLabel.setText(Constants.DATE_FORMAT.format(transaction.getDate()));
         typeLabel.setText(transaction.getType().toString());
         accountLabel.setText(Integer.toString(transaction.getAccount_id()));
+
         if (transaction.getAmount() != null) {
-            amountLabel.setText(transaction.getAmount().toPlainString() + transaction.getCurrency());
+            amountLabel.setText(Constants.CURRENCY_FORMAT.format(transaction.getAmount().doubleValue()) + " " + transaction.getCurrency());
         }
+
+        if (transaction.account_id == -1) {
+            amountHint.setForeground(new Color(0, true));
+            accountLabel.setText(transaction.getUid() + "");
+            accountHint.setText("User ID");
+            amountLabel.setForeground(new Color(0, true));
+        }
+
+        if (transaction.getType() == TransactionType.CLOSE) {
+            amountLabel.setForeground(new Color(0, true));
+            amountHint.setForeground(new Color(0, true));
+        }
+
         targetUserLabel.setText(Integer.toString(transaction.getTarget_uid()));
         targetAccountLabel.setText(Integer.toString(transaction.getTarget_account_id()));
     }
