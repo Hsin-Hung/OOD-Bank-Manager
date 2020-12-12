@@ -7,6 +7,9 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+/**
+ * A sign up screen that allows users to create new accounts. Will auto log users in after a successful signup
+ */
 public class SignUpScreen extends BaseScreen {
     private JPanel mainPanel;
     private JTextField userTextField;

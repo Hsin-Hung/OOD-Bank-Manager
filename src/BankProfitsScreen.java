@@ -4,6 +4,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.HashMap;
 
+/**
+ * Displays the profit the bank makes to the bank manager.
+ */
 public class BankProfitsScreen extends BaseScreen {
     private JPanel mainPanel;
 

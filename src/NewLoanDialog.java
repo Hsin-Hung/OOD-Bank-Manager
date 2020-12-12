@@ -7,7 +7,10 @@ import java.awt.*;
 import java.awt.event.*;
 import java.math.BigDecimal;
 
-public class NewLoanScreen extends JDialog {
+/**
+ * A simple dialog that allows users to request a new loan, with amount, currency, and collateral.
+ */
+public class NewLoanDialog extends JDialog {
     private JPanel contentPane;
     private JButton buttonOK;
     private JButton buttonCancel;
@@ -17,7 +20,7 @@ public class NewLoanScreen extends JDialog {
     private final ATM atm;
     private final ElementsScreen owner;
 
-    public NewLoanScreen(ATM atm, ElementsScreen owner) {
+    public NewLoanDialog(ATM atm, ElementsScreen owner) {
         this.atm = atm;
         this.owner = owner;
         amountSpinner.setModel(new SpinnerNumberModel(0, 0, 1000000000, 0.1));

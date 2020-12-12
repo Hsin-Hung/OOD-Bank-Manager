@@ -47,6 +47,8 @@ public abstract class BankAccount {
         return res == 0 || res == 1;
     }
 
+    public abstract boolean canClose();
+
     public boolean withdraw(BigDecimal amount) {
         if (hasEnoughBalance(amount)) {
             balance = balance.subtract(amount);

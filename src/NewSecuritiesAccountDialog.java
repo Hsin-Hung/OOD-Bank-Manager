@@ -7,6 +7,9 @@ import java.awt.*;
 import java.awt.event.*;
 import java.math.BigDecimal;
 
+/**
+ * A simple dialog that allows users to open a new securities account. Takes money from the USD savings account when completed
+ */
 public class NewSecuritiesAccountDialog extends JDialog {
     private JPanel contentPane;
     private JButton buttonOK;

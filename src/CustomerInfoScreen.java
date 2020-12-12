@@ -8,6 +8,9 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 
+/**
+ * A screen for the Bank Manager to display information regarding the bank's customers
+ */
 public class CustomerInfoScreen extends BaseScreen {
     private JComboBox customerCombo;
     private JRadioButton accountRadio;

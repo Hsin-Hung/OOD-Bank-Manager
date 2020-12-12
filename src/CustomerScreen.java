@@ -10,8 +10,8 @@ import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
 import java.util.List;
 
-/*
- * CustomerScreen.java - creates the customer screen gui and child screens
+/**
+ *  The portal screen for customers to access the many functions that have access to once they login.
  */
 public class CustomerScreen extends BaseScreen {
     private final ATM owner;
@@ -162,7 +162,7 @@ public class CustomerScreen extends BaseScreen {
      * Function that loads the creating a new loan gui
      */
     private Void createNewLoan(ElementsScreen s) {
-        new NewLoanScreen(owner, s);
+        new NewLoanDialog(owner, s);
         return null;
     }
 

@@ -78,11 +78,9 @@ public class ATM {
                     new ManagerScreen(this);
                     return true;
                 default:
-                    // TODO exception
+                    throw new IllegalArgumentException("Person has a non existent role: " + person.getRole());
             }
         }
-
-        return true;
     }
 
     public void logout() {
