@@ -47,7 +47,7 @@ public class ATM {
         Customer customer = bank.createCustomer(name, userName, password);
         if (customer != null) {
             loggedInPerson = customer;
-            new CustomerScreen(this);
+            customerScreen = new CustomerScreen(this);
             return true;
         } else {
             System.out.println("fail to create customer");
@@ -112,6 +112,7 @@ public class ATM {
         if ((getLoggedInCustomer().getSecuritiesAccount() == null) && startingBalance.compareTo(new BigDecimal(1000)) >= 0
                 && (savingsAccount.getBalance().subtract(startingBalance).compareTo(new BigDecimal(2500)) >= 0)) {
 
+            getLoggedInCustomer().getSavingsAccount("USD").setAsSecurityBackingAccount();
             return bank.createSecuritiesAccount(getLoggedInCustomer(), "USD", startingBalance);//will return boolean indicate success or not
         }
 
@@ -165,6 +166,11 @@ public class ATM {
 
     public boolean deposit(Customer c, BankAccount ba, BigDecimal amount) {
         //make sure deposit is positive number
+        if (ba.getType() == AccountType.CHECKING) {
+            if (amount.compareTo(new BigDecimal(5)) == -1) {
+                return false;
+            }
+        }
         if (isPositive(amount)) {
             return bank.deposit(c, ba, amount);//will return boolean indicate success or not
         }
@@ -174,7 +180,7 @@ public class ATM {
 
     public boolean withdraw(Customer c, BankAccount ba, BigDecimal amount) {
         //make sure withdraw is positive number
-        if (isPositive(amount) && ba.hasEnoughBalance(amount)) {
+        if (isPositive(amount) && ba.hasEnoughBalance(amount.add(new BigDecimal(5.0)))) {
             return bank.withdraw(c, ba, amount); //will return boolean indicate success or not
         }
         return false;
@@ -208,7 +214,13 @@ public class ATM {
      * @return true if transfer succeeded, false otherwise
      */
     public boolean transferMoney(BankAccount fromBank, int toAccountID, BigDecimal amount) {
-        if (isPositive(amount) && fromBank.hasEnoughBalance(amount) && fromBank.getAccountID() != toAccountID) {
+        BigDecimal amountChecker = new BigDecimal(0);
+        amountChecker = amountChecker.add(amount);
+
+        if (fromBank.getType() == AccountType.CHECKING) {
+            amountChecker = amountChecker.add(new BigDecimal(5));
+        }
+        if (isPositive(amount) && fromBank.hasEnoughBalance(amountChecker) && fromBank.getAccountID() != toAccountID) {
             boolean res = bank.transferMoney(getLoggedInCustomer(), fromBank, toAccountID, amount);
             if (res) {
                 bank.reloadCustomerAccount(getLoggedInCustomer());

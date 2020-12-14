@@ -11,8 +11,9 @@ public class SavingsAccount extends BankAccount {
     }
 
     public void setAsSecurityBackingAccount() {
-        SecurityBackingAccount = true;
+        setAsSecurityBackingAccount(true);
     }
+    public void setAsSecurityBackingAccount(boolean val) { SecurityBackingAccount = val; }
 
     @Override
     public boolean hasEnoughBalance(BigDecimal amount) {

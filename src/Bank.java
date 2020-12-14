@@ -119,7 +119,6 @@ public class Bank {
         SecuritiesAccount account = (SecuritiesAccount) db.addAccount(customer, AccountType.SECURITIES, amount, currency);
 
         if (account != null) {
-
             Transaction transferT = db.addTransaction(TransactionType.TRANSFER, customer.getUid(), saccount.getAccountID(), amount,
                     "USD", customer.getUid(), account.getAccountID(), null);
 
@@ -127,7 +126,10 @@ public class Bank {
 
             customer.addBankAccount(account);
             Transaction t = db.addTransaction(TransactionType.OPENSECURITIES, customer.getUid(), account.getAccountID(), amount, currency, -1, -1, null);
-            if (t != null) customer.addTransaction(t);
+            if (t != null && transferT != null) {
+                customer.addTransaction(t);
+                customer.addTransaction(transferT);
+            }
 
             return true;
         }

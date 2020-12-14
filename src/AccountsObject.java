@@ -68,6 +68,9 @@ public class AccountsObject extends ElementObject {
     }
 
     public void closeAccount() {
+        if (account.getType() == AccountType.SECURITIES) {
+            atm.getLoggedInCustomer().getSavingsAccount("USD").setAsSecurityBackingAccount(false);
+        }
         if (atm.closeAccount(atm.getLoggedInCustomer(), account)) {
             String message = "Account has been closed successfully. A fee of " +
                     Constants.closeAccountFee.toPlainString() + " has been applied. " +

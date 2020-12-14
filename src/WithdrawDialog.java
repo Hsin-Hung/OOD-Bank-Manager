@@ -83,7 +83,7 @@ public class WithdrawDialog extends JDialog {
         } else {
             String message = "Failed to withdraw money. You don't have enough.";
             if (account.getType() == AccountType.SAVINGS && ((SavingsAccount) account).isSecurityBackingAccount()) {
-                message += "This is a security bank account, you need to keep a minimum of $" + Constants.minimalStartingSecurityAmount;
+                message += "This is a security backing account, you need to keep a minimum of $" + Constants.minimalSecurityAmount.toPlainString();
             }
 
             JOptionPane.showMessageDialog(contentPane, message);

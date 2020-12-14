@@ -59,7 +59,7 @@ public class StockMarket {
                 try (BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream(), StandardCharsets.UTF_8))) {
                     for (String line; (line = reader.readLine()) != null; ) {
                         if (line.contains("\"symbol\" :")) {
-                            symbols.add(line.split(": ")[1].split(",")[0].replace('"', '\0'));
+                            symbols.add(line.split(": ")[1].split(",")[0].replace("\"", ""));
                         }
 
                         if (line.contains("\"price\" : ")) {
