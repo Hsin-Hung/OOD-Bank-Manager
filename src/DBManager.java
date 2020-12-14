@@ -23,7 +23,7 @@ public class DBManager {
 
             conn = DriverManager.getConnection(url);
             System.out.println("Connection to SQLite has been established.");
-            dropTables();
+            // dropTables();
 //            System.out.println("Tables dropped");
             createTables();
             System.out.println("Tables created");
