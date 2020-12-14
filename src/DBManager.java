@@ -23,7 +23,7 @@ public class DBManager {
 
             conn = DriverManager.getConnection(url);
             System.out.println("Connection to SQLite has been established.");
-//            dropTables();
+            dropTables();
 //            System.out.println("Tables dropped");
             createTables();
             System.out.println("Tables created");
@@ -114,7 +114,7 @@ public class DBManager {
     }
 
     public void addDefaultManager() {
-        String sql = "INSERT INTO USERS(NAME,USERNAME,PASSWORD,ROLE) VALUES (\"MANAGER\",\"admin\",\"admin\",\"MANAGER\");";
+        String sql = "INSERT OR IGNORE INTO USERS(NAME,USERNAME,PASSWORD,ROLE) VALUES (\"MANAGER\",\"admin\",\"admin\",\"MANAGER\");";
         Statement stmt = null;
         try {
             stmt = conn.createStatement();
