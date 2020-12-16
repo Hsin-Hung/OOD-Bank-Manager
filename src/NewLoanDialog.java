@@ -70,7 +70,12 @@ public class NewLoanDialog extends JDialog {
             JOptionPane.showMessageDialog(contentPane, "You need to provide some collateral.");
             return;
         }
-        if (!atm.requestLoan(new BigDecimal((Double) amountSpinner.getValue()), currencyCombo.getSelectedItem().toString(), collateralText.getText())) {
+        BigDecimal amount = Helper.checkSpinnnerMoneyValue(amountSpinner);
+
+        if (amount == null) {
+            JOptionPane.showMessageDialog(contentPane, "Amount entered is not valid.");
+            return;
+        } else if (!atm.requestLoan(amount, currencyCombo.getSelectedItem().toString(), collateralText.getText())) {
             JOptionPane.showMessageDialog(contentPane, "Failed to request loan");
             return;
         }
