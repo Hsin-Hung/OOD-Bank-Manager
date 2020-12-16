@@ -177,7 +177,7 @@ public class Bank {
         List<Loan> loans = db.getAllLoans();
         for (Loan l : loans) {
             Customer c = (Customer) db.getPersonFromLoan(l.getLid());
-            applyLoanInterest(c, l, Constants.savingsInterestPercentage);
+            applyLoanInterest(c, l, Constants.loanInterestPercentage);
         }
     }
 
