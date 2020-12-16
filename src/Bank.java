@@ -248,8 +248,11 @@ public class Bank {
     public boolean transferMoney(Customer c, BankAccount fromBank, int toAccountID, BigDecimal amount) {
         BankAccount toBank = getBankAccount(c, toAccountID);
 
-        if (toBank == null || !toBank.getCurrency().equals(fromBank.getCurrency())) return false;
 
+        if (toBank == null || !toBank.getCurrency().equals(fromBank.getCurrency())) return false;
+        if (toBank.getUSER_ID() == 1) {
+            return false;
+        }
         BigDecimal fromBankBalance = fromBank.getBalance().subtract(amount), toBankBalance = toBank.getBalance().add(amount);
         if (db.transferMoney(fromBank.getAccountID(), toAccountID, fromBankBalance, toBankBalance)) {
             Transaction t = db.addTransaction(TransactionType.TRANSFER, fromBank.getUSER_ID(), fromBank.getAccountID(), amount,

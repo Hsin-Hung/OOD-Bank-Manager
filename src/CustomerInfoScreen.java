@@ -65,10 +65,13 @@ public class CustomerInfoScreen extends BaseScreen {
 
     private void loadAccounts() {
         elementsPanel.removeAll();
-        for (BankAccount a : ((Customer) customerCombo.getSelectedItem()).getBankAccounts()) {
-            AccountsObject aa = new AccountsObject(null, a);
-            elementsPanel.add(aa.$$$getRootComponent$$$());
+        if (customerCombo.getItemCount() > 0) {
+            for (BankAccount a : ((Customer) customerCombo.getSelectedItem()).getBankAccounts()) {
+                AccountsObject aa = new AccountsObject(null, a);
+                elementsPanel.add(aa.$$$getRootComponent$$$());
+            }
         }
+
 
         refreshUI();
     }
@@ -127,4 +130,5 @@ public class CustomerInfoScreen extends BaseScreen {
     public JComponent $$$getRootComponent$$$() {
         return mainPanel;
     }
+
 }
