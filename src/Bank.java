@@ -265,9 +265,7 @@ public class Bank {
             if (fromBank.getType().equals(AccountType.CHECKING)) {
                 chargeFee(c, fromBank, Constants.checkingFee);
             }
-            if (toBank.getType().equals(AccountType.CHECKING)) {
-                chargeFee(c, toBank, Constants.checkingFee);
-            }
+
             return true;
         }
 
