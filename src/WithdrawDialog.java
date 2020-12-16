@@ -16,6 +16,8 @@ public class WithdrawDialog extends JDialog {
     private JSpinner amountSpin;
     private JButton WithdrawButton;
     private JLabel amountLabel;
+    private JLabel DepositLbl;
+    private JLabel WithdrawLbl;
 
     /**
      * A dialog that shows up to allow users to withdraw or deposit money.
@@ -31,6 +33,8 @@ public class WithdrawDialog extends JDialog {
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(DepositButton);
+        DepositLbl.setText("For Checking Account, Minimum Deposit has to be more than " + Constants.checkingFee);
+        WithdrawLbl.setText("For Checking Account,Maximum Withdrawal has to be less than (Amount - " + Constants.checkingFee + ")");
 
         DepositButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
