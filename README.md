@@ -34,14 +34,18 @@ https://ericchen1248.github.io/611-OOD-Bank-Manager/
 1.	Initial account only created for manager admin/admin. Other users have to be created.
 2.	When opening/closing/depositing into accounts, the user only has to input how much money he wants added. The charge will be a separate transaction.
 3.	Internet connection is required to update stocks. An offline method to update stocks is to update the stocks.csv manually.
+4.	Bank profits are only added for charging fees, during open and close accounts, checking account transaction and when loan is being paid off.
+5.	Bank profits are subtracted during saving interest increase and when loan is being requested from the bank.
+6. 	All integer spinners are automatically set to integers or 0, if the value is invalid.
 
+ 
 # Files
 
 ## Main Files 
 1.	App.java
-    a.	Main class that runs entire application
+a.	Main class that runs entire application
 2.	DBManager.java 
-    a.	Class that handles all database operations.
+a.	Class that handles all database operations.
 
 ## Jar Files
 3.	Forms_rt.jar
