@@ -34,6 +34,9 @@ public class StockActionDialog extends JDialog {
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
 
+        shares.setModel(new SpinnerNumberModel(1, 1, 10000, 1));
+        Helper.disableSpinnerInvalidsInteger(shares);
+
         buttonOK.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 onOK();

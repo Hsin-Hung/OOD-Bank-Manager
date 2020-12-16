@@ -70,4 +70,14 @@ public class Helper {
         formatter.setFormat(decimalFormat);
         formatter.setAllowsInvalid(false);
     }
+
+    /**
+     * Force a spinner to only accept valid inputs integer
+     * @param spinner The spinner to set the property on
+     */
+    public static void disableSpinnerInvalidsInteger(JSpinner spinner) {
+        JFormattedTextField txt = (((JSpinner.DefaultEditor) spinner.getEditor()).getTextField());
+        NumberFormatter formatter = (NumberFormatter) txt.getFormatter();
+        formatter.setAllowsInvalid(false);
+    }
 }
