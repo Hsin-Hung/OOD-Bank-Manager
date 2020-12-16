@@ -23,13 +23,14 @@ public class TransferDialog extends JDialog {
         this.atm = atm;
         this.owner = owner;
 
-        transferAmount.setModel(new SpinnerNumberModel(0, 0.01, Math.max(5.0, owner.getAccount().getBalance().doubleValue()), 0.01));
-        Helper.disableSpinnerInvalids(transferAmount);
-        
+
         $$$setupUI$$$();
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
+
+        transferAmount.setModel(new SpinnerNumberModel(0.01, 0.01, Math.max(5.0, owner.getAccount().getBalance().doubleValue()), 0.01));
+        Helper.disableSpinnerInvalids(transferAmount);
 
         buttonOK.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
