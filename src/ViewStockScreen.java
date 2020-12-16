@@ -70,9 +70,9 @@ public class ViewStockScreen extends BaseScreen {
     private void updateBalance() {
         SecuritiesAccount securitiesAccount = owner.getLoggedInCustomer().getSecuritiesAccount();
         if (securitiesAccount != null) {
-            balance.setText(securitiesAccount.getBalance().toPlainString());
+            balance.setText(Constants.CURRENCY_FORMAT.format(securitiesAccount.getBalance().doubleValue()));
         } else {
-            balance.setText("0");
+            balance.setText(Constants.CURRENCY_FORMAT.format(0));
         }
 
     }
