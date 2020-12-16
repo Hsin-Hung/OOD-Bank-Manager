@@ -1,5 +1,7 @@
 import javax.swing.*;
+import javax.swing.text.NumberFormatter;
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.List;
 
 /**
@@ -55,5 +57,17 @@ public class Helper {
         } else {
             return null;
         }
+    }
+
+    /**
+     * Force a spinner to only accept valid inputs
+     * @param spinner The spinner to set the property on
+     */
+    public static void disableSpinnerInvalids(JSpinner spinner) {
+        JFormattedTextField txt = (((JSpinner.DefaultEditor) spinner.getEditor()).getTextField());
+        NumberFormatter formatter = (NumberFormatter) txt.getFormatter();
+        DecimalFormat decimalFormat = new DecimalFormat("0.00");
+        formatter.setFormat(decimalFormat);
+        formatter.setAllowsInvalid(false);
     }
 }

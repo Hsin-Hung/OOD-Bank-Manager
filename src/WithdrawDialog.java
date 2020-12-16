@@ -25,7 +25,9 @@ public class WithdrawDialog extends JDialog {
      */
     public WithdrawDialog(ATM atm, BankAccount account, AccountsObject object) {
         $$$setupUI$$$();
-        amountSpin.setModel(new SpinnerNumberModel(0, 0, 1000000000, 0.01));
+        amountSpin.setModel(new SpinnerNumberModel(0, 0.01, 1000000000, 0.01));
+        Helper.disableSpinnerInvalids(amountSpin);
+
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(DepositButton);

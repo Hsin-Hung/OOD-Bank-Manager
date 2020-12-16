@@ -26,8 +26,6 @@ public class TransactionObject extends ElementObject {
         setExternalTransaction(transaction.target_account_id == -1);
         this.transaction = transaction;
 
-
-
         dateLabel.setText(Constants.DATE_FORMAT.format(transaction.getDate()));
         typeLabel.setText(transaction.getType().toString());
         accountLabel.setText(Integer.toString(transaction.getAccount_id()));

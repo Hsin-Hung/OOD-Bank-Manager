@@ -28,6 +28,7 @@ public class NewSecuritiesAccountDialog extends JDialog {
         getRootPane().setDefaultButton(buttonOK);
 
         spinner1.setModel(new SpinnerNumberModel(Constants.minimalStartingSecurityAmount, Constants.minimalStartingSecurityAmount, atm.getLoggedInCustomer().getSavingsAccount("USD").getBalance().doubleValue(), 0.1));
+        Helper.disableSpinnerInvalids(spinner1);
 
         buttonOK.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {

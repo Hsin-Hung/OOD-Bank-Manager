@@ -28,6 +28,8 @@ public class NewAccountDialog extends JDialog {
 
         $$$setupUI$$$();
         amountSpin.setModel(new SpinnerNumberModel(20, 20, 1000000000, 0.1));
+        Helper.disableSpinnerInvalids(amountSpin);
+
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
