@@ -37,10 +37,12 @@ public class TransactionObject extends ElementObject {
         }
 
         if (transaction.account_id == -1) {
-            amountHint.setForeground(new Color(0, true));
+            if (transaction.getType() != TransactionType.OPENLOAN) {
+                amountHint.setForeground(new Color(0, true));
+                amountLabel.setForeground(new Color(0, true));
+            }
             accountLabel.setText(transaction.getUid() + "");
             accountHint.setText("User ID");
-            amountLabel.setForeground(new Color(0, true));
         }
 
         if (transaction.getType() == TransactionType.CLOSE) {
