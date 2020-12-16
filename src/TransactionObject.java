@@ -59,10 +59,10 @@ public class TransactionObject extends ElementObject {
     }
 
     private void setExternalTransaction(boolean external) {
-        targetUserLabel.setForeground(new Color(0, true));
-        targetUserInfoLabel.setForeground(new Color(0, true));
-        targetAccountLabel.setForeground(new Color(0, true));
-        targetAccountInfoLabel.setForeground(new Color(0, true));
+        targetUserLabel.setForeground(new Color(0, external));
+        targetUserInfoLabel.setForeground(new Color(0, external));
+        targetAccountLabel.setForeground(new Color(0, external));
+        targetAccountInfoLabel.setForeground(new Color(0, external));
     }
 
     {
