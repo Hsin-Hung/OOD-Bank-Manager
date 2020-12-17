@@ -3,15 +3,15 @@ CS611 Final Project - ATM
 # Teammates
 1.	Name: Richard Andreas
 Email: ra7296@bu.edu
-BUID: U78371851
+
 
 2.	Name: Jiun Yan Chen
 Email: ericjyc@bu.edu
-BUID: U12635715
+
 
 3.	Name: Hsin Hung Wu
 Email: henrywu@bu.edu
-BUID: U29935516
+
 
 
 # Execution instructions
