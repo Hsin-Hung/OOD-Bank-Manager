@@ -1,19 +1,3 @@
-CS611 Final Project - ATM
-
-# Teammates
-1.	Name: Richard Andreas
-Email: ra7296@bu.edu
-
-
-2.	Name: Jiun Yan Chen
-Email: ericjyc@bu.edu
-
-
-3.	Name: Hsin Hung Wu
-Email: henrywu@bu.edu
-
-
-
 # Execution instructions
 1.	Unzip the ATM.zip file and enter the directory.
 2.	Compile the java program.
